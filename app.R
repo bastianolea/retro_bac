@@ -5,6 +5,8 @@ library(shinyvalidate)
 library(ggplot2)
 library(shinyjs)
 library(shinydisconnect)
+library(officer)
+# library(rvg)
 
 # --- Constantes ---
 BETA_MIN <- 0.10 # g/L/hora
@@ -81,50 +83,53 @@ ui <- page_sidebar(
     dateInput("fecha_evento", "Date of incident:", value = Sys.Date(), format = "dd/mm/yyyy", language = "es"),
     textInput("hora_evento", "Time incident (HH:MM):", value = format(Sys.time() - hours(3), "%H:%M")),
     actionButton("calcular", "Calculate extrapolation", class = "btn-primary btn-lg w-100", icon = icon("calculator")), 
+    
+    downloadButton("descargar_reporte", "Download report") |> disabled(),
+    
     hr(),
     helpText(paste0("Note: Alcohol elimination rate (β) varies between ", BETA_MIN, " and ", BETA_MAX, " g/L/h.")),
     helpText("Ensure that the date/time of the event is prior to the date/time of the measurement.")
   ),
   
   page_fluid(
-  # navset_tab(
+    # navset_tab(
     # id = "main_tabs",
     # nav_panel(
-      # title = "Extrapolation", icon = icon("chart-line"), 
-      layout_column_wrap(width = "100%", heights_equal = "row",
-                         
-                         # Results ----
-                         card(class = "shadow-sm mb-3", 
-                              card_header(h4("Results estimated")), 
-                              card_body(
-                                
-                                div(
-                                  markdown("No results to show. Press _Calculate extrapolation_ to get results."), 
-                                    id = "no_results", style = "opacity: 0.4;", role = "alert") |> hidden(),
-                                uiOutput("resultados_ui")
-                                )
-                         ),
-                         card(class = "shadow-sm mb-3", card_header(h4("Retrograde extrapolation plot")), card_body(plotOutput("bac_plot"))),
-                         # El id "calculos_detallados_card_body" se usa para que el CSS pueda apuntar a los h5 dentro.
-                         # O simplemente se puede poner el uiOutput directo y apuntar con #calculos_detallados_ui h5
-                         card(full_screen = TRUE, class = "shadow-sm mb-3", card_header(h4("Calculation details")), 
-                              card_body(id="calculos_detallados_card_body", uiOutput("calculos_detallados_ui")) 
-                         ),
-                         card(class = "shadow-sm", card_header(h4("Notas Importantes e Interpretación")),
-                              card_body(
-                                tags$ul(
-                                  tags$li("La retroproyección (o extrapolación retrógrada) es una estimación matemática."),
-                                  tags$li("Se basa en la fórmula de Widmark: ", tags$code("BAC_evento = BAC_medido + (tasa_eliminación * tiempo_transcurrido)")),
-                                  tags$li("Los resultados muestran un ", tags$strong("rango posible"),", debido a la variabilidad individual en la tasa de eliminación de alcohol (β)."),
-                                  tags$li("Factores como el sexo, peso, ingesta de alimentos, patrón de consumo y estado de salud pueden influir en la tasa de eliminación real y no se consideran en este cálculo simplificado."),
-                                  tags$li("Esta herramienta pretende ser un apoyo en el análisis pericial experto, sin embargo, no tiene validez legal por sí misma.")
-                                ),
-                                h5("Reference:"),
-                                tags$ul(tags$a(href="https://www.aafs.org/asb-standard/best-practice-recommendation-performing-alcohol-calculations-forensic-toxicology", target="_blank", "Best Practice Recommendation for Performing Alcohol Calculations in Forensic Toxicology"))
-                              ))
-      )
+    # title = "Extrapolation", icon = icon("chart-line"), 
+    layout_column_wrap(width = "100%", heights_equal = "row",
+                       
+                       # Results ----
+                       card(class = "shadow-sm mb-3", 
+                            card_header(h4("Results estimated")), 
+                            card_body(
+                              
+                              div(
+                                markdown("No results to show. Press _Calculate extrapolation_ to get results."), 
+                                id = "no_results", style = "opacity: 0.4;", role = "alert") |> hidden(),
+                              uiOutput("resultados_ui")
+                            )
+                       ),
+                       card(class = "shadow-sm mb-3", card_header(h4("Retrograde extrapolation plot")), card_body(plotOutput("bac_plot"))),
+                       # El id "calculos_detallados_card_body" se usa para que el CSS pueda apuntar a los h5 dentro.
+                       # O simplemente se puede poner el uiOutput directo y apuntar con #calculos_detallados_ui h5
+                       card(full_screen = TRUE, class = "shadow-sm mb-3", card_header(h4("Calculation details")), 
+                            card_body(id="calculos_detallados_card_body", uiOutput("calculos_detallados_ui")) 
+                       ),
+                       card(class = "shadow-sm", card_header(h4("Notas Importantes e Interpretación")),
+                            card_body(
+                              tags$ul(
+                                tags$li("La retroproyección (o extrapolación retrógrada) es una estimación matemática."),
+                                tags$li("Se basa en la fórmula de Widmark: ", tags$code("BAC_evento = BAC_medido + (tasa_eliminación * tiempo_transcurrido)")),
+                                tags$li("Los resultados muestran un ", tags$strong("rango posible"),", debido a la variabilidad individual en la tasa de eliminación de alcohol (β)."),
+                                tags$li("Factores como el sexo, peso, ingesta de alimentos, patrón de consumo y estado de salud pueden influir en la tasa de eliminación real y no se consideran en este cálculo simplificado."),
+                                tags$li("Esta herramienta pretende ser un apoyo en el análisis pericial experto, sin embargo, no tiene validez legal por sí misma.")
+                              ),
+                              h5("Reference:"),
+                              tags$ul(tags$a(href="https://www.aafs.org/asb-standard/best-practice-recommendation-performing-alcohol-calculations-forensic-toxicology", target="_blank", "Best Practice Recommendation for Performing Alcohol Calculations in Forensic Toxicology"))
+                            ))
+    )
     # ),
-  # )
+    # )
     # Signos y Síntomas ----
     # nav_panel(
     #   title = "Signos y Síntomas", icon = icon("notes-medical"),
@@ -153,7 +158,7 @@ ui <- page_sidebar(
     #        )),
     #   uiOutput("bebidas_output")
     # )
-  # )
+    # )
   )
 )
 
@@ -165,8 +170,10 @@ server <- function(input, output, session) {
   observe(
     if (input$calcular == 0) {
       show("no_results")
+      hide("descargar_reporte")
     } else {
       hide("no_results")
+      show("descargar_reporte")
     }
   )
   
@@ -215,9 +222,14 @@ server <- function(input, output, session) {
     bac_evento_max <- round(bac_medido_val + BETA_MAX * horas_transcurridas, 2)
     
     list(
-      horas = round(horas_transcurridas, 2), bac_min = bac_evento_min, bac_max = bac_evento_max,
-      bac_medido_val = bac_medido_val, tiempo_medicion_val = tiempo_medicion_val,
-      tiempo_evento_val = tiempo_evento_val, beta_min_val = BETA_MIN, beta_max_val = BETA_MAX
+      horas = round(horas_transcurridas, 2), 
+      bac_min = bac_evento_min, 
+      bac_max = bac_evento_max,
+      bac_medido_val = bac_medido_val, 
+      tiempo_medicion_val = tiempo_medicion_val,
+      tiempo_evento_val = tiempo_evento_val, 
+      beta_min_val = BETA_MIN, 
+      beta_max_val = BETA_MAX
     )
   })
   
@@ -227,21 +239,25 @@ server <- function(input, output, session) {
     tagList(
       p(strong("Time between incident and time of blood draw: "), paste(res$horas, "hours")),
       tags$div(class = "alert alert-success fs-5", role = "alert", 
-               HTML(paste0("Estimated BAC at time of the incident: <br>", tags$strong(res$bac_min), " – ", tags$strong(res$bac_max), " g/L")))
+               HTML(paste0("Estimated BAC at time of the incident: <br>", 
+                           tags$strong(res$bac_min |> formatC(digits = 2, format = "f")), " – ", 
+                           tags$strong(res$bac_max |> formatC(digits = 2, format = "f")), " g/L")))
     )
   })
   
   ## gráfico ----
-  output$bac_plot <- renderPlot({
+  grafico <- reactive({
     res <- resultado()
     req(res)
     points_df <- data.frame(
       time = c(res$tiempo_evento_val, res$tiempo_evento_val, res$tiempo_medicion_val),
       bac = c(res$bac_min, res$bac_max, res$bac_medido_val),
-      type = factor(c("Extrapolado (Mín)", "Extrapolado (Máx)", "Analito"), levels = c("Analítico", "Extrapolado (Mín)", "Extrapolado (Máx)")),
+      type = factor(c("Extrapolado (Mín)", "Extrapolado (Máx)", "Analítico"), levels = c("Analítico", "Extrapolado (Mín)", "Extrapolado (Máx)")),
       label_text = c(sprintf("%.2f g/L", res$bac_min), sprintf("%.2f g/L", res$bac_max), sprintf("%.2f g/L", res$bac_medido_val))
     )
-    p <- ggplot(points_df, aes(x = time, y = bac)) +
+    # p <- 
+    # dev.new()
+    ggplot(points_df, aes(x = time, y = bac)) +
       geom_segment(data = data.frame(x=res$tiempo_medicion_val, y=res$bac_medido_val, xend=res$tiempo_evento_val, yend=res$bac_min),
                    aes(x=x, y=y, xend=xend, yend=yend), linetype = "dashed", color = "steelblue", linewidth = 0.8) +
       geom_segment(data = data.frame(x=res$tiempo_medicion_val, y=res$bac_medido_val, xend=res$tiempo_evento_val, yend=res$bac_max),
@@ -260,7 +276,7 @@ server <- function(input, output, session) {
                        expand = expansion(c(0.1, 0.1))
       ) +
       scale_y_continuous(name = "Blood alcohol concentration (g/L)", limits = c(0, max(points_df$bac, na.rm = TRUE) * 1.25), expand = expansion(mult = c(0.01, 0.1))) +
-      scale_shape_manual(values = c("Analite" = 16, "Extrapolate (Mín)" = 17, "Extrapolate (Máx)" = 17)) + 
+      # scale_shape_manual(values = c("Analite" = 16, "Extrapolate (Mín)" = 17, "Extrapolate (Máx)" = 17)) + 
       scale_color_manual(values = c("Analítico" = "#0072B2", "Extrapolado (Mín)" = "#E69F00", "Extrapolado (Máx)" = "#D55E00")) + 
       labs(color = "Resultado:", shape = "Resultado:") +
       theme_bw(base_size = 14) + 
@@ -269,7 +285,12 @@ server <- function(input, output, session) {
             legend.title = element_text(size=11), legend.text = element_text(size=10),
             panel.grid.minor = element_blank(), panel.grid.major.x = element_line(linetype = "dotted", color = "grey80"),
             panel.grid.major.y = element_line(linetype = "dotted", color = "grey80"))
-    print(p)
+    # browser()
+    # print(p)
+  })
+  
+  output$bac_plot <- renderPlot({
+    grafico()
   }, res = 96) 
   
   output$calculos_detallados_ui <- renderUI({
@@ -297,30 +318,34 @@ server <- function(input, output, session) {
       tags$h5("Cálculo del Límite Inferior del Rango Estimado (BAC_evento_min)"),
       tags$p(paste0("Usando Tasa de Eliminación Mínima (beta_min) = ", res$beta_min_val, " g/L/hora:")),
       tags$p(tags$code(
-        paste0("BAC_evento_min = ", res$bac_medido_val, " g/L + (", 
-               res$beta_min_val, " g/L/hora * ", res$horas, " horas)")
+        paste0("BAC_evento_min = ", 
+               res$bac_medido_val |> formatC(digits = 2, format = "f"), 
+               " g/L + (", 
+               res$beta_min_val |> formatC(digits = 2, format = "f"), 
+               " g/L/hora * ", 
+               res$horas, " horas)")
       )),
       tags$p(HTML(paste0(
-        "&nbsp;&nbsp;&nbsp;&nbsp; = ", res$bac_medido_val, " g/L + ", 
-        round(res$beta_min_val * res$horas, 3), " g/L"
+        "&nbsp;&nbsp;&nbsp;&nbsp; = ", res$bac_medido_val |> formatC(digits = 2, format = "f"), " g/L + ", 
+        round(res$beta_min_val * res$horas, 3) |> formatC(digits = 2, format = "f"), " g/L"
       ))),
       tags$p(tags$strong(
-        paste0("BAC_evento_min = ", res$bac_min, " g/L")
+        paste0("BAC_evento_min = ", res$bac_min |> formatC(digits = 2, format = "f"), " g/L")
       )),
       tags$hr(),
       
       tags$h5("Cálculo del Límite Superior del Rango Estimado (BAC_evento_max)"),
       tags$p(paste0("Usando Tasa de Eliminación Máxima (beta_max) = ", res$beta_max_val, " g/L/hora:")),
       tags$p(tags$code(
-        paste0("BAC_evento_max = ", res$bac_medido_val, " g/L + (", 
-               res$beta_max_val, " g/L/hora * ", res$horas, " horas)")
+        paste0("BAC_evento_max = ", res$bac_medido_val |> formatC(digits = 2, format = "f"), " g/L + (", 
+               res$beta_max_val |> formatC(digits = 2, format = "f"), " g/L/hora * ", res$horas, " horas)")
       )),
       tags$p(HTML(paste0(
-        "&nbsp;&nbsp;&nbsp;&nbsp; = ", res$bac_medido_val, " g/L + ", 
-        round(res$beta_max_val * res$horas, 3), " g/L"
+        "&nbsp;&nbsp;&nbsp;&nbsp; = ", res$bac_medido_val |> formatC(digits = 2, format = "f"), " g/L + ", 
+        round(res$beta_max_val * res$horas, 3) |> formatC(digits = 2, format = "f"), " g/L"
       ))),
       tags$p(tags$strong(
-        paste0("BAC_evento_max = ", res$bac_max, " g/L")
+        paste0("BAC_evento_max = ", res$bac_max |> formatC(digits = 2, format = "f"), " g/L")
       ))
     )
   })
@@ -350,60 +375,122 @@ server <- function(input, output, session) {
   })
   
   # --- Lógica para Pestaña de Estimación de Bebidas ---
-  calculo_bebidas_res <- eventReactive(input$calcular_bebidas, {
-    shiny::validate( 
-      need(isTruthy(input$bac_para_bebidas) && input$bac_para_bebidas > 0, "El BAC objetivo debe ser un número positivo."),
-      need(isTruthy(input$peso_estimacion) && input$peso_estimacion > 0, "El peso debe ser un número positivo."),
-      need(isTruthy(input$sexo_estimacion), "Debe seleccionar un sexo biológico."),
-      need(isTruthy(input$tipo_bebida_estimacion), "Debe seleccionar un tipo de bebida.")
-    )
+  # calculo_bebidas_res <- eventReactive(input$calcular_bebidas, {
+  #   shiny::validate( 
+  #     need(isTruthy(input$bac_para_bebidas) && input$bac_para_bebidas > 0, "El BAC objetivo debe ser un número positivo."),
+  #     need(isTruthy(input$peso_estimacion) && input$peso_estimacion > 0, "El peso debe ser un número positivo."),
+  #     need(isTruthy(input$sexo_estimacion), "Debe seleccionar un sexo biológico."),
+  #     need(isTruthy(input$tipo_bebida_estimacion), "Debe seleccionar un tipo de bebida.")
+  #   )
+  #   
+  #   peso <- input$peso_estimacion
+  #   sexo <- input$sexo_estimacion
+  #   bac_objetivo <- input$bac_para_bebidas 
+  #   bebida_seleccionada_nombre <- input$tipo_bebida_estimacion
+  #   
+  #   r_widmark <- ifelse(sexo == "Hombre", 0.68, 0.55)
+  #   gramos_alcohol_totales <- bac_objetivo * peso * r_widmark
+  #   
+  #   info_bebida <- beverages_data[[bebida_seleccionada_nombre]]
+  #   gramos_etanol_por_bebida <- info_bebida$gramos_etanol
+  #   
+  #   if (is.null(gramos_etanol_por_bebida) || gramos_etanol_por_bebida <= 0) {
+  #     shiny::validate("Error: La bebida seleccionada no tiene un contenido alcohólico definido correctamente.")
+  #   }
+  #   
+  #   numero_bebidas <- round(gramos_alcohol_totales / gramos_etanol_por_bebida, 1)
+  #   
+  #   list(
+  #     numero_bebidas = numero_bebidas, bebida_nombre = bebida_seleccionada_nombre, etiqueta_ube = info_bebida$etiqueta_ube,
+  #     gramos_alcohol_totales = round(gramos_alcohol_totales,1), bac_objetivo = bac_objetivo,
+  #     peso = peso, sexo = sexo, r_widmark = r_widmark
+  #   )
+  # })
+  
+  # output$bebidas_output <- renderUI({
+  #   req(input$calcular_bebidas > 0) 
+  #   res_bebidas_data <- calculo_bebidas_res() 
+  #   req(res_bebidas_data) 
+  #   
+  #   card(class = "shadow-sm mt-3", card_header("Resultado de la Estimación de Bebidas"),
+  #        card_body(
+  #          p(HTML(paste0("Para alcanzar un BAC de aproximadamente <strong>", res_bebidas_data$bac_objetivo, " g/L</strong>, una persona de <strong>",
+  #                        res_bebidas_data$sexo, "</strong> con un peso de <strong>", res_bebidas_data$peso, " kg</strong> (usando factor de Widmark r = ", res_bebidas_data$r_widmark,"), necesitaría consumir aproximadamente:" ))),
+  #          h4(class = "text-center text-primary", style="font-size: 2em; margin-top: 1rem; margin-bottom: 0.5rem;", 
+  #             paste(res_bebidas_data$numero_bebidas, "dosis de", res_bebidas_data$bebida_nombre)),
+  #          p(class = "text-center", paste0("(",res_bebidas_data$etiqueta_ube, ", aprox. ", beverages_data[[res_bebidas_data$bebida_nombre]]$gramos_etanol, "g de etanol por dosis)")),
+  #          p(class = "text-center small", paste0("Esto equivale a un total estimado de ", res_bebidas_data$gramos_alcohol_totales, " gramos de etanol puro.")),
+  #          hr(),
+  #          p(strong("Nota Importante:"), class = "text-danger"),
+  #          tags$ul(
+  #            tags$li("Esta es una estimación teórica basada en la fórmula de Widmark (A = C * W * r)."), # Fórmula en texto plano
+  #            tags$li("No considera la velocidad de ingesta, alimentos consumidos, fase de absorción o eliminación del alcohol durante el consumo."),
+  #            tags$li("La respuesta individual al alcohol y el BAC real alcanzado pueden variar significativamente."),
+  #            tags$li("Este cálculo no debe usarse para tomar decisiones sobre la capacidad para conducir o realizar actividades de riesgo.")
+  #          )))
+  # })
+  
+  # reporte ----
+  
+  reporte <- reactive({
+    doc <- read_docx()
     
-    peso <- input$peso_estimacion
-    sexo <- input$sexo_estimacion
-    bac_objetivo <- input$bac_para_bebidas 
-    bebida_seleccionada_nombre <- input$tipo_bebida_estimacion
+    # Título
+    doc <- body_add_par(doc, "Reporte de Retroproyección de Etanol", style = "heading 1")
     
-    r_widmark <- ifelse(sexo == "Hombre", 0.68, 0.55)
-    gramos_alcohol_totales <- bac_objetivo * peso * r_widmark
+    # Datos de entrada
+    doc <- body_add_par(doc, paste("Concentración medida:", resultado()$bac_medido_val, "g/L"), style = "Normal")
+    doc <- body_add_par(doc, paste("Tiempo transcurrido:", resultado()$horas, "horas"), style = "Normal")
     
-    info_bebida <- beverages_data[[bebida_seleccionada_nombre]]
-    gramos_etanol_por_bebida <- info_bebida$gramos_etanol
+    # # Insertar tabla
+    # tabla <- datos_proyeccion()
+    # doc <- body_add_par(doc, "Resultados:", style = "heading 2")
+    # doc <- body_add_table(doc, value = tabla, style = "table_template")
+    # browser()
+    doc <- body_add_par(doc, "Concentración estimada al evento (g/L):", style = "heading 2")
     
-    if (is.null(gramos_etanol_por_bebida) || gramos_etanol_por_bebida <= 0) {
-      shiny::validate("Error: La bebida seleccionada no tiene un contenido alcohólico definido correctamente.")
-    }
+    doc <- body_add_par(doc, 
+                        paste0("Mínimo (tasa de eliminación ", BETA_MIN, "): ", 
+                               resultado()$bac_min |> formatC(digits = 2, format = "f"), " g/L"), 
+                        style = "Normal")
+    doc <- body_add_par(doc, 
+                        paste0("Máximo (tasa de eliminación ", BETA_MAX, "): ", 
+                               resultado()$bac_max |> formatC(digits = 2, format = "f"), " g/L"), 
+                        style = "Normal")
     
-    numero_bebidas <- round(gramos_alcohol_totales / gramos_etanol_por_bebida, 1)
+    # # Insertar gráfico
+    # datos <- data.frame(
+    #   Tiempo = seq(0, input$tiempo, by = 0.1)
+    # )
+    # datos$BAC_Lenta <- res$bac_medido_val + 0.10 * datos$Tiempo
+    # datos$BAC_Rapida <- res$bac_medido_val + 0.25 * datos$Tiempo
+    # 
+    # grafica <- ggplot(datos, aes(x = Tiempo)) +
+    #   geom_line(aes(y = BAC_Lenta), color = "blue", size = 1.2) +
+    #   geom_line(aes(y = BAC_Rapida), color = "red", size = 1.2) +
+    #   labs(x = "Tiempo (horas)", 
+    #        y = "Concentración de etanol (g/L)", 
+    #        title = "Retroproyección de Concentración de Etanol") +
+    #   theme_minimal() +
+    #   theme(plot.title = element_text(hjust = 0.5)) +
+    #   scale_y_continuous(limits = c(0, max(datos$BAC_Rapida) * 1.1))
     
-    list(
-      numero_bebidas = numero_bebidas, bebida_nombre = bebida_seleccionada_nombre, etiqueta_ube = info_bebida$etiqueta_ube,
-      gramos_alcohol_totales = round(gramos_alcohol_totales,1), bac_objetivo = bac_objetivo,
-      peso = peso, sexo = sexo, r_widmark = r_widmark
-    )
+    doc <- body_add_par(doc, "Gráfico de extrapolación:", style = "heading 2")
+    
+    doc <- body_add_gg(doc, value = grafico(), style = "centered")
   })
   
-  output$bebidas_output <- renderUI({
-    req(input$calcular_bebidas > 0) 
-    res_bebidas_data <- calculo_bebidas_res() 
-    req(res_bebidas_data) 
-    
-    card(class = "shadow-sm mt-3", card_header("Resultado de la Estimación de Bebidas"),
-         card_body(
-           p(HTML(paste0("Para alcanzar un BAC de aproximadamente <strong>", res_bebidas_data$bac_objetivo, " g/L</strong>, una persona de <strong>",
-                         res_bebidas_data$sexo, "</strong> con un peso de <strong>", res_bebidas_data$peso, " kg</strong> (usando factor de Widmark r = ", res_bebidas_data$r_widmark,"), necesitaría consumir aproximadamente:" ))),
-           h4(class = "text-center text-primary", style="font-size: 2em; margin-top: 1rem; margin-bottom: 0.5rem;", 
-              paste(res_bebidas_data$numero_bebidas, "dosis de", res_bebidas_data$bebida_nombre)),
-           p(class = "text-center", paste0("(",res_bebidas_data$etiqueta_ube, ", aprox. ", beverages_data[[res_bebidas_data$bebida_nombre]]$gramos_etanol, "g de etanol por dosis)")),
-           p(class = "text-center small", paste0("Esto equivale a un total estimado de ", res_bebidas_data$gramos_alcohol_totales, " gramos de etanol puro.")),
-           hr(),
-           p(strong("Nota Importante:"), class = "text-danger"),
-           tags$ul(
-             tags$li("Esta es una estimación teórica basada en la fórmula de Widmark (A = C * W * r)."), # Fórmula en texto plano
-             tags$li("No considera la velocidad de ingesta, alimentos consumidos, fase de absorción o eliminación del alcohol durante el consumo."),
-             tags$li("La respuesta individual al alcohol y el BAC real alcanzado pueden variar significativamente."),
-             tags$li("Este cálculo no debe usarse para tomar decisiones sobre la capacidad para conducir o realizar actividades de riesgo.")
-           )))
-  })
+  # download ----
+  output$descargar_reporte <- downloadHandler(
+    filename = function() {
+      paste0("reporte_retroproyeccion_", Sys.Date(), ".docx")
+    },
+    content = function(file) {
+      print(reporte(), target = file)
+    }
+  )
+  
+  
 }
 
 # --- Run ---
