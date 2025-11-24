@@ -1,0 +1,13 @@
+name: application
+title: application
+username: retro-bac
+account: retro-bac
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16152326
+bundleId: 11222506
+url: https://retro-bac.shinyapps.io/application/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
+ignoredFiles: anteriores/Retro-BACAzul.R|anteriores/RetroBAC_V6.R

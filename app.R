@@ -3,6 +3,7 @@ library(bslib)
 library(lubridate)
 library(shinyvalidate)
 library(ggplot2)
+library(shinyjs)
 
 # --- Constantes ---
 BETA_MIN <- 0.10 # g/L/hora
@@ -26,7 +27,13 @@ for (bev_name in names(beverages_data)) {
 
 # --- UI ---
 ui <- page_sidebar(
-  title = "Retro-BAC v.1.0.0: Application for retrograde extrapolation alcohol calculation.", 
+  # title = "Retro-BAC v.1.0.0", 
+  
+  title = div(
+    h1("Retro-BAC v.1.0.0", style = "font-size:190%;"),
+    h5("Application for retrograde extrapolation alcohol calculation")
+  ),
+  
   theme = bs_theme(version = 5, bootswatch = "flatly",
                    base_font = font_google("Inter"),
                    heading_font = font_google("Inter"),
@@ -35,8 +42,12 @@ ui <- page_sidebar(
   ), 
   # Eliminamos withMathJax() de aquí
   
+  useShinyjs(),
+  
+  # css ----
   tags$head(
     tags$style(HTML("
+      h4 { margin-bottom: .4rem; margin-top: .4rem;}
       .bslib-page-title { font-size: 2.2rem !important; color: white !important; }
       .navbar { background-color: #2C3E50 !important; padding-top: 0.8rem !important; padding-bottom: 0.8rem !important; }
       .card-header { background-color: #3498DB !important; color: white !important; }
@@ -54,28 +65,40 @@ ui <- page_sidebar(
   
   sidebar = sidebar(
     width = 350, 
-    h4("Input data"),
+    # h4("Input data"),
     numericInput("bac_medido", "Blood Alcohol Concentration tested (g/L):", value = 0.8, min = 0, max = 5, step = 0.01),
-    dateInput("fecha_medicion", "Date of the sample colection:", value = Sys.Date(), format = "dd/mm/yyyy", language = "es"),
-    textInput("hora_medicion", "Time of the sample colection (HH:MM):", value = format(Sys.time() - hours(1), "%H:%M")),
-    dateInput("fecha_evento", "Date of the incident:", value = Sys.Date(), format = "dd/mm/yyyy", language = "es"),
+    dateInput("fecha_medicion", "Date of sample colection:", value = Sys.Date(), format = "dd/mm/yyyy", language = "es"),
+    textInput("hora_medicion", "Time of sample colection (HH:MM):", value = format(Sys.time() - hours(1), "%H:%M")),
+    dateInput("fecha_evento", "Date of incident:", value = Sys.Date(), format = "dd/mm/yyyy", language = "es"),
     textInput("hora_evento", "Time incident (HH:MM):", value = format(Sys.time() - hours(3), "%H:%M")),
-    actionButton("calcular", "To calculate extrapolation", class = "btn-primary btn-lg w-100", icon = icon("calculator")), 
+    actionButton("calcular", "Calculate extrapolation", class = "btn-primary btn-lg w-100", icon = icon("calculator")), 
     hr(),
-    helpText(paste0("Note: The alcohol elimination rate (β) varies between ", BETA_MIN, " and ", BETA_MAX, " g/L/h.")),
+    helpText(paste0("Note: Alcohol elimination rate (β) varies between ", BETA_MIN, " and ", BETA_MAX, " g/L/h.")),
     helpText("Ensure that the date/time of the event is prior to the date/time of the measurement.")
   ),
   
-  navset_tab(
-    id = "main_tabs",
-    nav_panel(
-      title = "Extrapolation", icon = icon("chart-line"), 
+  page_fluid(
+  # navset_tab(
+    # id = "main_tabs",
+    # nav_panel(
+      # title = "Extrapolation", icon = icon("chart-line"), 
       layout_column_wrap(width = "100%", heights_equal = "row",
-                         card(class = "shadow-sm mb-3", card_header(h4("Results estimated")), card_body(uiOutput("resultados_ui"))),
-                         card(class = "shadow-sm mb-3", card_header(h4("Grafic of the retrograde extrapolation")), card_body(plotOutput("bac_plot"))),
+                         
+                         # Results ----
+                         card(class = "shadow-sm mb-3", 
+                              card_header(h4("Results estimated")), 
+                              card_body(
+                                
+                                div(
+                                  markdown("No results to show. Press _Calculate extrapolation_ to get results."), 
+                                    id = "no_results", style = "opacity: 0.4;", role = "alert") |> hidden(),
+                                uiOutput("resultados_ui")
+                                )
+                         ),
+                         card(class = "shadow-sm mb-3", card_header(h4("Retrograde extrapolation plot")), card_body(plotOutput("bac_plot"))),
                          # El id "calculos_detallados_card_body" se usa para que el CSS pueda apuntar a los h5 dentro.
                          # O simplemente se puede poner el uiOutput directo y apuntar con #calculos_detallados_ui h5
-                         card(full_screen = TRUE, class = "shadow-sm mb-3", card_header(h4("Detalle de los Cálculos")), 
+                         card(full_screen = TRUE, class = "shadow-sm mb-3", card_header(h4("Calculation details")), 
                               card_body(id="calculos_detallados_card_body", uiOutput("calculos_detallados_ui")) 
                          ),
                          card(class = "shadow-sm", card_header(h4("Notas Importantes e Interpretación")),
@@ -91,37 +114,52 @@ ui <- page_sidebar(
                                 tags$ul(tags$a(href="https://www.aafs.org/asb-standard/best-practice-recommendation-performing-alcohol-calculations-forensic-toxicology", target="_blank", "Best Practice Recommendation for Performing Alcohol Calculations in Forensic Toxicology"))
                               ))
       )
-    ),
-    nav_panel(
-      title = "Signos y Síntomas", icon = icon("notes-medical"),
-      h3("Signos y Síntomas Clínicos Asociados a la Alcoholemia"),
-      p("Esta sección muestra los signos y síntomas generalmente asociados con diferentes niveles de concentración de alcohol en sangre (CAS / BAC)."),
-      sliderInput("bac_sintomas_selector", "Nivel de BAC (g/L) para consultar síntomas:", min = 0, max = 4, value = 0.8, step = 0.05, width = '100%'),
-      uiOutput("sintomas_output") 
-    ),
-    nav_panel(
-      title = "Estimación de Bebidas", icon = icon("beer-mug-empty"), 
-      h3("Estimación de Bebidas Consumidas"),
-      p("Esta herramienta estima la cantidad de bebidas alcohólicas que una persona necesitaría consumir para alcanzar un determinado nivel de alcoholemia (BAC), según la fórmula de Widmark. Es una estimación teórica y la absorción real puede variar."),
-      card(class="shadow-sm mb-3", card_header("Datos para la estimación de bebidas"),
-           card_body(
-             fluidRow(
-               column(6, numericInput("bac_para_bebidas", "Nivel de BAC objetivo (g/L):", value = 0.8, min = 0.01, max = 4, step = 0.01)),
-               column(6, numericInput("peso_estimacion", "Peso Corporal (kg):", value = 70, min = 30, max = 200, step = 1))
-             ),
-             fluidRow(
-               column(6, radioButtons("sexo_estimacion", "Sexo Biológico:", choices = c("Hombre", "Mujer"), selected = "Hombre", inline = TRUE)),
-               column(6, selectInput("tipo_bebida_estimacion", "Tipo de Bebida Estándar:", choices = names(beverages_data)))
-             ),
-             actionButton("calcular_bebidas", "Estimar Cantidad de Bebidas", class = "btn-primary w-100", icon = icon("calculator"))
-           )),
-      uiOutput("bebidas_output")
-    )
+    # ),
+  # )
+    # Signos y Síntomas ----
+    # nav_panel(
+    #   title = "Signos y Síntomas", icon = icon("notes-medical"),
+    #   h3("Signos y Síntomas Clínicos Asociados a la Alcoholemia"),
+    #   p("Esta sección muestra los signos y síntomas generalmente asociados con diferentes niveles de concentración de alcohol en sangre (CAS / BAC)."),
+    #   sliderInput("bac_sintomas_selector", "Nivel de BAC (g/L) para consultar síntomas:", min = 0, max = 4, value = 0.8, step = 0.05, width = '100%'),
+    #   uiOutput("sintomas_output") 
+    # ),
+    
+    # Estimación de Bebidas ----
+    # nav_panel(
+    #   title = "Estimación de Bebidas", icon = icon("beer-mug-empty"), 
+    #   h3("Estimación de Bebidas Consumidas"),
+    #   p("Esta herramienta estima la cantidad de bebidas alcohólicas que una persona necesitaría consumir para alcanzar un determinado nivel de alcoholemia (BAC), según la fórmula de Widmark. Es una estimación teórica y la absorción real puede variar."),
+    #   card(class="shadow-sm mb-3", card_header("Datos para la estimación de bebidas"),
+    #        card_body(
+    #          fluidRow(
+    #            column(6, numericInput("bac_para_bebidas", "Nivel de BAC objetivo (g/L):", value = 0.8, min = 0.01, max = 4, step = 0.01)),
+    #            column(6, numericInput("peso_estimacion", "Peso Corporal (kg):", value = 70, min = 30, max = 200, step = 1))
+    #          ),
+    #          fluidRow(
+    #            column(6, radioButtons("sexo_estimacion", "Sexo Biológico:", choices = c("Hombre", "Mujer"), selected = "Hombre", inline = TRUE)),
+    #            column(6, selectInput("tipo_bebida_estimacion", "Tipo de Bebida Estándar:", choices = names(beverages_data)))
+    #          ),
+    #          actionButton("calcular_bebidas", "Estimar Cantidad de Bebidas", class = "btn-primary w-100", icon = icon("calculator"))
+    #        )),
+    #   uiOutput("bebidas_output")
+    # )
+  # )
   )
 )
 
+
 # --- Server ---
 server <- function(input, output, session) {
+  
+  
+  observe(
+    if (input$calcular == 0) {
+      show("no_results")
+    } else {
+      hide("no_results")
+    }
+  )
   
   observeEvent(input$bac_medido, {
     current_bac <- input$bac_medido
@@ -164,8 +202,8 @@ server <- function(input, output, session) {
     tiempo_evento_val <- ymd_hm(paste(input$fecha_evento, input$hora_evento), tz = Sys.timezone())
     horas_transcurridas <- as.numeric(difftime(tiempo_medicion_val, tiempo_evento_val, units = "hours"))
     bac_medido_val <- input$bac_medido
-    bac_evento_min <- round(bac_medido_val + BETA_MIN * horas_transcurridas, 3)
-    bac_evento_max <- round(bac_medido_val + BETA_MAX * horas_transcurridas, 3)
+    bac_evento_min <- round(bac_medido_val + BETA_MIN * horas_transcurridas, 2)
+    bac_evento_max <- round(bac_medido_val + BETA_MAX * horas_transcurridas, 2)
     
     list(
       horas = round(horas_transcurridas, 2), bac_min = bac_evento_min, bac_max = bac_evento_max,
@@ -180,10 +218,11 @@ server <- function(input, output, session) {
     tagList(
       p(strong("Time between incident and time of blood draw: "), paste(res$horas, "hours")),
       tags$div(class = "alert alert-success fs-5", role = "alert", 
-               HTML(paste0("Estimated BAC at the time of the incident: <br>", tags$strong(res$bac_min), " – ", tags$strong(res$bac_max), " g/L")))
+               HTML(paste0("Estimated BAC at time of the incident: <br>", tags$strong(res$bac_min), " – ", tags$strong(res$bac_max), " g/L")))
     )
   })
   
+  ## gráfico ----
   output$bac_plot <- renderPlot({
     res <- resultado()
     req(res)
@@ -191,7 +230,7 @@ server <- function(input, output, session) {
       time = c(res$tiempo_evento_val, res$tiempo_evento_val, res$tiempo_medicion_val),
       bac = c(res$bac_min, res$bac_max, res$bac_medido_val),
       type = factor(c("Extrapolado (Mín)", "Extrapolado (Máx)", "Analito"), levels = c("Analítico", "Extrapolado (Mín)", "Extrapolado (Máx)")),
-      label_text = c(sprintf("%.3f g/L", res$bac_min), sprintf("%.3f g/L", res$bac_max), sprintf("%.3f g/L", res$bac_medido_val))
+      label_text = c(sprintf("%.2f g/L", res$bac_min), sprintf("%.2f g/L", res$bac_max), sprintf("%.2f g/L", res$bac_medido_val))
     )
     p <- ggplot(points_df, aes(x = time, y = bac)) +
       geom_segment(data = data.frame(x=res$tiempo_medicion_val, y=res$bac_medido_val, xend=res$tiempo_evento_val, yend=res$bac_min),
@@ -208,7 +247,9 @@ server <- function(input, output, session) {
                            else if (t == res$tiempo_medicion_val) { paste0(base_format, "\n(T Muestra)") }
                            else { base_format }
                          })
-                       }) +
+                       },
+                       expand = expansion(c(0.1, 0.1))
+      ) +
       scale_y_continuous(name = "Blood alcohol concentration (g/L)", limits = c(0, max(points_df$bac, na.rm = TRUE) * 1.25), expand = expansion(mult = c(0.01, 0.1))) +
       scale_shape_manual(values = c("Analite" = 16, "Extrapolate (Mín)" = 17, "Extrapolate (Máx)" = 17)) + 
       scale_color_manual(values = c("Analítico" = "#0072B2", "Extrapolado (Mín)" = "#E69F00", "Extrapolado (Máx)" = "#D55E00")) + 
@@ -231,18 +272,18 @@ server <- function(input, output, session) {
     
     # Estructura usando tagList y etiquetas HTML individuales para claridad
     tagList(
-      tags$h5("1. Tiempo Transcurrido (Delta_t)"),
-      tags$p(paste0("Hora de Medición: ", fmt_tiempo_medicion)),
-      tags$p(paste0("Hora del Evento: ", fmt_tiempo_evento)),
-      tags$p(tags$code("Delta_t = Hora de Medición - Hora de Evento")),
-      tags$p(tags$strong(paste0("Delta_t = ", res$horas, " horas"))),
-      tags$hr(),
+      # tags$h5("1. Tiempo Transcurrido (Delta_t)"),
+      # tags$p(paste0("Hora de Medición: ", fmt_tiempo_medicion)),
+      # tags$p(paste0("Hora del Evento: ", fmt_tiempo_evento)),
+      # tags$p(tags$code("Delta_t = Hora de Medición - Hora de Evento")),
+      # tags$p(tags$strong(paste0("Delta_t = ", res$horas, " horas"))),
+      # tags$hr(),
       
-      tags$h5("2. Concentración de Alcohol Estimada en el Momento del Evento (BAC_evento)"),
-      tags$p(tags$code("BAC_evento = BAC_medido + (beta * Delta_t)")),
-      tags$p(paste0("Donde BAC_medido = ", res$bac_medido_val, " g/L")),
-      tags$p(paste0("y beta es la tasa de eliminación horaria (g/L/hora).")),
-      tags$hr(),
+      # tags$h5("2. Concentración de Alcohol Estimada en el Momento del Evento (BAC_evento)"),
+      # tags$p(tags$code("BAC_evento = BAC_medido + (beta * Delta_t)")),
+      # tags$p(paste0("Donde BAC_medido = ", res$bac_medido_val, " g/L")),
+      # tags$p(paste0("y beta es la tasa de eliminación horaria (g/L/hora).")),
+      # tags$hr(),
       
       tags$h5("Cálculo del Límite Inferior del Rango Estimado (BAC_evento_min)"),
       tags$p(paste0("Usando Tasa de Eliminación Mínima (beta_min) = ", res$beta_min_val, " g/L/hora:")),
