@@ -4,6 +4,7 @@ library(lubridate)
 library(shinyvalidate)
 library(ggplot2)
 library(shinyjs)
+library(shinydisconnect)
 
 # --- Constantes ---
 BETA_MIN <- 0.10 # g/L/hora
@@ -43,6 +44,14 @@ ui <- page_sidebar(
   # Eliminamos withMathJax() de aquí
   
   useShinyjs(),
+  
+  disconnectMessage(
+    text = "The app has been disconnected. Please reconnect to continue your session.",
+    refresh = "Reconnect app",
+    background = "#2C3E50",
+    colour = "white",
+    overlayColour = "white"
+  ),
   
   # css ----
   tags$head(
