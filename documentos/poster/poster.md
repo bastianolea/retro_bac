@@ -14,6 +14,7 @@ Espinoza Cruz, Carlos (1,4), Moreno Paz, José (1), Gómez Olmos, Yolanda (2) Ca
 Retrograde extrapolation alcohol calculation is frequently requested to forensic toxicology laboratories. In these cases, the blood alcohol concentration (BAC) is used as a reference value. In 2018, Labay and Logan called for creating consensus standards for conducting retrograde extrapolations of BAC to guarantee a scientific foundation for such estimates and their usage in judicial scenarios(1), LeBeau and Limoges in response to this request in 2024, “we announced an effort within the OSAC for Forensic Science and the Academy Standards Board (ASB) to develop such a consensus approach. In June 2024, ANSI/ASB 122, First Edition, was published.”(2,3). Currently using programming languages tools are created to support the work in the forensic area.
 
 ## Objective
+
 The objective was to develop an application in R Shiny for the retrograde extrapolation alcohol calculation.
 
 ## Methods
@@ -22,12 +23,16 @@ Calculations were performed following the ANSI/ASB Best Practice Recommendation 
 
 Tests were carried out with results of post-absorptive real cases. The basic calculation for retrograde extrapolation it is expressed as:
 
-𝐴𝐶_inc = 𝐴𝐶_test + (𝛽 x 𝑇)
+$$
+AC_{inc} = AC_{test} + (\beta \times T)
+$$
 
-𝐴𝐶_inc: estimated alcohol concentration at the time of the incident (g/L).
-𝐴𝐶_test: measured alcohol concentration (g/L)
-𝛽: elimination rate (g/L/hour)
-𝑇: time between incident and time of breath test/blood draw (hours).
+where:
+
+- $AC_{inc}$: estimated alcohol concentration at the time of the incident (g/L).
+- $AC_{test}$: measured alcohol concentration (g/L).
+- $\beta$: elimination rate (g/L/hour).
+- $T$: time between incident and time of breath test/blood draw (hours)..
 
 ## Results
 

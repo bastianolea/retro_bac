@@ -2,19 +2,26 @@
 - [x] te pido si puedes redondear a dos cifras el output de los resultados.
 - [x] Y luego eliminar en la parte de los resultados debajo de la gráfica, las items: “tiempo transcurrido” y “concentración de alcohol…”, debido a que esa información esta en el Input data; entregue el cálculo y los resultados para cada rango de eliminación.
 
-- [ ] google font local
+General:
+- [x] google font local
 - [x] "Calculation details" debería estar en dos columnas
 - [x] mostrar texto "No results to show. Press Calculate extrapolation to get results." en "Retrograde extrapolation plot"
 - [x] mejorar responsividad en dispositivos móviles, controles deberían estar arriba
 - [ ] armonizar idioma de la app (inglés como idioma de la aplicación, español como idioma del código)
   - [ ] traducir sección "Notas Importantes e Interpretación"
-- [ ] implementar chatbot
 
+Gráfico
+- [ ] mejorar gráfico
+  - [ ] achicar un poco letras
+  - [ ] tiempo en horas como líneas de fondo
+  - [ ] sacar negritas de y
+  - [ ] traducir a inglés
+  - [ ] si la ventana es angosta, leyenda hacia abajo
 
-
-- [ ] si la ventana es angosta, leyenda hacia abajo
 - [ ] fórmulas formateadas con texto de mathjax
 
+
+Cálculo
 - [ ] refactorizar el cálculo de extrapolación a una función de R independiente
 
   Actualmente el cálculo principal vive en línea dentro del reactivo `resultado <- eventReactive(input$calcular, {...})` en `RetroBAC_V6.R` (aprox. línea 214). Planificación punto por punto:
@@ -26,3 +33,7 @@
   5. **Manejo de casos límite.** Documentar y validar dentro de la función qué hacer si `horas_transcurridas` es negativa o cero (evento posterior a la medición), en lugar de dejarlo pasar silenciosamente.
   6. **Pruebas.** Agregar tests con `testthat` que verifiquen la fórmula de Widmark con valores conocidos (p. ej. los datos del ejemplo) y los casos límite.
   7. **Documentación.** Documentar la función (roxygen o comentario de cabecera) y actualizar `documentacion.qmd` / `documentos/marco_teorico.qmd` para reflejar la nueva estructura.
+  
+  
+Chatbot
+- [ ] implementar chatbot

@@ -139,10 +139,6 @@ Understanding the mechanisms of alcohol absorption, distribution, and eliminatio
 
 The absorption of alcohol is a complex dynamic process that begins as soon as drinking begins. Alcohol is primarily absorbed into the bloodstream through the small intestine, but some absorption occurs in the stomach and mouth. Absorption rates are highly variable and are not linear. Factors such as the presence of food in the stomach, the type and volume of beverage consumed, other drugs consumed, and the condition of the gastrointestinal tract, can impact absorption rates. Studies support that it can take up to 2 hours to reach the post absorptive phase after the last drink [2, 3, 5, 6, 10, 12, 13, 15, 22, 30, 32]. The time needed to reach the peak alcohol concentration is not the same as the time to reach the post absorptive phase.
 
-1
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
-
 ### 4.1.3 Distribution
 
 **4.1.3.1** Alcohol is water soluble and rapidly distributed throughout the total body water by the blood supply. For alcohol, the volume of distribution (Vd) is closely correlated with the total body water (some literature refers to this as *rho*). Numerous factors impact an individual's Vd including sex, body mass index (BMI), and age. In general, Vd is typically lower for women, obese individuals, and the elderly. Numerous publications propose mathematical approaches to estimate an individual's Vd based on certain factors (height, weight, sex), and attempt to provide ranges for the Vd of alcohol [4, 21, 26, 29, 31]. However, there are significant limitations to these studies. For example, the number of participants in many studies is quite small, and the ethnic diversity is often unknown. There are also differences in whether Vd or total body water (TBW) were measured. Some involved bolus drinking, while others used a social drinking scenario. Alcohol concentration may have been measured in whole blood, serum, plasma, or breath. Therefore, it may not be appropriate to directly compare or average these various formulas since they do not all calculate the same variable.
@@ -166,10 +162,6 @@ Since there are physiological limitations to the minimum TBW, calculation result
 ## 4.2 Case History
 
 **4.2.1** The type of information and source of that information will vary from case to case. Experts should clearly communicate the information they rely upon and the assumptions they make. On occasion, that information may change as the case proceeds.
-
-2
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 
 4.2.2 The time of the incident and the timing of drinking both play a role in the assumptions that can be made and the associated calculations. For example, the time of last drink based on video surveillance may be considered differently than a time based on the subject's self-reported drinking history. This may impact the assessment of whether the subject was post absorptive at the time of the incident.
 
@@ -202,10 +194,6 @@ The sources of information may be received in English and/or metric units, and c
 Volume: 1 oz = 29.6 mL
 Weight: 1 lb = 0.454 kg
 Height: 1 in = 2.54 cm or 0.0254 m
-
-3
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
 
 ### 4.7 Density of Alcohol
 
@@ -257,9 +245,6 @@ $$
 w = \text { weight   (kg) }
 $$
 
-4
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 
 5.2.3.2 Calculate the individual Vd from Maskell, et al(16, 19):
 
@@ -315,10 +300,6 @@ Estimating the minimum number of drinks to achieve a particular alcohol concentr
 
 This calculation does not account for any drinks eliminated. It provides an estimate of the equivalent dose of alcohol in the body at the time of the blood draw or breath test. See A.1.1 for example.
 
-5
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 Minimum dose of alcohol
 
 $$
@@ -360,10 +341,6 @@ where:
 $$
 D = \text { dose(g) }
 $$
-
-6
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
 
 $$
 V = \text { volume   (oz) }
@@ -437,10 +414,6 @@ $$
 T = \text { time   between   incident   and   time   of   breath   test / blood   draw   (hours) }
 $$
 
-7
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
-
 5.4.3 Retrograde extrapolation calculations shall not be performed on alcohol concentrations below 0.020 g/dL.
 5.4.4 The calculation shall be performed using a range of elimination rates.
 5.4.4.1 The minimum range shall be 0.010-0.025 g/dL/hour.
@@ -473,9 +446,6 @@ Reference A.3 for an example where the subject is not post absorptive. See A.4 f
 
 Calculations should be documented and assumptions clearly stated. This may be in the form of case notes, an electronic spreadsheet, a written report, etc.
 
-8
-
-ANSI/ASB Best Practice Recommendation 122, 1$^{st}$^{}[] Ed. 2024
 
 ## 6.2 Protocols
 
@@ -488,10 +458,6 @@ Where feasible, independent review of calculations by a qualified individual sho
 ## 6.4 Calculations During Testimony
 
 Performing alcohol calculations is a forensic service request and should not be viewed as just a question during direct or cross examination, or “simple math” that the expert should be able to readily perform. While the expert must respectfully follow the orders of the legal authorities overseeing the testimony (trial, deposition, etc.), performing calculations during live testimony is discouraged due to the inherent risks. When so compelled, it is recommended that the witness document the additional work. Depending on the scope of the new work requested and its complexity, the expert may consider requesting a brief recess to perform the work and allow for its review. In some circumstances, it may be appropriate to discuss the *impact* a change would have on the calculations, instead of conducting new calculations, e.g., if the subject’s drinking history changes, one could state that it would raise or lower the estimated AC range provided, without calculating the new range.
-
-9
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 
 ## Annex A
 (informative)
@@ -537,10 +503,6 @@ $$
 $$
 D = 0.19 \frac{g}{dL} \times 0.58 \frac{L}{kg} \times 104 \text{kg} \times 10 \frac{dL}{L} \quad D = 0.19 \frac{g}{dL} \times 0.83 \frac{L}{kg} \times 104 \text{kg} \times 10 \frac{dL}{L}
 $$
-
-10
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
 
 $$
 D = 1 1 5 g
@@ -656,10 +618,6 @@ $$
 D = 1 3 6 g
 $$
 
-11
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 Using Equation 6, calculate the equivalent number of drinks for that dose:
 
 $$
@@ -760,10 +718,6 @@ $$
 \mathrm{AC} _ {d r i n k (s)} = \frac {3 2 g}{0 . 6 9 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}}
 $$
 
-12
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 $$
 \mathrm{AC} _ {d r i n k (s)} = 0. 0 5 4 g / d L
 $$
@@ -826,10 +780,6 @@ $$
 
 Summary: It is estimated that the subject's AC at the time of the incident was $\sim 0.096 - 0.137\mathrm{g / dL}$. Therefore, it is likely the subject was above the $0.08\mathrm{g / dL}$ legal limit at the time of the incident.
 
-13
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 ### A.3 Retrograde extrapolation, subject is not post absorptive
 
 History: A female subject was drinking at a bar. She stopped drinking around 10:00 pm. When she was ready to leave, she paid her tab and got one last shot of tequila. She drank it and immediately left the bar at ~11:00 pm. She crashed her car while trying to leave the parking lot. Her blood was drawn at 12:30 am and was a 0.082 g/dL. Her defense is that she was below 0.08 g/dL at the time of the crash.
@@ -884,10 +834,6 @@ $$
 D = 1. 5 o z \times 4 0 \frac {m L}{1 0 0 m L} \times 0. 7 8 9 \frac {g}{m L} \times 2 9. 6 \frac {m L}{o z}
 $$
 
-14
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 D = 14 g alcohol in a shot of tequila
 
 Using Equations 1b, 2b, and 3b, calculate an individualized Vd range:
@@ -939,10 +885,6 @@ Summary: Assuming the last shot of tequila was not absorbed at the time of the i
 History: A man drove his vehicle through his garage door at  $\sim$ 6:00 pm. A neighbor witnessed the crash and called the police. When the police arrived at the home, the subject greeted them with a partially consumed bottle of vodka in his hand (80 proof, 750 mL), and he appeared to be intoxicated. He was arrested for suspected DUI and had a breath test result of 0.215 g/210 L. The defendant claimed he had not been drinking prior to the crash, and that his AC was from the vodka consumption after the crash. He claimed it was a new bottle; approximately one-third was missing.
 
 Question: Could the consumption of  $\sim$ 1/3 bottle of vodka account for the measured AC?
-
-15
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
 
 #### Relevant Information:
 
@@ -1003,10 +945,6 @@ $$
 $$
 
 Summary: If all the alcohol from the 1/3 bottle of vodka were completely absorbed, and none eliminated, the theoretical maximum AC range achievable for the subject would be $\sim 0.122 - 0.148$ g/dL, below the breath test result of $0.215\mathrm{g} / 210\mathrm{L}$. The subject's drinking history is inconsistent; there was likely additional alcohol consumption.
-
-16
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
 
 ### A.5 Minimal Case History Available
 
@@ -1086,10 +1024,6 @@ $$
 \mathrm{AC} _ {\text { drink } (s)} = 0. 0 2 6 \mathrm{g} / \mathrm{dL}
 $$
 
-17
-
-ANSI/ASB Best Practice Recommendation 122, 1 $^{st}$ Ed. 2024
-
 Using Equation 10, adjust the AC to remove the number of drinks that would have to be unabsorbed to have the subject be below the legal limit at the time of the crash (using the calculated ranges of $\mathrm{AC}_{\mathrm{inc}}$ and $\mathrm{AC}_{\mathrm{drink}(s)}$):
 
 $$
@@ -1104,10 +1038,6 @@ $$
 |  -2 drinks unabsorbed |  |  | 0.035 | 0.073  |
 
 Summary: If the subject was post absorptive at the time of the incident, the estimated AC at that time would be  $\sim0.095 - 0.125$  g/dL, so she was likely above the 0.08 g/dL legal limit at that time. However, if the subject had the equivalent of  $\sim1 - 2$  standard drinks unabsorbed at the time of the incident, she could have been below the 0.08 g/dL legal limit.
-
-18
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 
 ## Annex B
 (informative)
@@ -1140,10 +1070,6 @@ The following bibliography is not intended to be an all-inclusive list, review, 
 
 b Available from: https://www.nzta.govt.nz/assets/resources/research/reports/541/docs/541.pdf
 
-19
-
-ANSI/ASB Best Practice Recommendation 122, 1$^{st}$^{}[] Ed. 2024
-
 1. 12] Jones, A.W. and K.A. Jönsson. “Food-Induced Lowering of Blood-Ethanol Profiles and Increased Rate of Elimination Immediately After a Meal.” *Journal of Forensic Sciences*, 39(4), 1994, pp. 1084-1093, doi: 10.1520/JFS13687J.
 2. 13] Jones, A.W. and A. Neri. “Evaluation of Blood-Ethanol Profiles After Consumption of Alcohol Together with a Large Meal.” *Canadian Society of Forensic Science Journal*, 24(3), 1991, pp. 165-174, doi: 10.1080/00085030.1991.10756993.
 3. 14] Jones, A.W., and C. Tilson. “Distribution Ratios of Ethanol and Water Between Whole Blood, Plasma, Serum, and Erythrocytes: Recommendations for Interpreting Clinical Laboratory Results in a Legal Context.” *Journal of Forensic Sciences*, 68(1), 2023, pp. 9-21, doi: 10.1111/1556-4029.15164.
@@ -1156,10 +1082,6 @@ ANSI/ASB Best Practice Recommendation 122, 1$^{st}$^{}[] Ed. 2024
 10. 21] Maudens, K.E., L. Patteet, A.N. van Nuijs, C. Van Broekhoven, A. Covaci, and H. Neels. “The Influence of the Body Mass Index (BMI) on the Volume of Distribution of Ethanol.” *Forensic Science International*, 243 (Oct), 2014, pp. 74-78, doi: 10.1016/j.forsciint.2014.04.036.
 11. 22] McElrea, A., C. Su, and L. Smith. “Truncation of Breath Alcohol Measurements and Its Effect on Peak Concentrations.” *Journal of the Canadian Society of Forensic Science*, 44(1), 2011, pp. 13-21, doi: 10.1080/00085030.2011.10768138.
 12. 23] Montgomery, M.R. and M.J. Reasor. “Retrograde Extrapolation of Blood Alcohol Data: An Applied Approach.” *Journal of Toxicology and Environmental Health*, 36(4), 1992, pp. 281-292, doi: 10.1080/15287399209531639.
-
-20
-
-ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 
 24] National Institute on Alcohol Abuse and Alcoholism, U.S. Department of Health and Human Services. “What is a Standard Drink?”c
 
@@ -1184,8 +1106,6 @@ ANSI/ASB Best Practice Recommendation 122, 1st Ed. 2024
 c Available from: https://pubs.niaaa.nih.gov/publications/practitioner/PocketGuide/pocket_guide2.htm
 
 d Available from: http://www.ukiaft.co.uk/image/catalog/documents/ukiaft-atd-v4.3.pdf
-
-21
 
 ![img-3.jpeg](images/img-3.jpeg)
 

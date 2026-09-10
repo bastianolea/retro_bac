@@ -60,15 +60,22 @@ ui <- page_sidebar(
   theme = bs_theme(
     version = 5,
     bootswatch = "flatly",
-    base_font = font_google("Hedvig Letters Sans"),
-    heading_font = font_google("Hedvig Letters Sans"),
+    # base_font = font_google("Hedvig Letters Sans"),
+    # heading_font = font_google("Hedvig Letters Sans"),
+    base_font = "Hedvig Letters Sans",
+    heading_font = "Hedvig Letters Sans",
     primary = "#2C3E50",
     fg = "#19222A",
     bg = "#F5F8FA",
-    # "secondary" = "#3498DB"
     secondary = "#67839A"
   ),
-  # Eliminamos withMathJax() de aquí
+
+  # gfonts::setup_font("hedvig-letters-sans", "www/")
+  gfonts::use_font(
+    id = "hedvig-letters-sans",
+    css_path = "www/css/hedvig-letters-sans.css",
+    css = "font-family: 'Hedvig Letters Sans';"
+  ),
 
   useShinyjs(),
 
@@ -164,7 +171,7 @@ ui <- page_sidebar(
 
       # Results ----
       card(
-        class = "shadow-sm mb-3",
+        # class = "shadow-sm mb-3",
         card_header(h4("Results")),
         card_body(
           div(
@@ -180,7 +187,8 @@ ui <- page_sidebar(
         )
       ),
       card(
-        class = "shadow-sm mb-3",
+        # class = "shadow-sm mb-3",
+        full_screen = TRUE,
         card_header(h4("Retrograde extrapolation plot")),
         card_body(
           div(
@@ -198,8 +206,7 @@ ui <- page_sidebar(
       # El id "calculos_detallados_card_body" se usa para que el CSS pueda apuntar a los h5 dentro.
       # O simplemente se puede poner el uiOutput directo y apuntar con #calculos_detallados_ui h5
       card(
-        full_screen = TRUE,
-        class = "shadow-sm mb-3",
+        # class = "shadow-sm mb-3",
         card_header(h4("Calculation details")),
         card_body(
           id = "calculos_detallados_card_body",
@@ -216,7 +223,7 @@ ui <- page_sidebar(
         )
       ),
       card(
-        class = "shadow-sm",
+        # class = "shadow-sm",
         card_header(h4("Notas Importantes e Interpretación")),
         card_body(
           tags$ul(
