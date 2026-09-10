@@ -1,0 +1,62 @@
+h4 {
+  margin-bottom: .4rem;
+  margin-top: .4rem;
+}
+
+.bslib-page-title {
+  font-size: 2.2rem !important;
+  color: white !important;
+}
+
+.navbar {
+  background-color: #2C3E50 !important;
+  padding-top: 0.8rem !important;
+  padding-bottom: 0.8rem !important;
+}
+
+.card-header {
+  background-color: #3498DB !important;
+  color: white !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: #3498DB !important;
+  color: white !important;
+  border-color: #3498DB #3498DB #fff;
+}
+
+.btn-primary {
+  background-color: #2C3E50 !important;
+  border-color: #2C3E50 !important;
+}
+
+.btn-primary:hover {
+  background-color: #1A252F !important;
+  border-color: #1A252F !important;
+}
+
+/* Estilo para los h5 dentro de la card de cálculos detallados */
+#calculos_detallados_ui h5 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: #2C3E50;
+}
+
+#calculos_detallados_ui hr {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#calculos_detallados_ui p {
+  margin-bottom: 0.3rem;
+}
+
+.app-title {
+  font-size: 190%;
+}
+
+.no-results-msg {
+  opacity: 0.4;
+}
