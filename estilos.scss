@@ -132,3 +132,7 @@ h6, .h6 {
   font-size: 80%;
   padding-left: 6px !important;
 }
+
+.btn:disabled, .btn.disabled, fieldset:disabled .btn {
+  opacity: 0.5 !important;
+}

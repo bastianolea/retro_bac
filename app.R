@@ -78,6 +78,8 @@ ui <- page_sidebar(
 
   useShinyjs(),
 
+  withMathJax(),
+
   disconnectMessage(
     text = "The app has been disconnected. Please reconnect to continue your session.",
     refresh = "Reconnect app",
@@ -212,6 +214,8 @@ ui <- page_sidebar(
           plotOutput("bac_plot")
         )
       ),
+
+      ## detalles ----
       # El id "calculos_detallados_card_body" se usa para que el CSS pueda apuntar a los h5 dentro.
       # O simplemente se puede poner el uiOutput directo y apuntar con #calculos_detallados_ui h5
       card(
@@ -231,38 +235,41 @@ ui <- page_sidebar(
           uiOutput("calculos_detallados_ui")
         )
       ),
+
+      ## notas ----
       card(
         # class = "shadow-sm",
-        card_header(h4("Notas Importantes e Interpretación")),
+        card_header(h4("Important Notes and Interpretation")),
         card_body(
           tags$ul(
             tags$li(
-              "La retroproyección (o extrapolación retrógrada) es una estimación matemática."
+              "Retrograde extrapolation is a mathematical estimation based on Widmark's formula:",
+              # helpText(
+              "$$AC_{inc} = AC_{test} + (\\beta \\times t)$$",
+              # ),
+              "where \\(AC_{inc}\\) is the estimated alcohol concentration at the time of the incident, \\(AC_{test}\\) is the measured alcohol concentration, \\(\\beta\\) is the elimination rate, and \\(t\\) is the elapsed time between the incident and the sample."
             ),
             tags$li(
-              "Se basa en la fórmula de Widmark: ",
-              tags$code(
-                "BAC_evento = BAC_medido + (tasa_eliminación * tiempo_transcurrido)"
-              )
+              "The results show a ",
+              tags$strong("range of possible concentrations"),
+              ", due to individual variability in the alcohol elimination rate (\\(\\beta\\))."
             ),
             tags$li(
-              "Los resultados muestran un ",
-              tags$strong("rango posible"),
-              ", debido a la variabilidad individual en la tasa de eliminación de alcohol (β)."
+              "Factors such as sex, weight, food intake, drinking pattern, and state of health can influence the actual elimination rate and are not accounted for in this simplified calculation."
             ),
             tags$li(
-              "Factores como el sexo, peso, ingesta de alimentos, patrón de consumo y estado de salud pueden influir en la tasa de eliminación real y no se consideran en este cálculo simplificado."
-            ),
-            tags$li(
-              "Esta herramienta pretende ser un apoyo en el análisis pericial experto, sin embargo, no tiene validez legal por sí misma."
+              "This tool is intended to support expert forensic analysis; however, it does not carry legal validity by itself."
             )
           ),
           h5("Reference:"),
-          tags$ul(tags$a(
-            href = "https://www.aafs.org/asb-standard/best-practice-recommendation-performing-alcohol-calculations-forensic-toxicology",
-            target = "_blank",
-            "Best Practice Recommendation for Performing Alcohol Calculations in Forensic Toxicology"
-          ))
+
+          tags$ul(
+            tags$a(
+              href = "https://www.aafs.org/asb-standard/best-practice-recommendation-performing-alcohol-calculations-forensic-toxicology",
+              target = "_blank",
+              "Best Practice Recommendation for Performing Alcohol Calculations in Forensic Toxicology"
+            )
+          )
         )
       )
     )
@@ -308,12 +315,12 @@ server <- function(input, output, session) {
       show("no_results")
       show("no_results_plot")
       show("no_results_calculos")
-      hide("descargar_reporte")
+      disable("descargar_reporte")
     } else {
       hide("no_results")
       hide("no_results_plot")
       hide("no_results_calculos")
-      show("descargar_reporte")
+      enable("descargar_reporte")
     }
   )
 
@@ -444,7 +451,7 @@ server <- function(input, output, session) {
     res <- resultado()
     req(res)
 
-    etiquetas <- c("Analítico", "Extrapolation (min)", "Extrapolation (max)")
+    etiquetas <- c("Extrapolation (min)", "Extrapolation (max)", "Analítico")
 
     # datos
     points_df <- data.frame(
@@ -465,8 +472,11 @@ server <- function(input, output, session) {
       )
     )
 
+    # browser()
+
     # gráfico
     ggplot(points_df, aes(x = time, y = bac)) +
+      # líneas punteadas
       geom_segment(
         data = data.frame(
           x = res$tiempo_medicion_val,
@@ -491,7 +501,12 @@ server <- function(input, output, session) {
         color = "#67839A",
         linewidth = 0.6
       ) +
-      geom_point(aes(shape = type, color = type), size = 4) +
+      # figuras/puntos
+      geom_point(
+        aes(shape = type, color = type),
+        size = 5
+      ) +
+      # textos sobre figuras
       geom_label(
         aes(label = label_text),
         vjust = -1,
@@ -500,6 +515,7 @@ server <- function(input, output, session) {
         color = "#19222A",
         linewidth = 0
       ) +
+      # escalas
       scale_x_datetime(
         breaks = unique(points_df$time),
         minor_breaks = seq(
@@ -519,17 +535,22 @@ server <- function(input, output, session) {
             }
           })
         },
-        expand = expansion(c(0.06, 0.06))
+        expand = expansion(c(1, 1))
       ) +
       scale_y_continuous(
         limits = c(0, max(points_df$bac, na.rm = TRUE) * 1.25),
         expand = expansion(mult = c(0, 0.1))
       ) +
-      # scale_shape_manual(values = c("Analite" = 16, "Extrapolate (Mín)" = 17, "Extrapolate (Máx)" = 17)) +
       scale_color_manual(
         values = setNames(
-          c("#0072B2", "#E69F00", "#D55E00"),
-          etiquetas[1:3]
+          c("#D55E00", "#E69F00", "#0072B2"),
+          etiquetas
+        )
+      ) +
+      scale_shape_manual(
+        values = setNames(
+          c(15, 17, 16),
+          etiquetas
         )
       ) +
       labs(
@@ -542,6 +563,11 @@ server <- function(input, output, session) {
         base_size = 14,
         base_family = "Arial",
         ink = "#19222A"
+      ) +
+      guides(
+        shape = guide_legend(
+          override.aes = list(size = 3.6, alpha = 0.8)
+        )
       ) +
       theme(
         legend.position = "top",
@@ -590,104 +616,88 @@ server <- function(input, output, session) {
     res <- resultado()
     req(res) # Solo proceder si hay un resultado válido
 
-    fmt_tiempo_medicion <- format(res$tiempo_medicion_val, "%d/%m/%Y %H:%M")
-    fmt_tiempo_evento <- format(res$tiempo_evento_val, "%d/%m/%Y %H:%M")
+    fmt <- function(x) formatC(x, digits = 2, format = "f")
 
-    # Estructura usando tagList y etiquetas HTML individuales para claridad
-    tagList(
-      # tags$h5("1. Tiempo Transcurrido (Delta_t)"),
-      # tags$p(paste0("Hora de Medición: ", fmt_tiempo_medicion)),
-      # tags$p(paste0("Hora del Evento: ", fmt_tiempo_evento)),
-      # tags$p(tags$code("Delta_t = Hora de Medición - Hora de Evento")),
-      # tags$p(tags$strong(paste0("Delta_t = ", res$horas, " horas"))),
-      # tags$hr(),
+    bac <- res$bac_medido_val
+    prod_min <- round(res$beta_min_val * res$horas, 3)
+    prod_max <- round(res$beta_max_val * res$horas, 3)
 
-      # tags$h5("2. Concentración de Alcohol Estimada en el Momento del Evento (BAC_evento)"),
-      # tags$p(tags$code("BAC_evento = BAC_medido + (beta * Delta_t)")),
-      # tags$p(paste0("Donde BAC_medido = ", res$bac_medido_val, " g/L")),
-      # tags$p(paste0("y beta es la tasa de eliminación horaria (g/L/hora).")),
-      # tags$hr(),
+    withMathJax(tagList(
+      p(
+        # "The estimated alcohol concentration at the time of the incident is obtained from Widmark's retrograde extrapolation formula:",
+        # helpText("$$AC_{inc} = AC_{test} + (\\beta \\times t)$$"),
+        HTML(paste0(
+          "For the calculation of estimated alcohol concentration at the time of the incident, \\(AC_{test} = ",
+          fmt(bac),
+          "\\,\\text{g/L}\\) is the measured concentration, \\(\\beta\\) is the elimination rate, ",
+          "and \\(t = ",
+          res$horas,
+          "\\,\\text{h}\\) is the elapsed time between the incident and the sample. ",
+          "The range is spanned by applying the minimum and maximum elimination rates."
+        ))
+      ),
       layout_columns(
         div(
-          h5(
-            "Cálculo del Límite Inferior del Rango Estimado (BAC_evento_min)"
-          ),
-          p(paste0(
-            "Usando Tasa de Eliminación Mínima (beta_min) = ",
-            res$beta_min_val,
-            " g/L/hora:"
-          )),
-          p(tags$code(
-            paste0(
-              "BAC_evento_min = ",
-              res$bac_medido_val |> formatC(digits = 2, format = "f"),
-              " g/L + (",
-              res$beta_min_val |> formatC(digits = 2, format = "f"),
-              " g/L/hora * ",
-              res$horas,
-              " horas)"
-            )
-          )),
+          h5("Lower bound of the estimated range (\\(AC_{inc}^{\\,min}\\))"),
           p(HTML(paste0(
-            "&nbsp;&nbsp;&nbsp;&nbsp; = ",
-            res$bac_medido_val |> formatC(digits = 2, format = "f"),
-            " g/L + ",
-            round(res$beta_min_val * res$horas, 3) |>
-              formatC(digits = 2, format = "f"),
-            " g/L"
+            "Using the minimum elimination rate \\(\\beta_{min} = ",
+            fmt(res$beta_min_val),
+            "\\,\\text{g/L/h}\\):"
           ))),
-          p(tags$strong(
-            paste0(
-              "BAC_evento_min = ",
-              res$bac_min |> formatC(digits = 2, format = "f"),
-              " g/L"
-            )
-          ))
+          # helpText(
+          paste0(
+            "$$\\begin{aligned}",
+            "AC_{inc}^{\\,min} &= AC_{test} + (\\beta_{min} \\times t) \\\\",
+            "&= ",
+            fmt(bac),
+            "\\,\\text{g/L} + (",
+            fmt(res$beta_min_val),
+            "\\,\\text{g/L/h} \\times ",
+            res$horas,
+            "\\,\\text{h}) \\\\",
+            "&= ",
+            fmt(bac),
+            "\\,\\text{g/L} + ",
+            fmt(prod_min),
+            "\\,\\text{g/L} \\\\",
+            "&= ",
+            fmt(res$bac_min),
+            "\\,\\text{g/L}",
+            "\\end{aligned}$$"
+          )
         ),
 
-        # segunda columna
         div(
-          h5(
-            "Cálculo del Límite Superior del Rango Estimado (BAC_evento_max)"
-          ),
-          p(paste0(
-            "Usando Tasa de Eliminación Máxima (beta_max) = ",
-            res$beta_max_val,
-            " g/L/hora:"
-          )),
-          p(tags$code(
-            paste0(
-              "BAC_evento_max = ",
-              res$bac_medido_val |> formatC(digits = 2, format = "f"),
-              " g/L + (",
-              res$beta_max_val |> formatC(digits = 2, format = "f"),
-              " g/L/hora * ",
-              res$horas,
-              " horas)"
-            )
-          )),
-          p(
-            HTML(paste0(
-              "&nbsp;&nbsp;&nbsp;&nbsp; = ",
-              res$bac_medido_val |> formatC(digits = 2, format = "f"),
-              " g/L + ",
-              round(res$beta_max_val * res$horas, 3) |>
-                formatC(digits = 2, format = "f"),
-              " g/L"
-            ))
-          ),
-          p(
-            strong(
-              paste0(
-                "BAC_evento_max = ",
-                res$bac_max |> formatC(digits = 2, format = "f"),
-                " g/L"
-              )
-            )
+          h5("Upper bound of the estimated range (\\(AC_{inc}^{\\,max}\\))"),
+          p(HTML(paste0(
+            "Using the maximum elimination rate \\(\\beta_{max} = ",
+            fmt(res$beta_max_val),
+            "\\,\\text{g/L/h}\\):"
+          ))),
+          # helpText(
+          paste0(
+            "$$\\begin{aligned}",
+            "AC_{inc}^{\\,max} &= AC_{test} + (\\beta_{max} \\times t) \\\\",
+            "&= ",
+            fmt(bac),
+            "\\,\\text{g/L} + (",
+            fmt(res$beta_max_val),
+            "\\,\\text{g/L/h} \\times ",
+            res$horas,
+            "\\,\\text{h}) \\\\",
+            "&= ",
+            fmt(bac),
+            "\\,\\text{g/L} + ",
+            fmt(prod_max),
+            "\\,\\text{g/L} \\\\",
+            "&= ",
+            fmt(res$bac_max),
+            "\\,\\text{g/L}",
+            "\\end{aligned}$$"
           )
         )
       )
-    )
+    ))
   })
 
   # # --- Lógica para Pestaña de Signos y Síntomas ---
@@ -853,25 +863,42 @@ server <- function(input, output, session) {
   # })
 
   # reporte ----
+
   reporte <- reactive({
     doc <- read_docx()
 
     # Título
     doc <- body_add_par(
       doc,
-      "Reporte de Retroproyección de Etanol",
+      "Retrograde extrapolation alcohol calculation",
       style = "heading 1"
+    )
+
+    doc <- body_add_par(
+      doc,
+      "Report generated automatically by Retro-BAC web app."
+    )
+
+    doc <- body_add_par(
+      doc,
+      "Results:",
+      style = "heading 2"
     )
 
     # Datos de entrada
     doc <- body_add_par(
       doc,
-      paste("Concentración medida:", resultado()$bac_medido_val, "g/L"),
+      paste("Blood alcohol concentration:", resultado()$bac_medido_val, "g/L"),
       style = "Normal"
     )
+
     doc <- body_add_par(
       doc,
-      paste("Tiempo transcurrido:", resultado()$horas, "horas"),
+      paste(
+        "Elapsed time between incident and sample:",
+        resultado()$horas,
+        "horas"
+      ),
       style = "Normal"
     )
 
@@ -882,14 +909,14 @@ server <- function(input, output, session) {
     # browser()
     doc <- body_add_par(
       doc,
-      "Concentración estimada al evento (g/L):",
+      "Estimated blood alcohol concentration at time of event:",
       style = "heading 2"
     )
 
     doc <- body_add_par(
       doc,
       paste0(
-        "Mínimo (tasa de eliminación ",
+        "Minimum (elimination rate ",
         BETA_MIN,
         "): ",
         resultado()$bac_min |> formatC(digits = 2, format = "f"),
@@ -900,7 +927,7 @@ server <- function(input, output, session) {
     doc <- body_add_par(
       doc,
       paste0(
-        "Máximo (tasa de eliminación ",
+        "Maximun (elimination rate ",
         BETA_MAX,
         "): ",
         resultado()$bac_max |> formatC(digits = 2, format = "f"),
@@ -909,24 +936,11 @@ server <- function(input, output, session) {
       style = "Normal"
     )
 
-    # # Insertar gráfico
-    # datos <- data.frame(
-    #   Tiempo = seq(0, input$tiempo, by = 0.1)
-    # )
-    # datos$BAC_Lenta <- res$bac_medido_val + 0.10 * datos$Tiempo
-    # datos$BAC_Rapida <- res$bac_medido_val + 0.25 * datos$Tiempo
-    #
-    # grafica <- ggplot(datos, aes(x = Tiempo)) +
-    #   geom_line(aes(y = BAC_Lenta), color = "blue", size = 1.2) +
-    #   geom_line(aes(y = BAC_Rapida), color = "red", size = 1.2) +
-    #   labs(x = "Tiempo (horas)",
-    #        y = "Concentración de etanol (g/L)",
-    #        title = "Retroproyección de Concentración de Etanol") +
-    #   theme_minimal() +
-    #   theme(plot.title = element_text(hjust = 0.5)) +
-    #   scale_y_continuous(limits = c(0, max(datos$BAC_Rapida) * 1.1))
-
-    doc <- body_add_par(doc, "Gráfico de extrapolación:", style = "heading 2")
+    doc <- body_add_par(
+      doc,
+      "Retrograde extrapolation plot:",
+      style = "heading 2"
+    )
 
     doc <- body_add_gg(doc, value = grafico(), style = "centered")
   })
@@ -937,6 +951,14 @@ server <- function(input, output, session) {
       paste0("reporte_retroproyeccion_", Sys.Date(), ".docx")
     },
     content = function(file) {
+      id <- showNotification(
+        "Generating report...",
+        duration = NULL,
+        closeButton = FALSE,
+        type = "message"
+      )
+      on.exit(removeNotification(id), add = TRUE)
+
       print(reporte(), target = file)
     }
   )

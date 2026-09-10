@@ -11,11 +11,11 @@ General:
   - [ ] traducir sección "Notas Importantes e Interpretación"
 
 Gráfico
-- [ ] mejorar gráfico
-  - [ ] achicar un poco letras
-  - [ ] tiempo en horas como líneas de fondo
-  - [ ] sacar negritas de y
-  - [ ] traducir a inglés
+- [x] mejorar gráfico
+  - [x] achicar un poco letras
+  - [x] tiempo en horas como líneas de fondo
+  - [x] sacar negritas de y
+  - [x] traducir a inglés
   - [ ] si la ventana es angosta, leyenda hacia abajo
 
 - [ ] fórmulas formateadas con texto de mathjax
