@@ -220,29 +220,29 @@ The formulas presented here are designed to illustrate the mathematical relation
 5.2.3.1 Calculate TBW from Watson, et al $^{(31)}$ :
 
 $$
-T B W (m a l e) = 2. 4 4 7 - (0. 0 9 5 1 6 \times a) + (0. 1 0 7 4 \times h) + (0. 3 3 6 2 \times w) \tag {1a}
+TBW (male) = 2.447 - (0.09516 \times a) + (0.1074 \times h) + (0.3362 \times w) \tag{1a}
 $$
 
 $$
-T B W (f e m a l e) = - 2. 0 9 7 + (0. 1 0 6 9 \times h) + (0. 2 4 6 6 \times w) \tag {1b}
+TBW (female) = - 2.097 + (0.1069 \times h) + (0.2466 \times w) \tag{1b}
 $$
 
 where:
 
 $$
-\mathrm{TBW} = \text { total   body   water   (L) }
+\mathrm{TBW} = \text { total body water (L) }
 $$
 
 $$
-a = \text { age   (years) }
+a = \text { age (years) }
 $$
 
 $$
-\mathrm{h} = \text { height   (cm) }
+\mathrm{h} = \text { height (cm) }
 $$
 
 $$
-w = \text { weight   (kg) }
+w = \text { weight (kg) }
 $$
 
 
@@ -303,25 +303,25 @@ This calculation does not account for any drinks eliminated. It provides an esti
 Minimum dose of alcohol
 
 $$
-D = A C \times V d \times w \times 1 0 ^ {\frac {d L}{L}} \tag {5}
+D = AC \times Vd \times w \times 10^{\frac{dL}{L}} \tag{5}
 $$
 
 where:
 
 $$
-\begin{array}{l} D = \text { dose(g) } \\ A C = \text { alcohol   concentration } (\mathrm{g} / \mathrm{dL}) \\ V d = \text { volume   of   distribution } (\mathrm{L} / \mathrm{kg}) \\ w = \text { weight   (kg) } \\ \end{array}
+\begin{array}{l} D = \text { dose(g) } \\ AC = \text { alcohol concentration } (\mathrm{g} / \mathrm{dL}) \\ Vd = \text { volume of distribution } (\mathrm{L} / \mathrm{kg}) \\ w = \text { weight (kg) } \\ \end{array}
 $$
 
 Using the calculated dose to estimate the minimum number of “drinks” when beverage concentration is known.
 
 $$
-V = \frac {D}{C \times \rho \times m} \tag {6}
+V = \frac{D}{C \times \rho \times m} \tag{6}
 $$
 
 where:
 
 $$
-\begin{array}{l} V = \text { volume   (oz) } \\ D = \text { dose(g) } \\ C = \text {   beverage   concentration   (mL / 100   mL)   } \\ \rho = \text { density   of   ethanol } (0. 7 8 9 \mathrm{g} / \mathrm{mL}) \\ m = \text { metric   conversion } (2 9. 6 \mathrm{mL} / \mathrm{oz}) \\ \end{array}
+\begin{array}{l} V = \text { volume (oz) } \\ D = \text { dose(g) } \\ C = \text { beverage concentration (mL / 100 mL) } \\ \rho = \text { density of ethanol } (0.789 \mathrm{g} / \mathrm{mL}) \\ m = \text { metric conversion } (29.6 \mathrm{mL} / \mathrm{oz}) \\ \end{array}
 $$
 
 The calculated volume can be converted to the equivalent number of drinks, depending on the type of drink. For example, if the subject was drinking 12 oz beers, a volume of 37 oz would be equivalent to approximately 3 beers.
@@ -333,7 +333,7 @@ These calculations provide the maximum alcohol concentration attainable from a r
 Dose of alcohol from a drink
 
 $$
-D = V \times C \times \rho \times m \tag {7}
+D = V \times C \times \rho \times m \tag{7}
 $$
 
 where:
@@ -343,19 +343,19 @@ D = \text { dose(g) }
 $$
 
 $$
-V = \text { volume   (oz) }
+V = \text { volume (oz) }
 $$
 
 $$
-C = \text { beverage   concentration } (\mathrm{mL} / 1 0 0 \mathrm{mL})
+C = \text { beverage concentration } (\mathrm{mL} / 100 \mathrm{mL})
 $$
 
 $$
-\rho = \text { density   of   ethanol } (0. 7 8 9 \mathrm{g/mL})
+\rho = \text { density of ethanol } (0.789 \mathrm{g/mL})
 $$
 
 $$
-m = \text { metric   conversion } (2 9. 6 \mathrm{mL} / \mathrm{oz})
+m = \text { metric conversion } (29.6 \mathrm{mL} / \mathrm{oz})
 $$
 
 Theoretical maximum alcohol concentration from a given drink(s)
@@ -363,13 +363,13 @@ Theoretical maximum alcohol concentration from a given drink(s)
 This calculation provides the theoretical maximum alcohol concentration. It assumes full absorption with no elimination. See A.1.2 for example.
 
 $$
-\mathrm{AC} _ {\text {drink(s)}} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}} \tag {8}
+\mathrm{AC}_{\text {drink(s)}} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}} \tag{8}
 $$
 
 where:
 
 $$
-A C _ {d r i n k (s)} = \max \text { alcohol   concentration } (\mathrm{g} / \mathrm{dL}) \text { from   a   drink(s) }
+AC_{drink (s)} = \max \text { alcohol concentration } (\mathrm{g} / \mathrm{dL}) \text { from a drink(s) }
 $$
 
 $$
@@ -377,11 +377,11 @@ D = \text { dose(g) }
 $$
 
 $$
-V d = \text { volume   of   distribution } (\mathrm{L} / \mathrm{kg})
+Vd = \text { volume of distribution } (\mathrm{L} / \mathrm{kg})
 $$
 
 $$
-w = \text { weight   (kg) }
+w = \text { weight (kg) }
 $$
 
 5.3.4 Alcohol eliminated during the drinking timeline may be further considered if necessary or applicable.
@@ -393,25 +393,23 @@ $$
 5.4.2 The basic calculation for retrograde extrapolation shall be expressed as:
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T) \tag {9}
+AC_{inc} = AC_{test} + (\beta \times T) \tag{9}
 $$
 
 where:
 
 $$
-A C _ {i n c} = \text { estimated   alcohol   concentration   at   the   time   of   the   incident(g / dL) }
+AC_{inc} = \text { estimated alcohol concentration at the time of the incident (g/dL) }
+$$
+AC_{test} = \text { measured alcohol concentration (g/dL) }
 $$
 
 $$
-A C _ {t e s t} = \text { measured   alcohol   concentration(g / dL) }
+\beta = \text { elimination rate } (\mathrm{g} / \mathrm{dL} / \text { hour })
 $$
 
 $$
-\beta = \text { elimination   rate } (\mathrm{g} / \mathrm{dL} / \text { hour })
-$$
-
-$$
-T = \text { time   between   incident   and   time   of   breath   test / blood   draw   (hours) }
+T = \text { time between incident and time of breath test / blood draw (hours) }
 $$
 
 5.4.3 Retrograde extrapolation calculations shall not be performed on alcohol concentrations below 0.020 g/dL.
@@ -505,45 +503,45 @@ D = 0.19 \frac{g}{dL} \times 0.58 \frac{L}{kg} \times 104 \text{kg} \times 10 \f
 $$
 
 $$
-D = 1 1 5 g
+D = 115 g
 $$
 
 $$
-D = 1 6 4 g
+D = 164 g
 $$
 
 Using Equation 6, calculate the equivalent number of drinks for that dose:
 
 $$
-V = \frac {D}{C \times \rho \times m}
+V = \frac{D}{C \times \rho \times m}
 $$
 
 $$
-V = \frac {D}{C \times \rho \times m}
+V = \frac{D}{C \times \rho \times m}
 $$
 
 $$
-V = \frac {1 1 5 g}{4 . 3 \frac {m L}{1 0 0 m L} \times 0 . 7 8 9 \frac {g}{m L} \times 2 9 . 6 \frac {m L}{o z}}
+V = \frac{115 g}{4.3 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}}
 $$
 
 $$
-V = \frac {1 6 4 g}{4 . 3 \frac {m L}{1 0 0 m L} \times 0 . 7 8 9 \frac {g}{m L} \times 2 9 . 6 \frac {m L}{o z}}
+V = \frac{164 g}{4.3 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}}
 $$
 
 $$
-V = 1 1 5 o z
+V = 115 oz
 $$
 
 $$
-V = 1 6 3 o z
+V = 163 oz
 $$
 
 $$
-D r i n k s = 1 1 5 o z / 1 6 o z = 7. 2 p i n t s
+Drinks = 115 oz / 16 oz = 7.2 pints
 $$
 
 $$
-D r i n k s = 1 6 3 o z / 1 6 o z = 1 0. 2 p i n t s
+Drinks = 163 oz / 16 oz = 10.2 pints
 $$
 
 Summary: The subject's stated drinking history is inconsistent with the breath test result. He had the equivalent of $\sim 7 - 10$ pints of Brand X beer in his system at the time of the test.
@@ -553,103 +551,103 @@ b) Calculate with an individualized Vd
 Using Equation 1a, calculate the TBW:
 
 $$
-T B W (m a l e) = 2. 4 4 7 - (0. 0 9 5 1 6 \times a) + (0. 1 0 7 4 \times h) + (0. 3 3 6 2 \times w)
+TBW (male) = 2.447 - (0.09516 \times a) + (0.1074 \times h) + (0.3362 \times w)
 $$
 
 $$
-T B W (m a l e) = 2. 4 4 7 - (0. 0 9 5 1 6 \times 3 2) + (0. 1 0 7 4 \times 1 8 5) + (0. 3 3 6 2 \times 1 0 4)
+TBW (male) = 2.447 - (0.09516 \times 32) + (0.1074 \times 185) + (0.3362 \times 104)
 $$
 
 $$
-T B W (m a l e) = 5 4. 2
+TBW (male) = 54.2
 $$
 
 Using Equation 2a, calculate the Vd:
 
 $$
-V d (m a l e) = \frac {T B W}{w \times 0 . 8 2 5}
+Vd (male) = \frac{TBW}{w \times 0.825}
 $$
 
 $$
-V d (m a l e) = \frac {5 4 . 2}{1 0 4 \times 0 . 8 2 5}
+Vd (male) = \frac{54.2}{104 \times 0.825}
 $$
 
 $$
-V d (m a l e) = 0. 6 3 L / k g
+Vd (male) = 0.63 L / kg
 $$
 
 Using Equation 3a, apply the %CV:
 
 $$
-V d (m a l e) = V d \pm (V d \times 9.86 \%)
+Vd (male) = Vd \pm (Vd \times 9.86 \%)
 $$
 
 $$
-V d (m a l e) = 0. 6 3 \pm (0. 6 3 \times 9. 8 6 \%)
+Vd (male) = 0.63 \pm (0.63 \times 9.86 \%)
 $$
 
 $$
-V d (m a l e) = 0. 6 3 \pm 0. 0 6 = 0. 5 7 - 0. 6 9 L / k g
+Vd (male) = 0.63 \pm 0.06 = 0.57 - 0.69 L / kg
 $$
 
 Using Equation 5 and a Vd of 0.57-0.69 L/kg, calculate the dose needed:
 
 $$
-D = A C \times V d \times w \times 1 0 \frac {d L}{L}
+D = AC \times Vd \times w \times 10 \frac{dL}{L}
 $$
 
 $$
-D = A C \times V d \times w \times 1 0 \frac {d L}{L}
+D = AC \times Vd \times w \times 10 \frac{dL}{L}
 $$
 
 $$
-D = 0. 1 9 \frac {g}{d L} \times 0. 5 7 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}
+D = 0.19 \frac{g}{dL} \times 0.57 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}
 $$
 
 $$
-D = 0. 1 9 \frac {g}{d L} \times 0. 6 9 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}
+D = 0.19 \frac{g}{dL} \times 0.69 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}
 $$
 
 $$
-D = 1 1 3 g
+D = 113 g
 $$
 
 $$
-D = 1 3 6 g
+D = 136 g
 $$
 
 Using Equation 6, calculate the equivalent number of drinks for that dose:
 
 $$
-V = \frac {D}{C \times \rho \times m}
+V = \frac{D}{C \times \rho \times m}
 $$
 
 $$
-V = \frac {D}{C \times \rho \times m}
+V = \frac{D}{C \times \rho \times m}
 $$
 
 $$
-V = \frac {1 1 3 g}{4 . 3 \frac {m L}{1 0 0 m L} \times 0 . 7 8 9 \frac {g}{m L} \times 2 9 . 6 \frac {m L}{o z}}
+V = \frac{113 g}{4.3 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}}
 $$
 
 $$
-V = \frac {1 3 6 g}{4 . 3 \frac {m L}{1 0 0 m L} \times 0 . 7 8 9 \frac {g}{m L} \times 2 9 . 6 \frac {m L}{o z}}
+V = \frac{136 g}{4.3 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}}
 $$
 
 $$
-V = 1 1 3 o z
+V = 113 oz
 $$
 
 $$
-V = 1 3 5 o z
+V = 135 oz
 $$
 
 $$
-D r i n k s = 1 1 3 o z / 1 6 o z = 7. 1 p i n t s
+Drinks = 113 oz / 16 oz = 7.1 pints
 $$
 
 $$
-D r i n k s = 1 3 5 o z / 1 6 o z = 8. 4 p i n t s
+Drinks = 135 oz / 16 oz = 8.4 pints
 $$
 
 Summary: The subject's stated drinking history is inconsistent with the breath test result. He had the equivalent of $\sim 7 - 8\frac{1}{2}$ pints of Brand X beer in his system at the time of the test.
@@ -663,7 +661,7 @@ D = V \times C \times \rho \times m
 $$
 
 $$
-D = 3 2 o z \times 4. 3 \frac {m L}{1 0 0 m L} \times 0. 7 8 9 \frac {g}{m L} \times 2 9. 6 \frac {m L}{o z}
+D = 32 oz \times 4.3 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}
 $$
 
 D = 32 g alcohol in 2 pints of Brand X
@@ -673,27 +671,27 @@ a) Calculate with a fixed Vd range
 Using Equation 8 and a Vd range for males of 0.58-0.83 L/kg, calculate the maximum AC range this dose could theoretically reach:
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {3 2 g}{0 . 5 8 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{32 g}{0.58 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {3 2 g}{0 . 8 3 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{32 g}{0.83 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = 0. 0 5 3 g / d L
+\mathrm{AC}_{drink (s)} = 0.053 g / dL
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = 0. 0 3 7 g / d L
+\mathrm{AC}_{drink (s)} = 0.037 g / dL
 $$
 
 Summary: The subject's stated drinking history is inconsistent with the breath test result. If all the alcohol in 2 pints of Brand X were completely absorbed, and none eliminated, the maximum AC range achievable for the subject would be $\sim 0.037 - 0.053\mathrm{g / dL}$.
@@ -703,27 +701,27 @@ b) Calculate with an individualized Vd
 Using Equation 8 and a Vd range of 0.57 - 0.69 L/kg (see A.1.1.b for calculation), calculate the maximum range of ACs this dose could theoretically reach:
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {3 2 g}{0 . 5 7 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{32 g}{0.57 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {3 2 g}{0 . 6 9 \frac {L}{k g} \times 1 0 4 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{32 g}{0.69 \frac{L}{kg} \times 104 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = 0. 0 5 4 g / d L
+\mathrm{AC}_{drink (s)} = 0.054 g / dL
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = 0. 0 4 5 g / d L
+\mathrm{AC}_{drink (s)} = 0.045 g / dL
 $$
 
 Summary: The subject's stated drinking history is inconsistent with the breath test result. If all the alcohol in 2 pints of Brand X were completely absorbed, and none eliminated, the maximum AC range achievable for the subject would be $\sim 0.045 - 0.054\mathrm{g / dL}$.
@@ -755,27 +753,27 @@ Elapsed Time = 9:00 pm to 11:45 pm = 2.75 hours
 Using Equation 9 and an elimination rate range of 0.010 - 0.025 g/dL/hour, calculate AC range at time of incident:
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T)
+AC_{inc} = AC_{test} + (\beta \times T)
 $$
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T)
+AC_{inc} = AC_{test} + (\beta \times T)
 $$
 
 $$
-A C _ {i n c} = 0. 0 6 8 \frac {g}{d L} + \left(\frac {0 . 0 1 0 \frac {g}{d L}}{h o u r} \times 2. 7 5 h o u r s\right)
+AC_{inc} = 0.068 \frac{g}{dL} + \left(\frac{0.010 \frac{g}{dL}}{hour} \times 2.75 hours\right)
 $$
 
 $$
-A C _ {i n c} = 0. 0 6 8 \frac {g}{d L} + \left(\frac {0 . 0 2 5 \frac {g}{d L}}{h o u r} \times 2. 7 5 h o u r s\right)
+AC_{inc} = 0.068 \frac{g}{dL} + \left(\frac{0.025 \frac{g}{dL}}{hour} \times 2.75 hours\right)
 $$
 
 $$
-A C _ {i n c} = 0. 0 9 6 \frac {g}{d L}
+AC_{inc} = 0.096 \frac{g}{dL}
 $$
 
 $$
-A C _ {i n c} = 0. 1 3 7 \frac {g}{d L}
+AC_{inc} = 0.137 \frac{g}{dL}
 $$
 
 Summary: It is estimated that the subject's AC at the time of the incident was $\sim 0.096 - 0.137\mathrm{g / dL}$. Therefore, it is likely the subject was above the $0.08\mathrm{g / dL}$ legal limit at the time of the incident.
@@ -813,15 +811,15 @@ Height conversion:  $h = 68 \, in \times 2.54 \frac{cm}{in} = 173 \, cm$
 Using Equation 9 and an elimination rate range of 0.010 - 0.025 g/dL/hour, calculate AC range at the time of incident, if the subject were post absorptive:
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T) \quad A C _ {i n c} = A C _ {t e s t} + (\beta \times T)
+AC_{inc} = AC_{test} + (\beta \times T) \quad AC_{inc} = AC_{test} + (\beta \times T)
 $$
 
 $$
-A C _ {i n c} = 0. 0 8 2 \frac {g}{d L} + \left(\frac {0 . 0 1 0 \frac {g}{d L}}{h o u r} \times 1. 5 h o u r s\right) \quad A C _ {i n c} = 0. 0 8 2 \frac {g}{d L} + \left(\frac {0 . 0 2 5 \frac {g}{d L}}{h o u r} \times 1. 5 h o u r s\right)
+AC_{inc} = 0.082 \frac{g}{dL} + \left(\frac{0.010 \frac{g}{dL}}{hour} \times 1.5 hours\right) \quad AC_{inc} = 0.082 \frac{g}{dL} + \left(\frac{0.025 \frac{g}{dL}}{hour} \times 1.5 hours\right)
 $$
 
 $$
-A C _ {i n c} = 0. 0 9 7 \frac {g}{d L} \quad A C _ {i n c} = 0. 1 2 0 \frac {g}{d L}
+AC_{inc} = 0.097 \frac{g}{dL} \quad AC_{inc} = 0.120 \frac{g}{dL}
 $$
 
 Using Equation 7, calculate the dose of alcohol from a shot of tequila:
@@ -831,7 +829,7 @@ D = V \times C \times \rho \times m
 $$
 
 $$
-D = 1. 5 o z \times 4 0 \frac {m L}{1 0 0 m L} \times 0. 7 8 9 \frac {g}{m L} \times 2 9. 6 \frac {m L}{o z}
+D = 1.5 oz \times 40 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL} \times 29.6 \frac{mL}{oz}
 $$
 
 D = 14 g alcohol in a shot of tequila
@@ -839,43 +837,43 @@ D = 14 g alcohol in a shot of tequila
 Using Equations 1b, 2b, and 3b, calculate an individualized Vd range:
 
 $$
-V d (f e m a l e) = \frac {- 2 . 0 9 7 + (0 . 1 0 6 9 \times h) + (0 . 2 4 6 6 \times w)}{w x 0 . 8 3 8} \pm 15 \%
+Vd (female) = \frac{- 2.097 + (0.1069 \times h) + (0.2466 \times w)}{w \times 0.838} \pm 15 \%
 $$
 
 $$
-V d (f e m a l e) = \frac {- 2 . 0 9 7 + (0 . 1 0 6 9 \times 1 7 3) + (0 . 2 4 6 6 \times 7 3)}{7 3 x 0 . 8 3 8} \pm 15 \%
+Vd (female) = \frac{- 2.097 + (0.1069 \times 173) + (0.2466 \times 73)}{73 \times 0.838} \pm 15 \%
 $$
 
 $$
-V d (f e m a l e) = 0. 5 6 L / k g \pm 1 5 \% = 0. 4 8 - 0. 6 4 L / k g
+Vd (female) = 0.56 L / kg \pm 15 \% = 0.48 - 0.64 L / kg
 $$
 
 Using Equation 8 and a Vd range of 0.48 - 0.64 L/kg, calculate the maximum AC a tequila shot could contribute:
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}} \quad \mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}} \quad \mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {1 4 g}{0 . 4 8 \frac {L}{k g} \times 7 3 k g \times 1 0 \frac {d L}{L}} \quad \mathrm{AC} _ {d r i n k (s)} = \frac {1 4 g}{0 . 6 4 \frac {L}{k g} \times 7 3 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{14 g}{0.48 \frac{L}{kg} \times 73 kg \times 10 \frac{dL}{L}} \quad \mathrm{AC}_{drink (s)} = \frac{14 g}{0.64 \frac{L}{kg} \times 73 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {\text { drink } (s)} = 0. 0 4 0 g / d L \quad \mathrm{AC} _ {\text { drink } (s)} = 0. 0 3 0 g / d L
+\mathrm{AC}_{\text { drink } (s)} = 0.040 g / dL \quad \mathrm{AC}_{\text { drink } (s)} = 0.030 g / dL
 $$
 
 Using Equation 10, adjust the AC to remove the theoretical maximum contribution the last tequila shot could have contributed (using the calculated ranges of $\mathrm{AC}_{\mathrm{inc}}$ and $\mathrm{AC}_{\mathrm{drink(s)}}$):
 
 $$
-\text { Adjusted } \mathrm{AC} _ {\text { inc }} = \mathrm{AC} _ {\text { inc }} - \mathrm{AC} _ {\text { drink(s) }} \quad \text { Adjusted } \mathrm{AC} _ {\text { inc }} = \mathrm{AC} _ {\text { inc }} - \mathrm{AC} _ {\text { drink(s) }}
+\text { Adjusted } \mathrm{AC}_{\text { inc }} = \mathrm{AC}_{\text { inc }} - \mathrm{AC}_{\text { drink(s) }} \quad \text { Adjusted } \mathrm{AC}_{\text { inc }} = \mathrm{AC}_{\text { inc }} - \mathrm{AC}_{\text { drink(s) }}
 $$
 
 $$
-\text { Adjusted } \mathrm{AC} _ {\text { inc }} = 0. 0 9 7 - 0. 0 4 0 \quad \text { Adjusted } \mathrm{AC} _ {\text { inc }} = 0. 1 2 0 - 0. 0 3 0
+\text { Adjusted } \mathrm{AC}_{\text { inc }} = 0.097 - 0.040 \quad \text { Adjusted } \mathrm{AC}_{\text { inc }} = 0.120 - 0.030
 $$
 
 $$
-\text { Adjusted } \mathrm{AC} _ {\text { inc }} = 0. 0 5 7 \mathrm{g} / \mathrm{dL} \quad \text { Adjusted } \mathrm{AC} _ {\text { inc }} = 0. 0 9 0 \mathrm{g} / \mathrm{dL}
+\text { Adjusted } \mathrm{AC}_{\text { inc }} = 0.057 \mathrm{g} / \mathrm{dL} \quad \text { Adjusted } \mathrm{AC}_{\text { inc }} = 0.090 \mathrm{g} / \mathrm{dL}
 $$
 
 Summary: Assuming the last shot of tequila was not absorbed at the time of the incident, the subject's AC at that time is estimated to be  $\sim0.057-0.090$  g/dL. Therefore, it is possible she was below the 0.08 g/dL legal limit at the time of the incident. Further, since the initial drinking event ended approximately one hour before the incident, there may be additional unabsorbed alcohol, which would further lower the estimated range.
@@ -905,43 +903,43 @@ Amount consumed = 750 mL x  $\frac{1}{3}$  = 250 mL
 Using Equation 7, calculate the dose of alcohol from the vodka
 
 $$
-D = V \times C \times \rho (\text { metric   conversion   not   needed })
+D = V \times C \times \rho (\text { metric conversion not needed })
 $$
 
 $$
-D = 2 5 0 m L \times 4 0 \frac {m L}{1 0 0 m L} \times 0. 7 8 9 \frac {g}{m L}
+D = 250 mL \times 40 \frac{mL}{100 mL} \times 0.789 \frac{g}{mL}
 $$
 
 $$
-D = 7 9 g \text {   alcohol   in   } \frac {1}{3} \text {   bottle   of   vodka   }
+D = 79 g \text { alcohol in } \frac{1}{3} \text { bottle of vodka }
 $$
 
 Using Equations 1a, 2a, and 3a, calculate an individualized Vd range:
 
 $$
-V d (m a l e) = \frac {2 . 4 4 7 - (0 . 0 9 5 1 6 \times a) + (0 . 1 0 7 4 \times h) + (0 . 3 3 6 2 \times w)}{w \times 0 . 8 2 5} \pm 9. 86 \%
+Vd (male) = \frac{2.447 - (0.09516 \times a) + (0.1074 \times h) + (0.3362 \times w)}{w \times 0.825} \pm 9.86 \%
 $$
 
 $$
-V d (m a l e) = \frac {2 . 4 4 7 - (0 . 0 9 5 1 6 \times 5 5) + (0 . 1 0 7 4 \times 1 7 8) + (0 . 3 3 6 2 \times 9 5)}{9 5 \times 0 . 8 2 5} \pm 9. 86 \%
+Vd (male) = \frac{2.447 - (0.09516 \times 55) + (0.1074 \times 178) + (0.3362 \times 95)}{95 \times 0.825} \pm 9.86 \%
 $$
 
 $$
-V d (m a l e) = 0.62 L / kg \pm 9.86 \% = 0.56 - 0.68 L / kg
+Vd (male) = 0.62 L / kg \pm 9.86 \% = 0.56 - 0.68 L / kg
 $$
 
 Using Equation 8 and a Vd range of 0.56 - 0.68 L/kg, calculate the maximum AC the vodka could contribute:
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}} \quad \mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}} \quad \mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {7 9 g}{0 . 5 6 \frac {L}{k g} \times 9 5 k g \times 1 0 \frac {d L}{L}} \quad \mathrm{AC} _ {d r i n k (s)} = \frac {7 9 g}{0 . 6 8 \frac {L}{k g} \times 9 5 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{79 g}{0.56 \frac{L}{kg} \times 95 kg \times 10 \frac{dL}{L}} \quad \mathrm{AC}_{drink (s)} = \frac{79 g}{0.68 \frac{L}{kg} \times 95 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {\text {drink} (s)} = 0. 1 4 8 \mathrm{g} / \mathrm{dL} \quad \mathrm{AC} _ {\text {drink} (s)} = 0. 1 2 2 \mathrm{g} / \mathrm{dL}
+\mathrm{AC}_{\text {drink} (s)} = 0.148 \mathrm{g} / \mathrm{dL} \quad \mathrm{AC}_{\text {drink} (s)} = 0.122 \mathrm{g} / \mathrm{dL}
 $$
 
 Summary: If all the alcohol from the 1/3 bottle of vodka were completely absorbed, and none eliminated, the theoretical maximum AC range achievable for the subject would be $\sim 0.122 - 0.148$ g/dL, below the breath test result of $0.215\mathrm{g} / 210\mathrm{L}$. The subject's drinking history is inconsistent; there was likely additional alcohol consumption.
@@ -975,59 +973,59 @@ Elapsed Time = 1:00 am to 3:00 am = 2 hours
 Using Equation 9 and an elimination rate range of 0.010 - 0.025 g/dL/hour, calculate the AC at time of incident if post absorptive:
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T)
+AC_{inc} = AC_{test} + (\beta \times T)
 $$
 
 $$
-A C _ {i n c} = A C _ {t e s t} + (\beta \times T)
+AC_{inc} = AC_{test} + (\beta \times T)
 $$
 
 $$
-A C _ {i n c} = 0. 0 7 5 \frac {g}{d L} + \left(\frac {0 . 0 1 0 \frac {g}{d L}}{h o u r} \times 2 h o u r s\right)
+AC_{inc} = 0.075 \frac{g}{dL} + \left(\frac{0.010 \frac{g}{dL}}{hour} \times 2 hours\right)
 $$
 
 $$
-A C _ {i n c} = 0. 0 7 5 \frac {g}{d L} + \left(\frac {0 . 0 2 5 \frac {g}{d L}}{h o u r} \times 2 h o u r s\right)
+AC_{inc} = 0.075 \frac{g}{dL} + \left(\frac{0.025 \frac{g}{dL}}{hour} \times 2 hours\right)
 $$
 
 $$
-A C _ {i n c} = 0. 0 9 5 \frac {g}{d L}
+AC_{inc} = 0.095 \frac{g}{dL}
 $$
 
 $$
-A C _ {i n c} = 0. 1 2 5 \frac {g}{d L}
+AC_{inc} = 0.125 \frac{g}{dL}
 $$
 
 Using Equation 8 and a Vd range for females of 0.43-0.73 L/kg, calculate the maximum AC a "standard" drink could contribute:
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {D}{V d \times w \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{D}{Vd \times w \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {1 4 g}{0 . 4 3 \frac {L}{k g} \times 7 3 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{14 g}{0.43 \frac{L}{kg} \times 73 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {d r i n k (s)} = \frac {1 4 g}{0 . 7 3 \frac {L}{k g} \times 7 3 k g \times 1 0 \frac {d L}{L}}
+\mathrm{AC}_{drink (s)} = \frac{14 g}{0.73 \frac{L}{kg} \times 73 kg \times 10 \frac{dL}{L}}
 $$
 
 $$
-\mathrm{AC} _ {\text { drink } (s)} = 0. 0 4 5 \mathrm{g} / \mathrm{dL}
+\mathrm{AC}_{\text { drink } (s)} = 0.045 \mathrm{g} / \mathrm{dL}
 $$
 
 $$
-\mathrm{AC} _ {\text { drink } (s)} = 0. 0 2 6 \mathrm{g} / \mathrm{dL}
+\mathrm{AC}_{\text { drink } (s)} = 0.026 \mathrm{g} / \mathrm{dL}
 $$
 
 Using Equation 10, adjust the AC to remove the number of drinks that would have to be unabsorbed to have the subject be below the legal limit at the time of the crash (using the calculated ranges of $\mathrm{AC}_{\mathrm{inc}}$ and $\mathrm{AC}_{\mathrm{drink}(s)}$):
 
 $$
-\text { Adjusted } \mathrm{AC} _ {\text { inc }} = \mathrm{AC} _ {\text { inc }} - \mathrm{AC} _ {\text { drink(s) }}
+\text { Adjusted } \mathrm{AC}_{\text { inc }} = \mathrm{AC}_{\text { inc }} - \mathrm{AC}_{\text { drink(s) }}
 $$
 
 |  Estimated AC @ 1:00am | 0.010 rate |   | 0.025 rate  |   |

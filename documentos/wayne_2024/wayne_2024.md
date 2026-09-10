@@ -3,11 +3,9 @@ DOI: https://doi.org/10.1093/jat/bkae008
 Advance Access Publication Date: 9 February 2024
 Review
 
-OXFORD
-
 # Dubowski’s stages of alcohol influence and clinical signs and symptoms of drunkenness in relation to a person’s blood-alcohol concentration—Historical background
 
-Alan Wayne Jones
+**Alan Wayne Jones**
 
 Division of Clinical Chemistry and Pharmacology, Department of Biomedical and Clinical Sciences, Faculty of Medicine and Health Sciences, University of Linköping, Linköping SE-58183, Sweden
 
@@ -27,17 +25,7 @@ During police investigations of alcohol-related crimes, such as impaired driving
 
 To aid in interpreting BAC in a medicolegal context, various charts and tables have been constructed that list the expected clinical signs and symptoms of drunkenness in relation to the person’s BAC. One of the most widely used such tables in forensic science and legal medicine was constructed by Professor Kurt M. Dubowski (1921–2016) from the University of Oklahoma (10).
 
-This article presents the historical background and origin of the Dubowski alcohol table, and it seems to have originated from research done by the National Safety Council (NSC) Committee on Tests for Intoxication. The early members of this committee were Emil Bogen (1886–1962), Clarence W.
-
-© The Author(s) 2024. Published by Oxford University Press. All rights reserved. For permissions, please e-mail: journals.permissions@oup.com
-
-Downloaded from https://academic.oup.com/jat/article/48/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-132
-
-Jones
-
-Muehlberger (1896–1966), Walter W. Jetter (1905–1994) and Herman A. Heise (1891–1983). Also relevant in this connection are studies done in the Nordic countries involving the examination of apprehended drivers by physicians, who were expected to document clinical signs and symptoms of impairment in relation to the suspect’s BAC (11, 12).
+This article presents the historical background and origin of the Dubowski alcohol table, and it seems to have originated from research done by the National Safety Council (NSC) Committee on Tests for Intoxication. The early members of this committee were Emil Bogen (1886–1962), Clarence W. Muehlberger (1896–1966), Walter W. Jetter (1905–1994) and Herman A. Heise (1891–1983). Also relevant in this connection are studies done in the Nordic countries involving the examination of apprehended drivers by physicians, who were expected to document clinical signs and symptoms of impairment in relation to the suspect’s BAC (11, 12).
 
 ### Early studies of alcohol influence and/or intoxication
 
@@ -70,13 +58,7 @@ The pharmacological effects of alcohol on the central nervous system were compar
 
 In 1936, the NSC established a Committee on Test for Intoxication with the task of reviewing the medical literature to find information about the relationship between concentrations of ethanol in blood and other body fluids and the degree of impairment. The committee was interested in establishing some threshold BAC limits above which a person was unfit to drive, so that these could be presented in court as evidence when traffic offenders were prosecuted. One of the conclusions reached by the NSC committee was that the risk of a road-traffic crash increased in relation to the drivers’ BAC and UAC (22). The committee also proclaimed that the concentrations of ethanol in a person’s blood, breath or urine could be determined much more reliably than could the more subjective clinical signs and symptoms of drunkenness.
 
-One of the early NSC members was Clarence W. Muehlberger, who was awarded both MS and PhD degrees from the University of Wisconsin (23). Between 1924 and 1930, Dr Muehlberger was employed as the State Toxicologist
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-Journal of Analytical Toxicology, 2024, Vol. 48, No. 3
-
-133
+One of the early NSC members was Clarence W. Muehlberger, who was awarded both MS and PhD degrees from the University of Wisconsin (23). Between 1924 and 1930, Dr Muehlberger was employed as the State Toxicologist in Wisconsin before he moved to Chicago to take up a position as a toxicologist for the Cook County Coroner. His final appointment was as State Toxicologist of Michigan and Director of the Michigan Crime Detection Laboratory (23).
 
 ![img-0.jpeg](images/img-0.jpeg)
 
@@ -93,27 +75,15 @@ Table I. Five Stages of Alcohol Influence in Relation to BAC and UAC and the Cli
 |  Stupor | 0.27–0.39 | 0.38–0.54 | Marked stimuli decrease. Approaching paralysis.  |
 |  Coma | 0.36–0.48 | 0.51–0.67 | Complete unconsciousness. Depressed reflexes. Subnormal temperature. Anesthesia. Impairment of circulation. Stertorous (labored) breathing. Possible death.  |
 
-in Wisconsin before he moved to Chicago to take up a position as a toxicologist for the Cook County Coroner. His final appointment was as State Toxicologist of Michigan and Director of the Michigan Crime Detection Laboratory (23).
-
 Muehlberger was a strong advocate for using chemical test of intoxication as proof that a person was unfit to drive a motor vehicle on the highway and was in breach of drink-driving legislation. In Muehlberger's opinion clinical signs and symptoms were much too subjective, bordering on guesswork, and he based this opinion on the results of clinical studies published by Bogen and Jetter (24, 25).
 
 In the 1938 Annual Report of the NSC Committee on Tests for Intoxication, Muehlberger constructed an “alcohol table” that delineated various stages of alcohol influence in relation to a person’s BAC and UAC and the expected signs and symptoms of drunkenness (see Table I) (26). Note that he used overlapping ranges of BAC and UAC and wrote “Overlapping stages of intoxication are shown to take into account the variation to be expected in relationship between blood-alcohol concentration and physical and mental impairment of different individuals.”
 
-This alcohol table shown in Table I appears to be the first such compilation and also included a graphic showing a rising staircase with a man holding a cane on each step. As the concentration of alcohol in the man's urine increased
-
-so did his state of intoxication. The second step showed him having difficulties in standing upright, and he eventually had to lean against a lamp post, because he could no longer stand unaided. A coffin on the top step was meant to illustrate death from acute alcohol poisoning (26). Both the table and the graph appeared in Chapter 46 (Ethyl Alcohol) written by Muehlberger for the second edition of Legal Medicine—Pathology and Toxicology, an influential reference book edited by Gonzales et al. (27).
+This alcohol table shown in Table I appears to be the first such compilation and also included a graphic showing a rising staircase with a man holding a cane on each step. As the concentration of alcohol in the man's urine increased so did his state of intoxication. The second step showed him having difficulties in standing upright, and he eventually had to lean against a lamp post, because he could no longer stand unaided. A coffin on the top step was meant to illustrate death from acute alcohol poisoning (26). Both the table and the graph appeared in Chapter 46 (Ethyl Alcohol) written by Muehlberger for the second edition of Legal Medicine—Pathology and Toxicology, an influential reference book edited by Gonzales et al. (27).
 
 Herman A. Heise was another charter member of the NSC Committee on Tests for Intoxication, who became a strong supporter for use of chemical test evidence of intoxication for the prosecution of traffic offenders (28, 29). While working as a medical examiner, Heise became aware of the high prevalence of alcohol intoxication among drivers killed in road-traffic crashes and advocated that the analysis of ethanol needed to done routinely when victims of traffic deaths were autopsied and culpability for the crash was investigated (30, 31).
 
-During the 1920–1930s, it was a lot easier to determine the concentration of ethanol in urine rather than in blood and there were also constitutional issues preventing taking blood samples. The latter was a more invasive procedure, not without medical risk and could not be done without the person's consent. This was not the case with urine, although
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-134
-
-Jones
-
-Heise realized that BAC results were easier to interpret than UAC and he developed a method of blood-alcohol analysis that involved distillation followed by chemical oxidation with chromic acid and titrimetric analysis to determine an endpoint (32).
+During the 1920–1930s, it was a lot easier to determine the concentration of ethanol in urine rather than in blood and there were also constitutional issues preventing taking blood samples. The latter was a more invasive procedure, not without medical risk and could not be done without the person's consent. This was not the case with urine, although Heise realized that BAC results were easier to interpret than UAC and he developed a method of blood-alcohol analysis that involved distillation followed by chemical oxidation with chromic acid and titrimetric analysis to determine an endpoint (32).
 
 Herman A. Heise worked tirelessly to convince both state and federal authorities of the dangers of excessive drinking before driving, and these efforts led the NSC Committee to establish certain guidelines for use when traffic offenders were prosecuted (29, 33).
 
@@ -127,7 +97,7 @@ These suggestions were accepted by some state legislators, such as New York Stat
 
 The above wording does not make it perfectly clear whether the statute refers to % alcohol w/w or w/v and the difference between the two is 5.5%, because the average density of blood is 1.055 g/mL (34). However, it appears that laboratory methods of analysis used in the USA at the time were based on measuring aliquots of blood by volume, so % w/v is probably meant.
 
-Another early study of the relationship between signs and symptoms of intoxication and BAC was reported by Walter W. Jetter in 1938 (35). This involved 1,000 patients admitted to hospital and were suspected of being chronic drinkers and/or needed detoxification. Each patient was examined by nurses and/or physicians using the same standardized protocol to document signs and symptoms of drunkenness. These included the odor of alcohol on the breath, flushed face,
+Another early study of the relationship between signs and symptoms of intoxication and BAC was reported by Walter W. Jetter in 1938 (35). This involved 1,000 patients admitted to hospital and were suspected of being chronic drinkers and/or needed detoxification. Each patient was examined by nurses and/or physicians using the same standardized protocol to document signs and symptoms of drunkenness. These included the odor of alcohol on the breath, flushed face, dilated pupils, abnormality of gait (walking a straight line and/or swaying, reeling and staggering), slurred speech, as well as ability to answer questions and communicate verbally were noted for each patient (36). Samples of blood and urine were then taken for determination of ethanol content so that a quantitative relationship was established between visual observations and BAC and/or UAC (32).
 
 Table II. Relationship between BAC and Percentage of Patients Judged Intoxicated According to a 1938 Study by Jetter (36)
 
@@ -144,7 +114,6 @@ Table II. Relationship between BAC and Percentage of Patients Judged Intoxicated
 |  0.43–0.48 | 0.45 | 5 | 5 (100)  |
 |  0.48–0.53 | 0.50 | 2 | 2 (100)  |
 
-dilated pupils, abnormality of gait (walking a straight line and/or swaying, reeling and staggering), slurred speech, as well as ability to answer questions and communicate verbally were noted for each patient (36). Samples of blood and urine were then taken for determination of ethanol content so that a quantitative relationship was established between visual observations and BAC and/or UAC (32).
 
 Table II shows the percentages of patients judged to be impaired by alcohol in relation to their BAC according to the study reported by Jetter (36). BAC in these patients ranged from 0.05 to 0.50 g%, and the percentage of patients judged intoxicated increased with increasing BAC. Overall, there were 740 patients (74%) diagnosed as intoxicated according to clinical parameters alone. There was considerable uncertainty in making this diagnosis when BAC was <0.15 g%. Indeed, some of the patients did not exhibit overt signs and symptoms despite them having a high BAC, which Jetter attributed to the development of central nervous tolerance in heavy drinkers. He later concluded that the evidence of intoxication in a legal context should not be based only on the results of a clinical examination and that this needed to be supported by measuring the concentration of ethanol samples of blood, breath or urine.
 
@@ -154,13 +123,7 @@ The name Kurt M. Dubowski is tightly linked with research and teaching about for
 
 Dubowski's bibliography lists 208 items comprising journal articles and reviews, book chapters, government reports, letters to the editor and some conference abstracts. His name appears as sole or first author on the vast majority of these publications. He possessed an unique knowledge of the forensic alcohol research literature including articles published in both English and German language journals.
 
-The first Dubowski alcohol table was published in a journal called "Police" (Table III) in 1957 (38) and there are
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-Journal of Analytical Toxicology, 2024, Vol. 48, No. 3
-
-135
+The first Dubowski alcohol table was published in a journal called "Police" (Table III) in 1957 (38) and there are striking similarities to Muehlberger alcohol table published in 1938. Dubowski was aware of Muehlberger's table, because he included it in his PhD thesis published in 1949 entitled "Evaluation of methods for the determination of ethyl alcohol in biological materials" (39).
 
 Table III. First Version of the Dubowski Table Published in 1957 (38) Showing Seven Stages of Alcohol Influence, in Relation to the Person's BAC and UAC and the Clinical Signs and Symptoms of Intoxication
 
@@ -175,29 +138,19 @@ Table III. First Version of the Dubowski Table Published in 1957 (38) Showing Se
 |  0.35–0.50 | 0.47–0.67 | Coma | Complete unconsciousness; coma; anesthesia. Depressed or abolished reflexes. Subnormal temperature. Incontinence of urine and feces. Embarrassment of circulation and respiration. Possible death.  |
 |  0.45+ | 0.60+ | Death | Death from respiratory paralysis.  |
 
-striking similarities to Muehlberger alcohol table published in 1938. Dubowski was aware of Muehlberger's table, because he included it in his PhD thesis published in 1949 entitled "Evaluation of methods for the determination of ethyl alcohol in biological materials" (39).
-
 Both alcohol tables (Tables I and III) use overlapping ranges of BAC and UAC, although the "stimulation" stage in the Muehlberger table (BAC 0.09–0.21 g%) was split into two stages in the Dubowski table defined as euphoria (BAC 0.03–0.12 g%) and excitement (BAC 0.09–0.25 g%). The lowest BAC range (0.01–0.05 g%) was defined as "sobriety" in Dubowski's table, whereas Muehlberger referred to a BAC of 0.01–0.12 g% as subclinical (Table I). Descriptions of the various clinical signs and symptoms of drunkenness were similar but more elaborate in later versions of the Dubowski table.
 
 The Dubowski alcohol table was widely disseminated by re-publication in scientific journals (40), book chapters (41) and government reports (42), which helped to spread the information to many forensic practitioners in the USA and other nations. The most recent version of the Dubowski table was published in the newsletter of the International Association of Chemical Testing and is shown in Table IV (43).
 
 Close inspection of Dubowski's list of publications failed to reveal any clinical or observational studies with hospital patients or apprehended drivers to establish a relationship between BAC and the signs and symptoms of alcohol influence. It appears that Dubowski's alcohol table was synthesized from his vast knowledge of the scientific literature and articles published in clinical, biomedical and forensic toxicology journals.
 
-The first two versions of the Dubowski table were published in 1957 and 1970, and these included information about UAC alongside BAC (41). The concentrations of ethanol in urine were calculated from the BAC by multiplying
-
-with a factor of ~1.33, which corresponds to the average UAC/BAC ratio for a freshly voided specimen in the post-absorptive phase of the BAC curve (44, 45).
+The first two versions of the Dubowski table were published in 1957 and 1970, and these included information about UAC alongside BAC (41). The concentrations of ethanol in urine were calculated from the BAC by multiplying with a factor of ~1.33, which corresponds to the average UAC/BAC ratio for a freshly voided specimen in the post-absorptive phase of the BAC curve (44, 45).
 
 Forensic toxicologists are often hesitant or refuse to interpret urinary drug concentrations in relation the pharmacological effects on the individual and/or the amount of drug consumed (46, 47). However, interpretation of UAC is a lot easier, because of the high correlation between UAC and BAC as reported from controlled drinking studies (48) and in apprehended drivers (45).
 
 Concentration of ethanol in bladder urine reflects the BAC during the time when urine was formed in the kidney and stored in the bladder before voiding. However, many factors influence UAC and UAC/BAC ratios, such as the frequency of urination, the elapsed time between successive voids and retention of residual urine in the bladder (49). Because BAC is continuously changing through metabolism in the liver and when collected in the bladder the ethanol is protected from metabolism. The measured UAC reflects the average BAC since the previous void (44). Scores of studies demonstrate that BAC and UAC are highly correlated especially if voids are collected during the post-absorptive phase of ethanol metabolism (48).
 
 Overlapping BAC ranges is an important feature of both the Muehlberger and the Dubowski alcohol tables, although neither explained how they arrived at these ranges. Dubowski wrote "The deliberate overlap between the stages reflects the existence of some variation in these effects among individuals, a recognized biological phenomena" (42). In his table, the differences in BAC for each stage of alcohol influence were 0.04 g% (subclinical), 0.09 g% (euphoria), 0.16 g% (excitement), 0.12 g% (confusion), 0.15 g% (stupor) and 0.15 g% (coma). The latest 2012 version of the Dubowski table also mentions that the information it contains applies to a typical social drinker, not to chronic alcohol abusers (43).
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-136
-
-Jones
 
 Table IV. Most Recent Version of the Dubowski Alcohol Table (2012) Depicting Seven Stages of Alcohol Influence with Overlapping Ranges of BAC and the Associated Clinical Signs and Symptoms of Intoxication (43)
 
@@ -211,29 +164,19 @@ Table IV. Most Recent Version of the Dubowski Alcohol Table (2012) Depicting Sev
 |  0.35–0.50 | Coma | Complete unconsciousness; coma; anesthesia. Depressed or abolished reflexes. Subnormal temperature. Impairment/irregularities of circulation and respiration. Possible death.  |
 |  Mean, median 0.36 (90% 0.21–0.50) | Death | Death from respiratory failure and/or cardiac arrest.  |
 
-Copyright© 2012 by Kurt M. Dubowski, Ph.D. All Rights Reserved.
-
 The untoward effects of alcohol on an individual are difficult to detect clinically at BAC between 0.01 and 0.05 g% unless more sophisticated cognitive and/or divided attention psychomotor tasks are applied (50–52). More unequivocal is the BAC associated with death, which was reported as 0.45+ g% in early versions of Dubowski's table but complemented in the latest version with a mean and median concentration of 0.36 g% and a 90% range from 0.21 to 0.50 g% (53). These values are in good agreement with several autopsy studies involving the determination of ethanol in femoral blood when no other drugs were identified (54, 55). Note that the BAC of a 0.36 g% reflects time of death, and this was probably higher some time before death, owing to an ongoing metabolism of ethanol up until the time of death when blood circulation ends.
 
 ### Clinical examination of apprehended drivers
 
 Another source of information about the relationship between BAC and the clinical signs and symptoms of intoxication can be gleaned from drink-driving cases when suspects were examined by clinicians without any knowledge of the BAC. The BAC in apprehended drivers covers a wide range from below the legal limit for driving up to 0.4 g% (56). Beginning in the 1930s, every person suspected of driving under the influence of alcohol in Sweden was examined by a physician.
 
-The examination of suspects was done ~60–90 min after the arrest, and a physician or police surgeon used a questionnaire and standardized protocol for this purpose. Thereafter, a battery of simple observational, cognitive and psychomotor tests were administered including noting the person's demeanor, orientation in time and space, odor of alcohol on their breath, Romberg's balance test, walking a straight line, turning around, finger-nose test, picking up small objects, counting backwards starting at 107, and any disturbances
+The examination of suspects was done ~60–90 min after the arrest, and a physician or police surgeon used a questionnaire and standardized protocol for this purpose. Thereafter, a battery of simple observational, cognitive and psychomotor tests were administered including noting the person's demeanor, orientation in time and space, odor of alcohol on their breath, Romberg's balance test, walking a straight line, turning around, finger-nose test, picking up small objects, counting backwards starting at 107, and any disturbances in speech, such as stammering (57). After completion of the clinical examination, the physician was expected to conclude whether the person was or was not under the influence of alcohol. If judged to be under the influence, this was then graded as being slight, moderate or severe and finally a sample of blood was collected for the determination of ethanol at a forensic laboratory.
 
-in speech, such as stammering (57). After completion of the clinical examination, the physician was expected to conclude whether the person was or was not under the influence of alcohol. If judged to be under the influence, this was then graded as being slight, moderate or severe and finally a sample of blood was collected for the determination of ethanol at a forensic laboratory.
-
-Many studies of this kind were undertaken in the Nordic countries where statutory BAC limits for driving were introduced decades before other nations (57). Figure 2 shows percentages of apprehended drivers judged impaired by alcohol in relation to those not considered to be impaired in relation to the measured BAC (58). The graph shows that 50% of drivers were considered influenced by alcohol at a BAC of ~0.075 g% and these results were collected during the early
+Many studies of this kind were undertaken in the Nordic countries where statutory BAC limits for driving were introduced decades before other nations (57). Figure 2 shows percentages of apprehended drivers judged impaired by alcohol in relation to those not considered to be impaired in relation to the measured BAC (58). The graph shows that 50% of drivers were considered influenced by alcohol at a BAC of ~0.075 g% and these results were collected during the early 1960s. Similar studies with apprehended drivers have been done in Finland, and the results were in good agreement with those displayed in Figure 2 (59, 60).
 
 ![img-1.jpeg](images/img-1.jpeg)
 
 Figure 2. Percentages of apprehended drivers judged under the influence of alcohol according to a clinical examination done 60–90 min after arrest in relation to BAC in g/100 g (g%).
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-Journal of Analytical Toxicology, 2024, Vol. 48, No. 3
-
-137
 
 ![img-2.jpeg](images/img-2.jpeg)
 
@@ -245,8 +188,6 @@ Journal of Analytical Toxicology, 2024, Vol. 48, No. 3
 
 Figure 3. Relationship between percentage of drivers considered not under the influence of alcohol (A) in relation to increasing BACs (g/100 g or g%) compared with percentages of individuals judged as slightly (B), moderately (C) or severely (D) impaired by alcohol (11).
 
-1960s. Similar studies with apprehended drivers have been done in Finland, and the results were in good agreement with those displayed in Figure 2 (59, 60).
-
 Based on a much larger material of apprehended drivers, Figure 3A shows the percentage of those examined considered “not under the influence of alcohol” whereas Figures 3B–D depicts the percentages of drivers determined to be slightly, moderately or severely impaired by alcohol (11). One notices that ~2.5% of suspects were not considered influenced despite having a BAC between 0.25 and 0.29 g% (Figure 3A), whereas 18 (0.8%) of individuals with BAC <0.1 g% were considered severely impaired by alcohol. These findings underscore the difficulty in relying only on the results of clinical tests for use as evidence when traffic offenders are prosecuted.
 
 One problem with this type of study is that the physician who examines the suspects knows that they have been arrested by the police for drunken driving, which introduces an element of cognitive bias (61). Another factor is that the arrests were made throughout the whole country and hundreds of different physician were involved with making the clinical examinations. Reliability and consistency of their diagnosis might therefore depend on the amount of training for this task and their enthusiasm to make themselves available at all times of day and night.
@@ -257,15 +198,7 @@ There are numerous graphs and tables available that illustrate the clinical sign
 
 Many factors influence how people react to drinking alcoholic beverages, including their age and personality, the quantity (dose) consumed, the rate of consumption, and the resulting concentrations of ethanol in the blood and the brain (64). Most light-to-moderate drinkers seldom tolerate the amounts of ethanol necessary to reach a BAC of 0.15 g% (65), owing to nausea and other untoward effects experienced. Binge drinking is required to reach such high BAC (66), and most novice drinkers would vomit when their BAC rises rapidly to surpass 0.12 g% (unpublished observations from hundreds of controlled alcohol dosing studies).
 
-On the other hand, seasoned drinkers tolerate massive amounts of alcohol and don’t exhibit the expected
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-138
-
-Jones
-
-impairment effects, despite reaching a very high BAC (64). A recent pertinent study was reported by Olson et al. (67). They investigated patients presenting to a hospital emergency department (n = 384), who were perceived to be under the influence of alcohol on admission. All were subsequently examined by nurses and/or physicians using a so-called “alcohol symptoms check list.” The examiners were also expected to guess the patient’s BAC before a breath sample was analyzed with a hand-held instrument (AlcoSensor III).
+On the other hand, seasoned drinkers tolerate massive amounts of alcohol and don’t exhibit the expected impairment effects, despite reaching a very high BAC (64). A recent pertinent study was reported by Olson et al. (67). They investigated patients presenting to a hospital emergency department (n = 384), who were perceived to be under the influence of alcohol on admission. All were subsequently examined by nurses and/or physicians using a so-called “alcohol symptoms check list.” The examiners were also expected to guess the patient’s BAC before a breath sample was analyzed with a hand-held instrument (AlcoSensor III).
 
 The measured BAC of the patients in the Olson et al. study ranged from 0 to 0.418 g% and the estimated BAC, based on the results of the clinical tests, correlated well with the actual BAC (r = 0.513). However, the correlation between BAC and the overall clinical intoxication scores was low (r = 0.250). This improved somewhat when only patients (n = 134) without a history of chronic drinking were considered (r = 0.363). The correlation was much worse (r = 0.154) in those patients (n = 250) that had medical records documenting a previous history of chronic drinking. The overall conclusion from the study was that BAC was not well correlated with outward physical signs of intoxication, especially in chronic drinkers, because the development of central nervous tolerance tends to mask the clinical signs of intoxication in such individuals (68).
 
@@ -294,12 +227,6 @@ Remember that the information gleaned from using the Dubowski alcohol table is n
 ## Data availability
 
 The literature review necessary to prepare this manuscript used published articles, books and government reports available in the public domain via libraries, the internet and other resources.
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-Journal of Analytical Toxicology, 2024, Vol. 48, No. 3
-
-139
 
 ## Funding
 
@@ -404,12 +331,6 @@ The author (AW Jones) does not consider that he has any conflicts of interest in
 46. Kale, N. (2019) Urine drug tests: ordering and interpreting results. American Family Physician, 99, 33–39.
 
 47. ANSI/ACB. (2019) Guidelines for opinion testimony in forensic toxicology. Best Practice Recommendations. 1st edition, 037, pp. 1–5.
-
-Downloaded from https://academic.oup.com/jat/article/48/3/131/7604366 by TIAFT Member Access user on 08 April 2024
-
-140
-
-Jones
 
 48. Jones, A.W. (1992) Ethanol distribution ratios between urine and capillary blood in controlled experiments and in apprehended drinking drivers. Journal of Forensic Sciences, 37, 21–34.
 
