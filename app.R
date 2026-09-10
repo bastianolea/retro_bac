@@ -69,9 +69,7 @@ ui <- page_sidebar(
   useShinyjs(),
 
   disconnectMessage(
-    text = p(
-      "The app has been disconnected. Please reconnect to continue your session."
-    ),
+    text = "The app has been disconnected. Please reconnect to continue your session.",
     refresh = "Reconnect app",
     background = "#2C3E50",
     colour = "white",
@@ -84,6 +82,11 @@ ui <- page_sidebar(
   ),
 
   sidebar = sidebar(
+    open = list(
+      desktop = "open",
+      mobile = "always-above"
+    ),
+
     width = 350,
     # h4("Input data"),
     numericInput(
