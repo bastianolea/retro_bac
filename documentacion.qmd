@@ -1,7 +1,7 @@
 ---
 title: "Retro-BAC v.1.0.0 — Documentación técnica"
 subtitle: "Aplicación Shiny para extrapolación retrógrada de alcoholemia"
-author: "Documentación generada para RetroBAC_V6.R"
+author: "Documentación generada para app.R"
 date: today
 lang: es
 format:
@@ -20,7 +20,7 @@ format:
 ## Resumen de capacidades {#sec-resumen}
 
 **Retro-BAC** es una aplicación [Shiny](https://shiny.posit.co) de un solo archivo
-([RetroBAC_V6.R](../RetroBAC_V6.R)) que estima la concentración de alcohol en sangre
+([app.R](../app.R)) que estima la concentración de alcohol en sangre
 (BAC, *Blood Alcohol Concentration*) que una persona tenía en el momento de un
 **incidente**, partiendo de una medición analítica posterior. Implementa la
 **extrapolación retrógrada** basada en la fórmula de Widmark.
@@ -86,7 +86,7 @@ la organización de alto nivel.
 
 ```{mermaid}
 %%| label: fig-arquitectura
-%%| fig-cap: "Estructura de alto nivel de RetroBAC_V6.R."
+%%| fig-cap: "Estructura de alto nivel de app.R."
 
 flowchart TB
   subgraph Global["Ambito global (lineas 1-28)"]
