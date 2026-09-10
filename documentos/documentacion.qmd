@@ -19,11 +19,16 @@ format:
 
 ## Resumen de capacidades {#sec-resumen}
 
-**Retro-BAC** es una aplicación [Shiny](https://shiny.posit.co) de un solo archivo
-([app.R](../app.R)) que estima la concentración de alcohol en sangre
+**Retro-BAC** es una aplicación [Shiny](https://shiny.posit.co) cuyo punto de
+entrada es [app.R](../app.R) y que estima la concentración de alcohol en sangre
 (BAC, *Blood Alcohol Concentration*) que una persona tenía en el momento de un
 **incidente**, partiendo de una medición analítica posterior. Implementa la
 **extrapolación retrógrada** basada en la fórmula de Widmark.
+
+La lógica de negocio se separó de la capa de UI/servidor: `app.R` se ocupa de la
+interfaz y la reactividad, mientras que las funciones puras de cálculo y de
+graficado viven en módulos dentro de `R/` (ver @sec-estructura). Esto permite
+probarlas de forma aislada con `testthat`.
 
 El cálculo central es:
 
@@ -55,13 +60,46 @@ La herramienta es un apoyo al análisis pericial y, según indica la propia inte
 
 ### Constantes del modelo {#sec-constantes}
 
-Definidas al inicio del script (líneas 11-14):
+Definidas en [R/calculos.R](../R/calculos.R) como **fuente única de verdad**, de
+modo que tanto la app como las funciones de cálculo comparten los mismos valores
+(`app.R` las obtiene al hacer `source()` de ese archivo):
 
 | Constante | Valor | Unidad | Significado |
 |---|---|---|---|
 | `BETA_MIN` | 0.10 | g/L/hora | Tasa de eliminación mínima (límite inferior del rango) |
 | `BETA_MAX` | 0.25 | g/L/hora | Tasa de eliminación máxima (límite superior del rango) |
-| `DENSIDAD_ETANOL` | 0.789 | g/mL | Densidad del etanol (usada solo por código inactivo) |
+
+::: {.callout-note}
+`DENSIDAD_ETANOL` (0.789 g/mL) ya no está activa: solo aparece comentada en
+`app.R`, asociada al código inactivo de estimación de bebidas.
+:::
+
+## Estructura del proyecto {#sec-estructura}
+
+La app dejó de ser un único script. `app.R` carga tres módulos con `source()`
+al inicio y las funciones de negocio se distribuyen así:
+
+| Archivo | Contenido |
+|---|---|
+| [app.R](../app.R) | UI (`page_sidebar`, cards), `server` y `shinyApp()`. Orquesta la reactividad y las salidas. |
+| [R/calculos.R](../R/calculos.R) | Constantes `BETA_MIN`/`BETA_MAX` y funciones puras `calcular_horas()` y `extrapolar_bac()`. Sin dependencias de Shiny. |
+| [R/grafico.R](../R/grafico.R) | `construir_grafico(res, es_movil)`, que devuelve el objeto `ggplot` a partir de la lista de resultados. |
+| [R/otros.R](../R/otros.R) | Reservado para utilidades adicionales (actualmente vacío). |
+| `tests/testthat/` | Pruebas `testthat` de las funciones de cálculo y de graficado. |
+
+Funciones puras principales de [R/calculos.R](../R/calculos.R):
+
+| Función | Firma | Devuelve |
+|---|---|---|
+| `calcular_horas()` | `calcular_horas(tiempo_evento, tiempo_medicion)` | Horas transcurridas (numérico); falla si alguna fecha es `NA`. |
+| `extrapolar_bac()` | `extrapolar_bac(bac_medido, horas_transcurridas, beta_min = BETA_MIN, beta_max = BETA_MAX)` | Lista con `bac_min`, `bac_max`, `horas`, `bac_medido`, `beta_min`, `beta_max`. |
+
+::: {.callout-note}
+`extrapolar_bac()` valida los casos límite: lanza error si `bac_medido` es
+negativo o `NA`, o si `horas_transcurridas` es negativo (implicaría que el
+incidente ocurrió después de la medición) o `NA`. `horas_transcurridas = 0`
+devuelve el BAC medido sin cambios.
+:::
 
 ## Dependencias {#sec-dependencias}
 
@@ -89,11 +127,18 @@ la organización de alto nivel.
 %%| fig-cap: "Estructura de alto nivel de app.R."
 
 flowchart TB
-  subgraph Global["Ambito global (lineas 1-28)"]
+  subgraph Global["Ambito global (inicio de app.R)"]
     LIBS["Librerias"]
-    CONST["Constantes<br/>BETA_MIN, BETA_MAX, DENSIDAD_ETANOL"]
-    BEV["beverages_data<br/>(inactivo en la UI actual)"]
+    SRC["source(): R/calculos.R,<br/>R/grafico.R, R/otros.R"]
   end
+
+  subgraph Modules["Modulos en R/"]
+    CALC["R/calculos.R<br/>BETA_MIN, BETA_MAX,<br/>calcular_horas(), extrapolar_bac()"]
+    GRAF["R/grafico.R<br/>construir_grafico(res, es_movil)"]
+  end
+
+  SRC --> Modules
+  Modules --> SERVER
 
   subgraph UI["ui — page_sidebar (lineas 32-163)"]
     SIDEBAR["Sidebar: entradas + botones"]
@@ -121,9 +166,11 @@ flowchart TB
 
 ## Flujo principal de cálculo {#sec-flujo}
 
-El corazón de la app es el reactivo `resultado()` (líneas 214-234), disparado por
-el botón **Calculate extrapolation**. @fig-flujo detalla la secuencia desde la
-interacción del usuario hasta las salidas.
+El corazón de la app es el reactivo `resultado()`, disparado por el botón
+**Calculate extrapolation**. El reactivo se limita a parsear las fechas/horas y
+luego delega el cálculo en las funciones puras `calcular_horas()` y
+`extrapolar_bac()` de [R/calculos.R](../R/calculos.R). @fig-flujo detalla la
+secuencia desde la interacción del usuario hasta las salidas.
 
 ```{mermaid}
 %%| label: fig-flujo
@@ -133,8 +180,8 @@ flowchart TD
   START(["Usuario pulsa<br/>Calculate extrapolation"]) --> VALID{"iv is_valid?"}
   VALID -->|No| CANCEL["Cancela salida<br/>(cancelOutput = TRUE)"]
   VALID -->|Si| PARSE["Combina fecha + hora<br/>ymd_hm() -> tiempos"]
-  PARSE --> DELTA["dt = difftime(medicion, evento)<br/>en horas"]
-  DELTA --> CALC["BAC_min = BAC + BETA_MIN*dt<br/>BAC_max = BAC + BETA_MAX*dt"]
+  PARSE --> DELTA["calcular_horas(evento, medicion)<br/>(R/calculos.R)"]
+  DELTA --> CALC["extrapolar_bac(bac, horas)<br/>(R/calculos.R)<br/>BAC + BETA_MIN/MAX * horas"]
   CALC --> LIST["Lista resultado():<br/>horas, bac_min, bac_max, tiempos, betas"]
   LIST --> UI1["resultados_ui<br/>(rango estimado)"]
   LIST --> UI2["bac_plot<br/>(grafico ggplot2)"]
@@ -206,8 +253,11 @@ Líneas 236-246. Muestra el tiempo transcurrido y un `alert` verde con el rango
 
 ### Gráfico (`bac_plot`) {#sec-grafico}
 
-Líneas 249-294. Construye un `data.frame` de tres puntos (extrapolado mínimo,
-extrapolado máximo y analítico) y dibuja:
+El `renderPlot` delega en `construir_grafico(resultado(), es_movil = ...)`,
+definida en [R/grafico.R](../R/grafico.R). La función recibe la lista de
+resultados como argumento (ya no lee `resultado()` del entorno global), construye
+un `data.frame` de tres puntos (extrapolado mínimo, extrapolado máximo y
+analítico) y dibuja:
 
 - Dos `geom_segment` punteados desde el punto analítico hacia cada extrapolación.
 - `geom_point` mapeando forma y color a `type`, con `geom_text` de etiquetas.

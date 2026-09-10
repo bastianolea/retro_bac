@@ -17,13 +17,15 @@ Gráfico
   - [x] tiempo en horas como líneas de fondo
   - [x] sacar negritas de y
   - [x] traducir a inglés
-  - [ ] si la ventana es angosta, leyenda hacia abajo
+  - [x] si la ventana es angosta, leyenda hacia abajo
+  - [ ] líneas de horas cambiarlas si la fecha es más larga
+  - [ ] redibujado excesivo del gráfico al redimensionar la ventana (menor). `renderPlot` reescala la imagen al cambiar el tamaño del contenedor (con `execOnResize = FALSE`, el default), por lo que el gráfico "parpadea" muchas veces por segundo al arrastrar el borde de la ventana. No lo causa la reactividad de `es_movil`/`ancho()` (ya debounced y solo cambia al cruzar 600px). Explorar más adelante: fijar tamaño/altura del `plotOutput`, debounce sobre el tamaño del output vía `session$clientData$output_bac_plot_width`, o `renderCachedPlot`.
 
-- [ ] fórmulas formateadas con texto de mathjax
+- [x] fórmulas formateadas con texto de mathjax
 
 
 Cálculo
-- [ ] refactorizar el cálculo de extrapolación a una función de R independiente
+- [x] refactorizar el cálculo de extrapolación a una función de R independiente
 
   Actualmente el cálculo principal vive en línea dentro del reactivo `resultado <- eventReactive(input$calcular, {...})` en `RetroBAC_V6.R` (aprox. línea 214). Planificación punto por punto:
 
