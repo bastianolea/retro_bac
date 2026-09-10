@@ -3,9 +3,9 @@
 - [x] Y luego eliminar en la parte de los resultados debajo de la gráfica, las items: “tiempo transcurrido” y “concentración de alcohol…”, debido a que esa información esta en el Input data; entregue el cálculo y los resultados para cada rango de eliminación.
 
 - [ ] google font local
-- [ ] "Calculation details" debería estar en dos columnas
-- [ ] mostrar texto "No results to show. Press Calculate extrapolation to get results." en "Retrograde extrapolation plot"
-- [ ] mejorar responsividad en dispositivos móviles, controles deberían estar arriba
+- [x] "Calculation details" debería estar en dos columnas
+- [x] mostrar texto "No results to show. Press Calculate extrapolation to get results." en "Retrograde extrapolation plot"
+- [x] mejorar responsividad en dispositivos móviles, controles deberían estar arriba
 - [ ] armonizar idioma de la app (inglés como idioma de la aplicación, español como idioma del código)
   - [ ] traducir sección "Notas Importantes e Interpretación"
 - [ ] implementar chatbot

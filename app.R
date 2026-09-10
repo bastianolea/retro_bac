@@ -6,6 +6,7 @@ library(ggplot2)
 library(shinyjs)
 library(shinydisconnect)
 library(officer)
+library(sass)
 # library(rvg)
 
 version <- "1.2"
@@ -59,10 +60,13 @@ ui <- page_sidebar(
   theme = bs_theme(
     version = 5,
     bootswatch = "flatly",
-    base_font = font_google("Inter"),
-    heading_font = font_google("Inter"),
-    "primary" = "#2C3E50",
-    "secondary" = "#3498DB"
+    base_font = font_google("Hedvig Letters Sans"),
+    heading_font = font_google("Hedvig Letters Sans"),
+    primary = "#2C3E50",
+    fg = "#19222A",
+    bg = "#F5F8FA",
+    # "secondary" = "#3498DB"
+    secondary = "#67839A"
   ),
   # Eliminamos withMathJax() de aquí
 
@@ -78,7 +82,7 @@ ui <- page_sidebar(
 
   # css ----
   tags$head(
-    includeCSS("estilos.css")
+    tags$style(HTML(sass(sass_file("estilos.scss"))))
   ),
 
   sidebar = sidebar(
@@ -99,10 +103,10 @@ ui <- page_sidebar(
     ),
     dateInput(
       "fecha_medicion",
-      "Date of sample colection:",
+      "Date of sample collection:",
       value = Sys.Date(),
       format = "dd/mm/yyyy",
-      language = "es"
+      language = "en"
     ),
     textInput(
       "hora_medicion",
@@ -114,7 +118,7 @@ ui <- page_sidebar(
       "Date of incident:",
       value = Sys.Date(),
       format = "dd/mm/yyyy",
-      language = "es"
+      language = "en"
     ),
     textInput(
       "hora_evento",
@@ -161,7 +165,7 @@ ui <- page_sidebar(
       # Results ----
       card(
         class = "shadow-sm mb-3",
-        card_header(h4("Results estimated")),
+        card_header(h4("Results")),
         card_body(
           div(
             markdown(

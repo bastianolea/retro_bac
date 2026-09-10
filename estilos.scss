@@ -1,0 +1,91 @@
+// Colores base de la app
+$primary: #2C3E50;
+//$secondary: #3498DB;
+$secondary: #67839A;
+$light: #E3EBF3;
+$background: #F5F8FA;
+$dark: #19222A;
+$link: #14A589;
+
+a {
+  color: $link;
+
+  &:hover {
+    color: darken($link, 8%);
+  }
+}
+
+h1 {
+  color: $light !important;
+}
+
+h4 {
+  margin-bottom: .4rem;
+  margin-top: .4rem;
+}
+
+.bslib-page-title {
+  font-size: 2.2rem !important;
+  color: $light !important;
+}
+
+.navbar {
+  background-color: $primary !important;
+  padding-top: 0.8rem !important;
+  padding-bottom: 0.8rem !important;
+}
+
+.card-header {
+  background-color: $secondary !important;
+  color: $background !important;
+}
+
+.nav-tabs .nav-link.active,
+.nav-tabs .nav-item.show .nav-link {
+  background-color: $secondary !important;
+  color: $light !important;
+  border-color: $secondary $secondary $light;
+}
+
+.bslib-card .card-body {
+  background-color: white !important;
+}
+
+.form-control {
+  background-color: white !important;
+}
+
+.btn-primary {
+  background-color: $primary !important;
+  border-color: $primary !important;
+}
+
+.btn-primary:hover {
+  background-color: darken($primary, 8%) !important;
+  border-color: darken($primary, 8%) !important;
+}
+
+// Estilo para los h5 dentro de la card de cálculos detallados
+#calculos_detallados_ui h5 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: bold;
+  color: $primary;
+}
+
+#calculos_detallados_ui hr {
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+#calculos_detallados_ui p {
+  margin-bottom: 0.3rem;
+}
+
+.app-title {
+  font-size: 190%;
+}
+
+.no-results-msg {
+  opacity: 0.4;
+}
