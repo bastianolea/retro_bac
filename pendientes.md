@@ -9,6 +9,7 @@ General:
 - [x] mejorar responsividad en dispositivos móviles, controles deberían estar arriba
 - [ ] armonizar idioma de la app (inglés como idioma de la aplicación, español como idioma del código)
   - [ ] traducir sección "Notas Importantes e Interpretación"
+- [x] agregar validación de inputs
 
 Gráfico
 - [x] mejorar gráfico

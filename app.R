@@ -337,32 +337,45 @@ server <- function(input, output, session) {
     ignoreInit = TRUE
   )
 
+  ## validación ----
   iv <- InputValidator$new()
 
   iv$add_rule(
     "bac_medido",
-    sv_required("Debe ingresar un valor para BAC medido.")
+    sv_required("A tested BAC value is required.")
   )
-  iv$add_rule("bac_medido", sv_gte(0, "El BAC medido no puede ser negativo."))
+  iv$add_rule("bac_medido", sv_gte(0, "The tested BAC cannot be negative."))
   iv$add_rule(
     "hora_medicion",
-    sv_required("La hora de medición es obligatoria.")
+    sv_required("The time of sample collection is required.")
   )
   iv$add_rule(
     "hora_medicion",
     sv_regex(
       "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
-      "Hora de medición: formato HH:MM."
+      "Time of sample collection: HH:MM format."
     )
   )
-  iv$add_rule("hora_evento", sv_required("La hora del evento es obligatoria."))
+  iv$add_rule("hora_evento", sv_required("The time of incident is required."))
   iv$add_rule(
     "hora_evento",
     sv_regex(
       "^([01]?[0-9]|2[0-3]):[0-5][0-9]$",
-      "Hora del evento: formato HH:MM."
+      "Time of incident: HH:MM format."
     )
   )
+
+  iv$add_rule("fecha_medicion", function(value) {
+    if (is.null(value) || is.null(input$fecha_evento)) {
+      return(NULL)
+    }
+    if (value < input$fecha_evento) {
+      return(
+        "The date of sample collection cannot be earlier than the date of incident."
+      )
+    }
+    return(NULL)
+  })
 
   iv$add_rule("fecha_evento", function(value) {
     if (
@@ -383,10 +396,10 @@ server <- function(input, output, session) {
     )
     if (is.na(tiempo_medicion) || is.na(tiempo_evento)) {
       return(
-        "Error al combinar fechas y horas. Verifique que las fechas sean válidas."
+        "Error combining dates and times. Please check that the dates are valid."
       )
     } else if (tiempo_evento >= tiempo_medicion) {
-      return("El evento debe ser anterior a la medición.")
+      return("The incident must occur before the sample collection.")
     }
     return(NULL)
   })
@@ -451,7 +464,7 @@ server <- function(input, output, session) {
     res <- resultado()
     req(res)
 
-    etiquetas <- c("Extrapolation (min)", "Extrapolation (max)", "Analítico")
+    etiquetas <- c("Extrapolation (min)", "Extrapolation (max)", "Measured")
 
     # datos
     points_df <- data.frame(
