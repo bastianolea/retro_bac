@@ -4,5 +4,5 @@ Para más información, lee el `readme.qmd`
 
 **Instrucciones de contexto:**
 
-- Para responder cualquier consulta sobre la aplicación Shiny, lee la documentación de la app primero: `documentacion.qmd`
+- Para responder cualquier consulta sobre la aplicación Shiny, lee la documentación de la app primero: `documentos/documentacion.qmd`
 - Para responder temas conceptuales, sobre interpretación de resultados, sobre literatura médica/científica, y sobre aplicación de cálculos, lee: `documentos/marco_teorico.qmd`
