@@ -37,6 +37,12 @@ construir_grafico <- function(res, es_movil = FALSE) {
   # en móvil, repartir la leyenda en 2 filas para que quepan los 3 elementos
   filas_leyenda <- if (es_movil) 2 else 1
 
+  # con lapsos largos entre evento y medición, ampliar los minor_breaks
+  horas_lapso <- as.numeric(
+    difftime(res$tiempo_medicion_val, res$tiempo_evento_val, units = "hours")
+  )
+  intervalo_minor <- if (abs(horas_lapso) > 12) "3 hours" else "1 hour"
+
   # gráfico
   ggplot(points_df, aes(x = time, y = bac)) +
     # líneas punteadas
@@ -84,7 +90,7 @@ construir_grafico <- function(res, es_movil = FALSE) {
       minor_breaks = seq(
         min(points_df$time),
         max(points_df$time),
-        by = "1 hour"
+        by = intervalo_minor
       ),
       labels = function(brks) {
         sapply(brks, function(t) {

@@ -1,13 +1,14 @@
 library(testthat)
 library(ggplot2)
 library(lubridate)
+library(here)
 
-source(file.path("..", "..", "R", "grafico.R"))
+source(here("R/grafico.R"))
 
 # Resultado de ejemplo equivalente al que produce el reactivo resultado()
 res_ejemplo <- list(
   tiempo_evento_val = ymd_hm("2026-01-01 10:00", tz = "UTC"),
-  tiempo_medicion_val = ymd_hm("2026-01-01 12:00", tz = "UTC"),
+  tiempo_medicion_val = ymd_hm("2026-01-01 14:00", tz = "UTC"),
   bac_min = 1.00,
   bac_max = 1.30,
   bac_medido_val = 0.80
@@ -25,4 +26,18 @@ test_that("construir_grafico funciona en modo móvil", {
 
 test_that("construir_grafico falla si res es NULL", {
   expect_error(construir_grafico(NULL))
+})
+
+# ejemplo con rango de horas largo
+res_ejemplo <- list(
+  tiempo_evento_val = ymd_hm("2026-01-01 10:00", tz = "UTC"),
+  tiempo_medicion_val = ymd_hm("2026-01-02 12:00", tz = "UTC"),
+  bac_min = 1.00,
+  bac_max = 1.30,
+  bac_medido_val = 0.80
+)
+
+test_that("gráfico con muchas horas", {
+  p <- construir_grafico(res_ejemplo)
+  expect_s3_class(p, "ggplot")
 })

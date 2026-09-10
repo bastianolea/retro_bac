@@ -1,7 +1,8 @@
 library(testthat)
 library(lubridate)
+library(here)
 
-source(file.path("..", "..", "R", "calculos.R"))
+source(here("R/calculos.R"))
 
 test_that("extrapolar_bac reproduce la fórmula de Widmark con los datos del ejemplo", {
   # Ejemplo de la app: BAC medido 0.8 g/L, 2 horas transcurridas
