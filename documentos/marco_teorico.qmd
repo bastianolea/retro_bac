@@ -1,0 +1,238 @@
+---
+title: "Marco teórico: Extrapolación retrógrada de alcohol"
+subtitle: "Fundamento metodológico e interpretativo de Retro-BAC"
+date: today
+lang: es
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    mermaid: 
+      theme: neutral
+    number-sections: true
+    embed-resources: true
+    fig-cap-location: bottom
+---
+
+Este documento sintetiza el marco conceptual que respalda la aplicación **Retro-BAC**,
+a partir de dos fuentes de referencia:
+
+1. **ANSI/ASB Best Practice Recommendation 122, 1.ª ed. (2024)** — *Best Practice
+   Recommendation for Performing Alcohol Calculations in Forensic Toxicology*
+   (AAFS Academy Standards Board).
+2. **Jones, A.W. (2024)** — *Dubowski's stages of alcohol influence and clinical
+   signs and symptoms of drunkenness in relation to a person's blood-alcohol
+   concentration — Historical background* (Journal of Analytical Toxicology, 48:131-140).
+
+El primero aporta la **base metodológica y las fórmulas** de cálculo; el segundo, el
+**marco interpretativo** que relaciona la concentración de alcohol con signos clínicos.
+
+## Resumen de los documentos {#sec-resumen}
+
+### ANSI/ASB BPR 122 (2024)
+
+La guía establece un marco de consenso para realizar cálculos de alcohol en
+toxicología forense: extrapolación retrógrada, estimaciones prospectivas, número
+mínimo de bebidas consumidas y escenarios afines. Su premisa central es que la
+farmacocinética del etanol varía entre individuos y dentro del mismo individuo, por
+lo que **no es posible entregar un valor único**: la ciencia respalda entregar un
+**rango estimado** que englobe el valor de interés, declarando explícitamente los
+supuestos aplicados. La guía cubre la evaluación de la fase post-absortiva, los tipos
+de espécimen (sangre, aliento, suero/plasma, orina), la variabilidad poblacional y el
+reporte de los cálculos. Deja fuera de su alcance las opiniones periciales derivadas
+de esos cálculos y los escenarios post-mortem.
+
+### Jones (2024) — Tabla de Dubowski
+
+Artículo de revisión histórica que traza el origen de las tablas que relacionan
+estadios de influencia alcohólica con signos y síntomas clínicos y la BAC. La tabla
+más usada en ciencia forense fue creada por el Prof. Kurt M. Dubowski; su primera
+versión se publicó en 1957 y la última en 2012, con siete estadios: subclínico
+(sobriedad), euforia, excitación, confusión, estupor, coma y muerte. Una
+característica clave es el **solapamiento deliberado de los rangos de BAC** entre
+estadios, que refleja la variación fisiológica entre individuos. El autor subraya que
+la información **no aplica a un individuo concreto**, sino a una población de
+bebedores sociales —no a bebedores crónicos ni con trastorno por consumo de alcohol,
+en quienes la tolerancia del sistema nervioso central enmascara los signos—. La
+correlación entre BAC y signos externos de intoxicación es baja, especialmente en
+bebedores crónicos, por lo que la evidencia clínica debe complementarse con la
+medición analítica del etanol.
+
+## Definiciones de conceptos principales {#sec-definiciones}
+
+| Concepto | Definición |
+|---|---|
+| **BAC / AC** | Concentración de alcohol en sangre (*Blood/Alcohol Concentration*). La guía la expresa en g/dL; también aplicable a aliento (g/210 L). |
+| **Extrapolación retrógrada** | Proceso matemático que, a partir de una concentración de alcohol en un momento dado, estima cuál habría sido en un momento anterior. Solo permite estimar un **rango**, no un valor exacto. |
+| **Farmacocinética del etanol** | Estudio de absorción, distribución y eliminación del alcohol en el organismo. |
+| **Absorción** | Proceso dinámico que inicia al comenzar la ingesta; ocurre sobre todo en el intestino delgado. Puede tardar hasta 2 horas en alcanzarse la fase post-absortiva tras la última bebida. |
+| **Distribución / Volumen de distribución (Vd)** | El etanol es hidrosoluble y se distribuye por el agua corporal total (TBW). El Vd correlaciona con el TBW; es menor en mujeres, personas obesas y ancianos. |
+| **Eliminación (β)** | El etanol se elimina principalmente por metabolismo hepático a tasa constante y lineal (cinética de orden cero) hasta concentraciones bajas. |
+| **Fase post-absortiva** | Estado en que la absorción ha finalizado y la BAC solo desciende por eliminación; **requisito** para que la tasa de eliminación lineal sea aplicable. |
+| **Bebida estándar** | Bebida que contiene ~14 g de alcohol (p. ej. 12 oz de cerveza al 5%, 5 oz de vino al 12%, 1.5 oz de licor de 40%). |
+| **Efecto Mellanby** | El deterioro inducido por alcohol difiere según se observe en la fase ascendente o descendente de la curva de BAC. |
+| **Tolerancia del SNC** | Adaptación del sistema nervioso central en bebedores habituales que enmascara los signos clínicos de intoxicación a una BAC dada. |
+| **Estadios de influencia (Dubowski)** | Clasificación en siete etapas de los efectos del alcohol, con rangos de BAC solapados. |
+
+## Fórmulas {#sec-formulas}
+
+### Extrapolación retrógrada (base de Retro-BAC)
+
+$$
+AC_{inc} = AC_{test} + (\beta \times T)
+$$ {#eq-retro}
+
+| Símbolo | Significado | Unidad |
+|---|---|---|
+| $AC_{inc}$ | Concentración estimada en el momento del incidente | g/dL |
+| $AC_{test}$ | Concentración medida (analítica) | g/dL |
+| $\beta$ | Tasa de eliminación | g/dL/hora |
+| $T$ | Tiempo entre el incidente y la toma de muestra | horas |
+
+::: {.callout-note}
+La guía usa g/dL con $\beta$ = 0.010–0.025 g/dL/hora. Retro-BAC usa g/L, por lo que
+las constantes equivalentes son $\beta$ = 0.10–0.25 g/L/hora (1 g/dL = 10 g/L).
+:::
+
+### Fórmula de Widmark (dosis ↔ concentración)
+
+$$
+AC = \frac{D}{Vd \times w}
+$$
+
+donde $D$ = dosis (g), $Vd$ = volumen de distribución (L/kg), $w$ = peso (kg).
+
+### Volumen de distribución individualizado (Watson y Maskell)
+
+$$
+TBW_{(hombre)} = 2.447 - (0.09516 \times a) + (0.1074 \times h) + (0.3362 \times w)
+$$
+
+$$
+TBW_{(mujer)} = -2.097 + (0.1069 \times h) + (0.2466 \times w)
+$$
+
+$$
+Vd_{(hombre)} = \frac{TBW}{w \times 0.825} \qquad Vd_{(mujer)} = \frac{TBW}{w \times 0.838}
+$$
+
+con coeficientes de variación de ±9.86 % (hombres) y ±15.00 % (mujeres);
+$a$ = edad (años), $h$ = altura (cm), $w$ = peso (kg).
+
+### Dosis mínima y máxima concentración teórica
+
+$$
+D = AC \times Vd \times w \times 10 \tfrac{dL}{L} \qquad
+AC_{drink(s)} = \frac{D}{Vd \times w \times 10 \tfrac{dL}{L}}
+$$
+
+### Ajuste por alcohol no absorbido o consumo posterior
+
+$$
+\text{Adjusted } AC_{inc} = AC_{inc} - AC_{drink(s)}
+$$
+
+## Flujo de decisión {#sec-flujo}
+
+@fig-decision resume la lógica recomendada por la guía para decidir cómo tratar el
+estado post-absortivo antes de reportar el rango.
+
+```{mermaid}
+%%| label: fig-decision
+%%| fig-cap: "Árbol de decisión para la extrapolación retrógrada según ANSI/ASB BPR 122."
+
+flowchart TD
+  A["Resultado analitico AC_test"] --> B{"AC_test >= 0.020 g/dL?"}
+  B -->|No| STOP["No realizar extrapolacion retrograda"]
+  B -->|Si| C{"Incidente > 2 h despues<br/>del fin de la ingesta?"}
+  C -->|Si| D["Asumir post-absortivo"]
+  C -->|No / desconocido| E["Evaluar alcohol no absorbido<br/>(Ec. 8 y 10)"]
+  D --> F["Aplicar Ec. 9 con rango beta<br/>0.010-0.025 g/dL/h"]
+  E --> F
+  F --> G["Reportar RANGO estimado<br/>+ supuestos declarados"]
+```
+
+## Tablas de referencia {#sec-tablas}
+
+### Rangos farmacocinéticos (ANSI/ASB BPR 122)
+
+| Parámetro | Rango recomendado | Nota |
+|---|---|---|
+| Tasa de eliminación (β) | 0.010–0.025 g/dL/hora | Cubre la mayoría de la población |
+| Vd fijo, ambos sexos | 0.45–0.81 L/kg | Rango del 95 % |
+| Vd fijo, hombres | 0.58–0.83 L/kg | Rango del 95 % |
+| Vd fijo, mujeres | 0.43–0.73 L/kg | Rango del 95 % |
+| Ratio suero/plasma : sangre | 1.13–1.19 | Convertir a sangre antes de calcular |
+| Densidad del etanol | 0.789 g/mL | — |
+| Bebida estándar | ~14 g de alcohol | — |
+| Umbral mínimo para extrapolar | 0.020 g/dL | Por debajo, la cinética puede no ser lineal |
+| Fase post-absortiva | hasta 2 h tras la última bebida | Requisito de linealidad |
+
+### Estadios de influencia alcohólica — Tabla de Dubowski (versión 2012)
+
+| BAC (g/100 mL) | Estadio | Signos y síntomas clínicos (resumen) |
+|---|---|---|
+| 0.01–0.05 | Subclínico | Comportamiento casi normal; deterioro solo detectable con pruebas especiales |
+| 0.03–0.12 | Euforia | Euforia leve, sociabilidad, menor inhibición, juicio y atención disminuidos |
+| 0.09–0.25 | Excitación | Inestabilidad emocional, pérdida de juicio crítico, incoordinación, habla farfullante |
+| 0.18–0.30 | Confusión | Desorientación, vértigo, disturbios visuales, ataxia, marcha tambaleante |
+| 0.25–0.40 | Estupor | Inercia, respuesta muy disminuida a estímulos, incapacidad de estar de pie, vómito |
+| 0.35–0.50 | Coma | Inconsciencia, reflejos abolidos, temperatura subnormal, posible muerte |
+| Media/mediana 0.36 (90 %: 0.21–0.50) | Muerte | Muerte por fallo respiratorio y/o paro cardíaco |
+
+::: {.callout-note}
+Los rangos se **solapan deliberadamente** para reflejar la variabilidad individual.
+La tabla aplica a bebedores sociales, no a bebedores crónicos.
+:::
+
+### Conversiones de unidades
+
+| Magnitud | Conversión |
+|---|---|
+| Volumen | 1 oz = 29.6 mL |
+| Peso | 1 lb = 0.454 kg |
+| Altura | 1 in = 2.54 cm |
+
+## Principales conclusiones {#sec-conclusiones}
+
+- La farmacocinética del etanol es variable entre y dentro de individuos; por ello la
+  extrapolación retrógrada debe entregar un **rango estimado**, nunca un valor único,
+  con los supuestos claramente declarados.
+- La tasa de eliminación lineal (cinética de orden cero) **solo aplica en fase
+  post-absortiva** y por encima de ~0.020 g/dL.
+- El estado post-absortivo puede asumirse razonablemente si transcurren más de 2 horas
+  desde el fin de la ingesta; cuando el historial es desconocido, no debe asumirse y
+  hay que evaluar el alcohol potencialmente no absorbido.
+- La tabla de Dubowski es una **herramienta de referencia poblacional**, no
+  individual: la correlación entre BAC y signos clínicos es baja, sobre todo en
+  bebedores crónicos por la tolerancia del SNC.
+- El análisis cuantitativo del etanol en fluidos corporales es más fiable que los
+  signos y síntomas conductuales para establecer el consumo excesivo.
+
+## Principales recomendaciones {#sec-recomendaciones}
+
+- Realizar la extrapolación **usando un rango de tasas de eliminación** (mínimo
+  0.010–0.025 g/dL/hora); no sustituirlo por una tasa calculada de dos mediciones.
+- **No extrapolar** sobre resultados de orina (ni siquiera convertidos a equivalente
+  en sangre) ni sobre concentraciones inferiores a 0.020 g/dL.
+- Convertir resultados de suero/plasma a equivalente en sangre (ratio 1.13–1.19) antes
+  de cualquier otro cálculo.
+- Aplicar un **rango de Vd** (fijo por sexo o individualizado por antropometría con su
+  %CV); evitar un Vd fijo único.
+- Contabilizar el alcohol no absorbido o el consumo posterior al incidente cuando el
+  historial lo indique o sea desconocido.
+- **Documentar** todos los cálculos y supuestos; disponer de protocolos escritos y, de
+  ser posible, revisión técnica independiente. Se desaconseja realizar cálculos nuevos
+  durante el testimonio en vivo.
+- Al interpretar signos clínicos con la tabla de Dubowski, recordar su carácter
+  poblacional y complementar siempre con la medición analítica del etanol.
+
+## Referencias {#sec-referencias}
+
+1. Academy Standards Board (2024). *ANSI/ASB BPR 122 — Best Practice Recommendation
+   for Performing Alcohol Calculations in Forensic Toxicology*, 1.ª edición. AAFS.
+2. Jones, A.W. (2024). *Dubowski's stages of alcohol influence and clinical signs and
+   symptoms of drunkenness in relation to a person's blood-alcohol concentration —
+   Historical background*. Journal of Analytical Toxicology, 48, 131-140.
+   DOI: 10.1093/jat/bkae008.

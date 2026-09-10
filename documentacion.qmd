@@ -1,0 +1,284 @@
+---
+title: "Retro-BAC v.1.0.0 — Documentación técnica"
+subtitle: "Aplicación Shiny para extrapolación retrógrada de alcoholemia"
+author: "Documentación generada para RetroBAC_V6.R"
+date: today
+lang: es
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    number-sections: true
+    code-fold: false
+    mermaid: 
+      theme: neutral
+    embed-resources: true
+    fig-cap-location: bottom
+---
+
+## Resumen de capacidades {#sec-resumen}
+
+**Retro-BAC** es una aplicación [Shiny](https://shiny.posit.co) de un solo archivo
+([RetroBAC_V6.R](../RetroBAC_V6.R)) que estima la concentración de alcohol en sangre
+(BAC, *Blood Alcohol Concentration*) que una persona tenía en el momento de un
+**incidente**, partiendo de una medición analítica posterior. Implementa la
+**extrapolación retrógrada** basada en la fórmula de Widmark.
+
+El cálculo central es:
+
+$$
+\text{BAC}_{\text{evento}} = \text{BAC}_{\text{medido}} + (\beta \times \Delta t)
+$$
+
+donde $\beta$ es la tasa horaria de eliminación de etanol y $\Delta t$ el tiempo
+transcurrido entre el evento y la toma de muestra. Como $\beta$ varía entre
+individuos, la app reporta un **rango** usando dos valores límite en lugar de un
+único número.
+
+Capacidades principales:
+
+| Capacidad | Descripción |
+|---|---|
+| Cálculo de rango de BAC | Estima límites inferior y superior con $\beta_{min}$ y $\beta_{max}$ |
+| Validación de entradas | Formato de hora `HH:MM`, BAC no negativo, evento anterior a la medición |
+| Visualización | Gráfico `ggplot2` con puntos analítico/extrapolados y líneas de proyección |
+| Detalle de cálculo | Desglose paso a paso de ambas fórmulas renderizado en la UI |
+| Exportación | Reporte Word (`.docx`) descargable con datos, resultados y gráfico |
+| Robustez de sesión | Mensaje de reconexión mediante `shinydisconnect` |
+
+::: {.callout-important}
+La herramienta es un apoyo al análisis pericial y, según indica la propia interfaz,
+**no tiene validez legal por sí misma**. Los cálculos ignoran factores individuales
+(sexo, peso, ingesta de alimentos, patrón de consumo, estado de salud).
+:::
+
+### Constantes del modelo {#sec-constantes}
+
+Definidas al inicio del script (líneas 11-14):
+
+| Constante | Valor | Unidad | Significado |
+|---|---|---|---|
+| `BETA_MIN` | 0.10 | g/L/hora | Tasa de eliminación mínima (límite inferior del rango) |
+| `BETA_MAX` | 0.25 | g/L/hora | Tasa de eliminación máxima (límite superior del rango) |
+| `DENSIDAD_ETANOL` | 0.789 | g/mL | Densidad del etanol (usada solo por código inactivo) |
+
+## Dependencias {#sec-dependencias}
+
+La app carga los siguientes paquetes (líneas 1-9):
+
+| Paquete | Rol en la app |
+|---|---|
+| `shiny` | Framework reactivo base |
+| `bslib` | Tema Bootstrap 5 (`flatly`), `page_sidebar`, `card`, `layout_column_wrap` |
+| `lubridate` | Parseo y aritmética de fechas/horas (`ymd_hm`, `difftime`) |
+| `shinyvalidate` | Validación reactiva de entradas (`InputValidator`) |
+| `ggplot2` | Gráfico de extrapolación |
+| `shinyjs` | Mostrar/ocultar elementos (`show`, `hide`, `disabled`) |
+| `shinydisconnect` | Mensaje de reconexión de sesión |
+| `officer` | Generación del reporte `.docx` |
+
+## Arquitectura general {#sec-arquitectura}
+
+La aplicación sigue el patrón clásico de Shiny: un objeto `ui`, una función
+`server`, y una llamada final `shinyApp(ui, server)`. @fig-arquitectura muestra
+la organización de alto nivel.
+
+```{mermaid}
+%%| label: fig-arquitectura
+%%| fig-cap: "Estructura de alto nivel de RetroBAC_V6.R."
+
+flowchart TB
+  subgraph Global["Ambito global (lineas 1-28)"]
+    LIBS["Librerias"]
+    CONST["Constantes<br/>BETA_MIN, BETA_MAX, DENSIDAD_ETANOL"]
+    BEV["beverages_data<br/>(inactivo en la UI actual)"]
+  end
+
+  subgraph UI["ui — page_sidebar (lineas 32-163)"]
+    SIDEBAR["Sidebar: entradas + botones"]
+    RESULTS["Card: Resultados"]
+    PLOT["Card: Grafico"]
+    DETAIL["Card: Detalle de calculo"]
+    NOTES["Card: Notas e interpretacion"]
+  end
+
+  subgraph SERVER["server (lineas 167-494)"]
+    OBS["observers / validacion"]
+    REACT["resultado() — eventReactive"]
+    RENDER["renderUI / renderPlot"]
+    DOWNLOAD["reporte() + downloadHandler"]
+  end
+
+  Global --> UI
+  Global --> SERVER
+  SIDEBAR --> SERVER
+  SERVER --> RESULTS
+  SERVER --> PLOT
+  SERVER --> DETAIL
+  SERVER --> DOWNLOAD
+```
+
+## Flujo principal de cálculo {#sec-flujo}
+
+El corazón de la app es el reactivo `resultado()` (líneas 214-234), disparado por
+el botón **Calculate extrapolation**. @fig-flujo detalla la secuencia desde la
+interacción del usuario hasta las salidas.
+
+```{mermaid}
+%%| label: fig-flujo
+%%| fig-cap: "Flujo reactivo desde el clic hasta las salidas."
+
+flowchart TD
+  START(["Usuario pulsa<br/>Calculate extrapolation"]) --> VALID{"iv is_valid?"}
+  VALID -->|No| CANCEL["Cancela salida<br/>(cancelOutput = TRUE)"]
+  VALID -->|Si| PARSE["Combina fecha + hora<br/>ymd_hm() -> tiempos"]
+  PARSE --> DELTA["dt = difftime(medicion, evento)<br/>en horas"]
+  DELTA --> CALC["BAC_min = BAC + BETA_MIN*dt<br/>BAC_max = BAC + BETA_MAX*dt"]
+  CALC --> LIST["Lista resultado():<br/>horas, bac_min, bac_max, tiempos, betas"]
+  LIST --> UI1["resultados_ui<br/>(rango estimado)"]
+  LIST --> UI2["bac_plot<br/>(grafico ggplot2)"]
+  LIST --> UI3["calculos_detallados_ui<br/>(desglose)"]
+  LIST --> UI4["reporte() -> .docx"]
+```
+
+El reactivo devuelve una lista con todos los valores derivados; las cuatro salidas
+de la UI la consumen vía `resultado()`, de modo que un solo recálculo actualiza
+todo de forma consistente.
+
+## Componentes de la interfaz {#sec-ui}
+
+### Sidebar de entradas {#sec-sidebar}
+
+El sidebar (líneas 77-92) recoge los datos y ofrece los controles de acción:
+
+| Input ID | Control | Descripción |
+|---|---|---|
+| `bac_medido` | `numericInput` | BAC analítico medido (g/L), por defecto 0.8 |
+| `fecha_medicion` | `dateInput` | Fecha de toma de muestra |
+| `hora_medicion` | `textInput` | Hora de muestra `HH:MM` |
+| `fecha_evento` | `dateInput` | Fecha del incidente |
+| `hora_evento` | `textInput` | Hora del incidente `HH:MM` |
+| `calcular` | `actionButton` | Dispara el cálculo |
+| `descargar_reporte` | `downloadButton` | Descarga el `.docx` (inicia deshabilitado) |
+
+### Cards de resultados {#sec-cards}
+
+El cuerpo principal (líneas 94-162) usa `layout_column_wrap` con cuatro `card`:
+
+1. **Results estimated** — mensaje inicial oculto (`no_results`) y `resultados_ui`.
+2. **Retrograde extrapolation plot** — `plotOutput("bac_plot")`.
+3. **Calculation details** — `uiOutput("calculos_detallados_ui")`, con `full_screen`.
+4. **Important Notes and Interpretation** — texto estático y enlace a la norma AAFS.
+
+El tema visual se define con `bs_theme()` (Bootstrap 5, bootswatch *flatly*, fuente
+*Inter*) más un bloque CSS personalizado en `tags$head` (líneas 59-75) que colorea
+navbar, cabeceras de card y botones con la paleta corporativa (`#2C3E50`, `#3498DB`).
+
+## Validación de entradas {#sec-validacion}
+
+La validación usa `shinyvalidate::InputValidator` (líneas 188-212). Las reglas
+mezclan validaciones simples y una regla compuesta para la coherencia temporal:
+
+| Campo | Regla | Mensaje |
+|---|---|---|
+| `bac_medido` | requerido y ≥ 0 | valor obligatorio / no negativo |
+| `hora_medicion` | requerido + regex `HH:MM` | formato de hora |
+| `hora_evento` | requerido + regex `HH:MM` | formato de hora |
+| `fecha_evento` | función personalizada | evento debe ser anterior a la medición |
+
+::: {.callout-note}
+La regla personalizada sobre `fecha_evento` primero comprueba que ambas horas
+tengan formato válido; si no, devuelve `NULL` (sin error) para no solapar mensajes.
+Solo cuando las horas son válidas construye los `datetime` y verifica que
+`tiempo_evento < tiempo_medicion`.
+:::
+
+Los mensajes de validación están en español, mientras que la interfaz visible está
+en inglés — una inconsistencia de idioma heredada (ver @sec-observaciones).
+
+## Salidas del servidor {#sec-salidas}
+
+### Rango estimado (`resultados_ui`) {#sec-resultados-ui}
+
+Líneas 236-246. Muestra el tiempo transcurrido y un `alert` verde con el rango
+`bac_min – bac_max` en g/L.
+
+### Gráfico (`bac_plot`) {#sec-grafico}
+
+Líneas 249-294. Construye un `data.frame` de tres puntos (extrapolado mínimo,
+extrapolado máximo y analítico) y dibuja:
+
+- Dos `geom_segment` punteados desde el punto analítico hacia cada extrapolación.
+- `geom_point` mapeando forma y color a `type`, con `geom_text` de etiquetas.
+- Eje X temporal con etiquetas personalizadas que marcan `(T Event)` y `(T Sample)`.
+
+### Detalle de cálculo (`calculos_detallados_ui`) {#sec-detalle}
+
+Líneas 296-351. Renderiza el desglose paso a paso de ambos límites (inferior y
+superior), mostrando la fórmula, la sustitución numérica y el resultado formateado.
+
+### Código inactivo {#sec-inactivo}
+
+Existe lógica comentada para dos pestañas adicionales que no están activas en la
+UI actual:
+
+- **Signos y síntomas** (`sintomas_output`, líneas 353-375): mapea rangos de BAC a
+  efectos clínicos. La función `renderUI` sigue definida aunque su input
+  (`bac_sintomas_selector`) está comentado.
+- **Estimación de bebidas** (líneas 377-431): usaría `beverages_data` y el factor
+  de Widmark para estimar dosis consumidas. Totalmente comentado.
+
+::: {.callout-tip}
+`beverages_data` (líneas 17-28) y `DENSIDAD_ETANOL` solo alimentan la pestaña de
+estimación de bebidas, que está desactivada. Si no se piensa reactivar, este bloque
+puede retirarse para simplificar el script.
+:::
+
+## Generación del reporte Word {#sec-reporte}
+
+El reactivo `reporte()` (líneas 435-481) usa `officer` para construir un documento
+`.docx` con `read_docx()`, añadiendo título, datos de entrada, resultados y el
+gráfico (`body_add_gg`). El `downloadHandler` (líneas 484-491) lo entrega con nombre
+`reporte_retroproyeccion_<fecha>.docx`.
+
+```{mermaid}
+%%| label: fig-reporte
+%%| fig-cap: "Construccion y descarga del reporte Word."
+
+flowchart LR
+  R["resultado()"] --> DOC["read_docx()"]
+  G["grafico()"] --> DOC
+  DOC --> TITLE["body_add_par: titulo + datos"]
+  TITLE --> RES["body_add_par: BAC min/max"]
+  RES --> GG["body_add_gg: grafico"]
+  GG --> DL["downloadHandler<br/>reporte_retroproyeccion.docx"]
+```
+
+## Observaciones para mantenimiento {#sec-observaciones}
+
+Puntos a considerar al actualizar o mejorar la app:
+
+::: {.callout-warning}
+## Posible bug en la paleta de colores del gráfico
+
+En `scale_color_manual` (línea 280) la tercera clave es `"Extrapolate Max"`
+(inglés), pero los datos generan la etiqueta `"Extrapolado (Máx)"` (español, línea
+255). Al no coincidir la clave, ese punto probablemente queda sin color asignado y
+`ggplot2` emite un aviso. Debería ser `"Extrapolado (Máx)"`.
+:::
+
+Otros aspectos:
+
+- **Idioma mixto:** interfaz y reporte en inglés, mensajes de validación y factores
+  internos en español. Convendría unificar o externalizar los textos (i18n).
+- **Zona horaria:** los tiempos se parsean con `tz = Sys.timezone()`, dependiente
+  del entorno del servidor; conviene fijarla explícitamente si se despliega.
+- **Formato del reporte:** en las líneas 453 y 457 los textos `"...(beta_min)"` y
+  `"...(beta_max)"` omiten el paréntesis de apertura, produciendo una cadena algo
+  descuadrada en el `.docx`.
+- **Código muerto:** amplias secciones comentadas (pestañas, tablas, gráfico
+  alternativo del reporte) aumentan el ruido; documentar o eliminar según se decida
+  reactivarlas.
+- **Versión declarada vs. archivo:** el título muestra `v.1.0.0` mientras el archivo
+  se llama `V6`; conviene alinear el versionado.
