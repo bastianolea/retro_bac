@@ -1,4 +1,5 @@
 # Retro-BAC
+_Aplicación de acceso abierto para el cálculo de extrapolación retrógrada de alcohol_
 
 2026-09-09
 
@@ -12,7 +13,7 @@ un individuo tenía en el momento de un incidente a partir de una
 medición analítica posterior.
 
 Los cálculos siguen la guía de consenso **ANSI/ASB Best Practice
-Recommendation 122, 1.ª ed. (2024)**, que establece un fundamento
+Recommendation 122, 1.ª ed. (2024)**, que establece un fundamento
 científico común para estas estimaciones y su uso en escenarios
 judiciales. La aplicación busca ofrecer:
 
