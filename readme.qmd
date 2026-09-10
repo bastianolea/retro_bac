@@ -3,10 +3,7 @@ title: "Retro-BAC"
 subtitle: "Aplicación de acceso abierto para el cálculo de extrapolación retrógrada de alcohol"
 date: today
 lang: es
-format:
-  html:
-    toc: true
-    embed-resources: true
+format: gfm
 ---
 
 ## Objetivos del proyecto
