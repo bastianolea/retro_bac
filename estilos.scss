@@ -22,6 +22,18 @@ h1 {
 h4 {
   margin-bottom: .4rem;
   margin-top: .4rem;
+  font-size: 1.3rem;
+}
+
+h6, .h6 {
+  font-size: 0.7rem;
+  margin-bottom: -0.4rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  opacity: 0.9;
+  color: $secondary;
+  line-height: 1; 
+  font-family: Arial;
 }
 
 .bslib-page-title {
@@ -55,6 +67,10 @@ h4 {
   background-color: white !important;
 }
 
+.form-label, .shiny-input-container .control-label {
+  margin-bottom: .3rem !important;
+}
+
 .btn-primary {
   background-color: $primary !important;
   border-color: $primary !important;
@@ -82,10 +98,37 @@ h4 {
   margin-bottom: 0.3rem;
 }
 
+.app-title-wrapper {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 0.8rem;
+}
+
+.app-title-wrapper h5 {
+  margin-bottom: 0;
+}
+
 .app-title {
   font-size: 190%;
+  margin-bottom: 0;
+}
+
+.app-subtitle {
+  opacity: 0.7;
 }
 
 .no-results-msg {
   opacity: 0.4;
+}
+
+.alert {
+  border: solid 1px #11A084 !important;
+  margin-bottom: 0 !important;
+}
+
+.input-format {
+  opacity: .6;
+  font-size: 80%;
+  padding-left: 6px !important;
 }

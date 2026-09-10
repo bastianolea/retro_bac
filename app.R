@@ -14,54 +14,53 @@ version <- "1.2"
 # --- Constantes ---
 BETA_MIN <- 0.10 # g/L/hora
 BETA_MAX <- 0.25 # g/L/hora
-DENSIDAD_ETANOL <- 0.789 # g/mL
-
-# Definición de bebidas estándar (aproximadamente 1 UBE = 10g de etanol)
-beverages_data <- list(
-  "Cerveza (Caña/Tercio, 300ml, 5%)" = list(
-    vol_ml = 300,
-    abv = 5,
-    etiqueta_ube = "~1 UBE"
-  ),
-  "Vino (Copa, 125ml, 13%)" = list(
-    vol_ml = 125,
-    abv = 13,
-    etiqueta_ube = "~1.3 UBE"
-  ),
-  "Destilado (Combinado/Chupito, 50ml, 40%)" = list(
-    vol_ml = 50,
-    abv = 40,
-    etiqueta_ube = "~1.6 UBE"
-  ),
-  "Vermut/Jerez (Copa, 70ml, 15%)" = list(
-    vol_ml = 70,
-    abv = 15,
-    etiqueta_ube = "~0.8 UBE"
-  )
-)
-
-# Calcular gramos de etanol para cada bebida
-for (bev_name in names(beverages_data)) {
-  bev <- beverages_data[[bev_name]]
-  beverages_data[[bev_name]]$gramos_etanol <- round(
-    bev$vol_ml * (bev$abv / 100) * DENSIDAD_ETANOL,
-    1
-  )
-}
-
+# DENSIDAD_ETANOL <- 0.789 # g/mL
+#
+# # Definición de bebidas estándar (aproximadamente 1 UBE = 10g de etanol)
+# beverages_data <- list(
+#   "Cerveza (Caña/Tercio, 300ml, 5%)" = list(
+#     vol_ml = 300,
+#     abv = 5,
+#     etiqueta_ube = "~1 UBE"
+#   ),
+#   "Vino (Copa, 125ml, 13%)" = list(
+#     vol_ml = 125,
+#     abv = 13,
+#     etiqueta_ube = "~1.3 UBE"
+#   ),
+#   "Destilado (Combinado/Chupito, 50ml, 40%)" = list(
+#     vol_ml = 50,
+#     abv = 40,
+#     etiqueta_ube = "~1.6 UBE"
+#   ),
+#   "Vermut/Jerez (Copa, 70ml, 15%)" = list(
+#     vol_ml = 70,
+#     abv = 15,
+#     etiqueta_ube = "~0.8 UBE"
+#   )
+# )
+#
+# # Calcular gramos de etanol para cada bebida
+# for (bev_name in names(beverages_data)) {
+#   bev <- beverages_data[[bev_name]]
+#   beverages_data[[bev_name]]$gramos_etanol <- round(
+#     bev$vol_ml * (bev$abv / 100) * DENSIDAD_ETANOL,
+#     1
+#   )
+# }
 
 # --- UI ---
 ui <- page_sidebar(
+  lang = "en",
   title = div(
+    class = "app-title-wrapper",
     h1("Retro-BAC", class = "app-title"),
-    h5("Retrograde extrapolation alcohol calculation")
+    h5("Retrograde extrapolation alcohol calculation", class = "app-subtitle")
   ),
 
   theme = bs_theme(
     version = 5,
     bootswatch = "flatly",
-    # base_font = font_google("Hedvig Letters Sans"),
-    # heading_font = font_google("Hedvig Letters Sans"),
     base_font = "Hedvig Letters Sans",
     heading_font = "Hedvig Letters Sans",
     primary = "#2C3E50",
@@ -87,11 +86,12 @@ ui <- page_sidebar(
     overlayColour = "white"
   ),
 
-  # css ----
+  # css
   tags$head(
     tags$style(HTML(sass(sass_file("estilos.scss"))))
   ),
 
+  # sidebar ----
   sidebar = sidebar(
     open = list(
       desktop = "open",
@@ -99,10 +99,14 @@ ui <- page_sidebar(
     ),
 
     width = 350,
-    # h4("Input data"),
+
+    h6("Sample:"),
+
     numericInput(
       "bac_medido",
-      "Blood Alcohol Concentration tested (g/L):",
+      HTML(
+        "Blood Alcohol Concentration tested: <span class='input-format'>(g/L)</span>"
+      ),
       value = 0.8,
       min = 0,
       max = 5,
@@ -117,9 +121,13 @@ ui <- page_sidebar(
     ),
     textInput(
       "hora_medicion",
-      "Time of sample colection (HH:MM):",
+      HTML(
+        "Time of sample colection: <span class='input-format'>(HH:MM)</span>"
+      ),
       value = format(Sys.time() - hours(1), "%H:%M")
     ),
+
+    h6("Event:"),
     dateInput(
       "fecha_evento",
       "Date of incident:",
@@ -129,7 +137,7 @@ ui <- page_sidebar(
     ),
     textInput(
       "hora_evento",
-      "Time incident (HH:MM):",
+      HTML("Time of incident: <span class='input-format'>(HH:MM)</span>"),
       value = format(Sys.time() - hours(3), "%H:%M")
     ),
     actionButton(
@@ -153,14 +161,15 @@ ui <- page_sidebar(
     ),
     helpText(
       "Ensure that the date/time of the event is prior to the date/time of the measurement."
-    ),
-
-    helpText(
-      paste("v", version)
     )
+
+    # helpText(
+    #   paste("v", version)
+    # )
   ),
 
-  page_fluid(
+  div(
+    style = "max-width: 800px;",
     # navset_tab(
     # id = "main_tabs",
     # nav_panel(
@@ -169,7 +178,7 @@ ui <- page_sidebar(
       width = "100%",
       heights_equal = "row",
 
-      # Results ----
+      # results ----
       card(
         # class = "shadow-sm mb-3",
         card_header(h4("Results")),
@@ -259,7 +268,7 @@ ui <- page_sidebar(
     )
     # ),
     # )
-    # Signos y Síntomas ----
+    # signos y síntomas ----
     # nav_panel(
     #   title = "Signos y Síntomas", icon = icon("notes-medical"),
     #   h3("Signos y Síntomas Clínicos Asociados a la Alcoholemia"),
@@ -268,7 +277,7 @@ ui <- page_sidebar(
     #   uiOutput("sintomas_output")
     # ),
 
-    # Estimación de Bebidas ----
+    # estimación de bebidas ----
     # nav_panel(
     #   title = "Estimación de Bebidas", icon = icon("beer-mug-empty"),
     #   h3("Estimación de Bebidas Consumidas"),
@@ -420,7 +429,7 @@ server <- function(input, output, session) {
         class = "alert alert-success fs-5",
         role = "alert",
         HTML(paste0(
-          "Estimated BAC at time of the incident: <br>",
+          "Estimated BAC at time of the incident: ",
           tags$strong(res$bac_min |> formatC(digits = 2, format = "f")),
           " – ",
           tags$strong(res$bac_max |> formatC(digits = 2, format = "f")),
@@ -434,6 +443,10 @@ server <- function(input, output, session) {
   grafico <- reactive({
     res <- resultado()
     req(res)
+
+    etiquetas <- c("Analítico", "Extrapolation (min)", "Extrapolation (max)")
+
+    # datos
     points_df <- data.frame(
       time = c(
         res$tiempo_evento_val,
@@ -442,8 +455,8 @@ server <- function(input, output, session) {
       ),
       bac = c(res$bac_min, res$bac_max, res$bac_medido_val),
       type = factor(
-        c("Extrapolado (Mín)", "Extrapolado (Máx)", "Analítico"),
-        levels = c("Analítico", "Extrapolado (Mín)", "Extrapolado (Máx)")
+        etiquetas,
+        levels = etiquetas
       ),
       label_text = c(
         sprintf("%.2f g/L", res$bac_min),
@@ -451,8 +464,8 @@ server <- function(input, output, session) {
         sprintf("%.2f g/L", res$bac_medido_val)
       )
     )
-    # p <-
-    # dev.new()
+
+    # gráfico
     ggplot(points_df, aes(x = time, y = bac)) +
       geom_segment(
         data = data.frame(
@@ -463,8 +476,8 @@ server <- function(input, output, session) {
         ),
         aes(x = x, y = y, xend = xend, yend = yend),
         linetype = "dashed",
-        color = "steelblue",
-        linewidth = 0.8
+        color = "#67839A",
+        linewidth = 0.6
       ) +
       geom_segment(
         data = data.frame(
@@ -475,64 +488,94 @@ server <- function(input, output, session) {
         ),
         aes(x = x, y = y, xend = xend, yend = yend),
         linetype = "dashed",
-        color = "steelblue",
-        linewidth = 0.8
+        color = "#67839A",
+        linewidth = 0.6
       ) +
       geom_point(aes(shape = type, color = type), size = 4) +
-      geom_text(
+      geom_label(
         aes(label = label_text),
-        vjust = -1.2,
-        size = 3.8,
-        check_overlap = FALSE,
-        fontface = "bold"
+        vjust = -1,
+        size = 3,
+        fontface = "bold",
+        color = "#19222A",
+        linewidth = 0
       ) +
       scale_x_datetime(
-        name = "Tiempo",
-        breaks = sort(unique(points_df$time)),
+        breaks = unique(points_df$time),
+        minor_breaks = seq(
+          min(points_df$time),
+          max(points_df$time),
+          by = "1 hour"
+        ),
         labels = function(brks) {
           sapply(brks, function(t) {
             base_format <- format(t, "%H:%M\n%d/%m/%Y")
             if (t == res$tiempo_evento_val) {
-              paste0(base_format, "\n(T Evento)")
+              paste0(base_format, "\n(event)")
             } else if (t == res$tiempo_medicion_val) {
-              paste0(base_format, "\n(T Muestra)")
+              paste0(base_format, "\n(sample)")
             } else {
               base_format
             }
           })
         },
-        expand = expansion(c(0.1, 0.1))
+        expand = expansion(c(0.06, 0.06))
       ) +
       scale_y_continuous(
-        name = "Blood alcohol concentration (g/L)",
         limits = c(0, max(points_df$bac, na.rm = TRUE) * 1.25),
-        expand = expansion(mult = c(0.01, 0.1))
+        expand = expansion(mult = c(0, 0.1))
       ) +
       # scale_shape_manual(values = c("Analite" = 16, "Extrapolate (Mín)" = 17, "Extrapolate (Máx)" = 17)) +
       scale_color_manual(
-        values = c(
-          "Analítico" = "#0072B2",
-          "Extrapolado (Mín)" = "#E69F00",
-          "Extrapolado (Máx)" = "#D55E00"
+        values = setNames(
+          c("#0072B2", "#E69F00", "#D55E00"),
+          etiquetas[1:3]
         )
       ) +
-      labs(color = "Resultado:", shape = "Resultado:") +
-      theme_bw(base_size = 14) +
+      labs(
+        color = NULL,
+        shape = NULL,
+        y = "Blood alcohol concentration (g/L)",
+        x = "Time"
+      ) +
+      theme_bw(
+        base_size = 14,
+        base_family = "Arial",
+        ink = "#19222A"
+      ) +
       theme(
-        legend.position = "bottom",
-        axis.title = element_text(face = "bold", size = 12),
-        axis.text.x = element_text(angle = 0, hjust = 0.5, size = 10),
+        legend.position = "top",
+        axis.title.y = element_text(size = 12),
+        axis.title.x = element_text(
+          size = 12,
+          margin = margin(t = 2, b = 0)
+        ),
+        axis.text.x = element_text(
+          # angle = 0,
+          hjust = 0.5,
+          size = 10,
+          margin = margin(t = 4)
+        ),
         axis.text.y = element_text(size = 10),
-        legend.title = element_text(size = 11),
-        legend.text = element_text(size = 10),
-        panel.grid.minor = element_blank(),
+        legend.title = element_text(
+          size = 11
+        ),
+        legend.text = element_text(
+          size = 10,
+          margin = margin(l = 1, r = 3)
+        ),
+        legend.margin = margin(b = -6),
         panel.grid.major.x = element_line(
-          linetype = "dotted",
+          linewidth = .4,
           color = "grey80"
         ),
-        panel.grid.major.y = element_line(linetype = "dotted", color = "grey80")
+        panel.grid.major.y = element_line(
+          linewidth = .4,
+          color = "grey80"
+        )
       )
     # browser()
+    # dev.new()
     # print(p)
   })
 
@@ -647,111 +690,111 @@ server <- function(input, output, session) {
     )
   })
 
-  # --- Lógica para Pestaña de Signos y Síntomas ---
-  output$sintomas_output <- renderUI({
-    bac <- input$bac_sintomas_selector
-    sintomas_info <- list(
-      list(
-        rango = c(-Inf, 0.29),
-        titulo = "BAC < 0.3 g/L (Muy Bajo - Leve)",
-        efectos = c(
-          "La mayoría de las personas no muestran efectos obvios o estos son muy leves.",
-          "Ligera intensificación del humor."
-        ),
-        class = "alert-light"
-      ),
-      list(
-        rango = c(0.3, 0.59),
-        titulo = "BAC 0.3 - 0.59 g/L (Bajo - Euforia Leve)",
-        efectos = c(
-          "Sensación de bienestar, relajación, euforia leve.",
-          "Reducción de la inhibición.",
-          "Disminución de la atención y control."
-        ),
-        class = "alert-info"
-      ),
-      list(
-        rango = c(0.6, 0.99),
-        titulo = "BAC 0.6 - 0.99 g/L (Moderado - Excitación)",
-        efectos = c(
-          "Deterioro del juicio.",
-          "Tiempo de reacción aumentado.",
-          "Pérdida de coordinación muscular."
-        ),
-        class = "alert-primary"
-      ),
-      list(
-        rango = c(1.0, 1.49),
-        titulo = "BAC 1.0 - 1.49 g/L (Alto - Confusión)",
-        efectos = c(
-          "Confusión mental, desorientación.",
-          "Alteraciones sensoriales.",
-          "Ataxia severa."
-        ),
-        class = "alert-warning"
-      ),
-      list(
-        rango = c(1.5, 2.49),
-        titulo = "BAC 1.5 - 2.49 g/L (Muy Alto - Estupor)",
-        efectos = c(
-          "Estupor.",
-          "Incapacidad para mantenerse de pie.",
-          "Vómitos, riesgo de aspiración."
-        ),
-        class = "alert-danger"
-      ),
-      list(
-        rango = c(2.5, 3.49),
-        titulo = "BAC 2.5 - 3.49 g/L (Severo - Coma)",
-        efectos = c("Coma.", "Reflejos deprimidos.", "Depresión respiratoria."),
-        class = "alert-danger fw-bold"
-      ),
-      list(
-        rango = c(3.5, Inf),
-        titulo = "BAC ≥ 3.5 g/L (Potencialmente Letal)",
-        efectos = c(
-          "Depresión respiratoria severa/paro.",
-          "Paro cardíaco.",
-          "Muerte."
-        ),
-        class = "alert-danger fw-bolder"
-      )
-    )
-    info_seleccionada <- NULL
-    for (item in sintomas_info) {
-      if (bac >= item$rango[1] && bac <= item$rango[2]) {
-        info_seleccionada <- item
-        break
-      }
-    }
-    if (!is.null(info_seleccionada)) {
-      tags$div(
-        class = paste("card shadow-sm mt-3"),
-        tags$div(
-          class = paste("card-header fs-5", info_seleccionada$class),
-          info_seleccionada$titulo
-        ),
-        tags$div(
-          class = "card-body",
-          tags$ul(
-            class = "list-group list-group-flush",
-            lapply(info_seleccionada$efectos, function(efecto) {
-              tags$li(class = "list-group-item", efecto)
-            })
-          ),
-          tags$p(
-            class = "mt-3 small text-muted",
-            "Fuente: Información general adaptada de fuentes toxicológicas y de salud pública. La respuesta individual al alcohol puede variar."
-          )
-        )
-      )
-    } else {
-      tags$p(
-        class = "alert alert-secondary mt-3",
-        "No se encontró información para el nivel de BAC seleccionado o el nivel es 0."
-      )
-    }
-  })
+  # # --- Lógica para Pestaña de Signos y Síntomas ---
+  # output$sintomas_output <- renderUI({
+  #   bac <- input$bac_sintomas_selector
+  #   sintomas_info <- list(
+  #     list(
+  #       rango = c(-Inf, 0.29),
+  #       titulo = "BAC < 0.3 g/L (Muy Bajo - Leve)",
+  #       efectos = c(
+  #         "La mayoría de las personas no muestran efectos obvios o estos son muy leves.",
+  #         "Ligera intensificación del humor."
+  #       ),
+  #       class = "alert-light"
+  #     ),
+  #     list(
+  #       rango = c(0.3, 0.59),
+  #       titulo = "BAC 0.3 - 0.59 g/L (Bajo - Euforia Leve)",
+  #       efectos = c(
+  #         "Sensación de bienestar, relajación, euforia leve.",
+  #         "Reducción de la inhibición.",
+  #         "Disminución de la atención y control."
+  #       ),
+  #       class = "alert-info"
+  #     ),
+  #     list(
+  #       rango = c(0.6, 0.99),
+  #       titulo = "BAC 0.6 - 0.99 g/L (Moderado - Excitación)",
+  #       efectos = c(
+  #         "Deterioro del juicio.",
+  #         "Tiempo de reacción aumentado.",
+  #         "Pérdida de coordinación muscular."
+  #       ),
+  #       class = "alert-primary"
+  #     ),
+  #     list(
+  #       rango = c(1.0, 1.49),
+  #       titulo = "BAC 1.0 - 1.49 g/L (Alto - Confusión)",
+  #       efectos = c(
+  #         "Confusión mental, desorientación.",
+  #         "Alteraciones sensoriales.",
+  #         "Ataxia severa."
+  #       ),
+  #       class = "alert-warning"
+  #     ),
+  #     list(
+  #       rango = c(1.5, 2.49),
+  #       titulo = "BAC 1.5 - 2.49 g/L (Muy Alto - Estupor)",
+  #       efectos = c(
+  #         "Estupor.",
+  #         "Incapacidad para mantenerse de pie.",
+  #         "Vómitos, riesgo de aspiración."
+  #       ),
+  #       class = "alert-danger"
+  #     ),
+  #     list(
+  #       rango = c(2.5, 3.49),
+  #       titulo = "BAC 2.5 - 3.49 g/L (Severo - Coma)",
+  #       efectos = c("Coma.", "Reflejos deprimidos.", "Depresión respiratoria."),
+  #       class = "alert-danger fw-bold"
+  #     ),
+  #     list(
+  #       rango = c(3.5, Inf),
+  #       titulo = "BAC ≥ 3.5 g/L (Potencialmente Letal)",
+  #       efectos = c(
+  #         "Depresión respiratoria severa/paro.",
+  #         "Paro cardíaco.",
+  #         "Muerte."
+  #       ),
+  #       class = "alert-danger fw-bolder"
+  #     )
+  #   )
+  #   info_seleccionada <- NULL
+  #   for (item in sintomas_info) {
+  #     if (bac >= item$rango[1] && bac <= item$rango[2]) {
+  #       info_seleccionada <- item
+  #       break
+  #     }
+  #   }
+  #   if (!is.null(info_seleccionada)) {
+  #     tags$div(
+  #       class = paste("card shadow-sm mt-3"),
+  #       tags$div(
+  #         class = paste("card-header fs-5", info_seleccionada$class),
+  #         info_seleccionada$titulo
+  #       ),
+  #       tags$div(
+  #         class = "card-body",
+  #         tags$ul(
+  #           class = "list-group list-group-flush",
+  #           lapply(info_seleccionada$efectos, function(efecto) {
+  #             tags$li(class = "list-group-item", efecto)
+  #           })
+  #         ),
+  #         tags$p(
+  #           class = "mt-3 small text-muted",
+  #           "Fuente: Información general adaptada de fuentes toxicológicas y de salud pública. La respuesta individual al alcohol puede variar."
+  #         )
+  #       )
+  #     )
+  #   } else {
+  #     tags$p(
+  #       class = "alert alert-secondary mt-3",
+  #       "No se encontró información para el nivel de BAC seleccionado o el nivel es 0."
+  #     )
+  #   }
+  # })
 
   # --- Lógica para Pestaña de Estimación de Bebidas ---
   # calculo_bebidas_res <- eventReactive(input$calcular_bebidas, {
@@ -810,7 +853,6 @@ server <- function(input, output, session) {
   # })
 
   # reporte ----
-
   reporte <- reactive({
     doc <- read_docx()
 
