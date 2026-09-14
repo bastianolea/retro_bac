@@ -7,8 +7,12 @@ library(shinyjs)
 library(shinydisconnect)
 library(officer)
 library(sass)
+library(shinychat)
+library(ellmer)
+library(ragnar)
 
-version <- "1.2"
+version <- "1.3"
+
 source("R/calculos.R")
 source("R/grafico.R")
 source("R/otros.R")
@@ -109,75 +113,96 @@ ui <- page_sidebar(
       desktop = "open",
       mobile = "always-above"
     ),
-
+    fillable = TRUE,
     width = 350,
 
-    h6("Sample:"),
+    # pestañas ----
+    navset_card_pill(
+      nav_panel(
+        title = "Inputs",
 
-    numericInput(
-      "bac_medido",
-      HTML(
-        "Blood Alcohol Concentration tested: <span class='input-format'>(g/L)</span>"
+        h6("Sample:"),
+
+        numericInput(
+          "bac_medido",
+          HTML(
+            "Blood Alcohol Concentration tested: <span class='input-format'>(g/L)</span>"
+          ),
+          value = 0.8,
+          min = 0,
+          max = 5,
+          step = 0.01
+        ),
+        dateInput(
+          "fecha_medicion",
+          "Date of sample collection:",
+          value = Sys.Date(),
+          format = "dd/mm/yyyy",
+          language = "en"
+        ),
+        textInput(
+          "hora_medicion",
+          HTML(
+            "Time of sample colection: <span class='input-format'>(HH:MM)</span>"
+          ),
+          value = format(Sys.time() - hours(1), "%H:%M")
+        ),
+
+        h6("Event:"),
+        dateInput(
+          "fecha_evento",
+          "Date of incident:",
+          value = Sys.Date(),
+          format = "dd/mm/yyyy",
+          language = "en"
+        ),
+        textInput(
+          "hora_evento",
+          HTML("Time of incident: <span class='input-format'>(HH:MM)</span>"),
+          value = format(Sys.time() - hours(3), "%H:%M")
+        ),
+        actionButton(
+          "calcular",
+          "Calculate extrapolation",
+          class = "btn-primary btn-lg w-100",
+          icon = icon("calculator")
+        ),
+
+        downloadButton("descargar_reporte", "Download report") |> disabled(),
+
+        hr(),
+        helpText(
+          paste0(
+            "Note: Alcohol elimination rate (β) varies between ",
+            BETA_MIN,
+            " and ",
+            BETA_MAX,
+            " g/L/h."
+          )
+        ),
+        helpText(
+          "Ensure that the date/time of the event is prior to the date/time of the measurement."
+        )
+
+        # helpText(
+        #   paste("v", version)
+        # )
       ),
-      value = 0.8,
-      min = 0,
-      max = 5,
-      step = 0.01
-    ),
-    dateInput(
-      "fecha_medicion",
-      "Date of sample collection:",
-      value = Sys.Date(),
-      format = "dd/mm/yyyy",
-      language = "en"
-    ),
-    textInput(
-      "hora_medicion",
-      HTML(
-        "Time of sample colection: <span class='input-format'>(HH:MM)</span>"
-      ),
-      value = format(Sys.time() - hours(1), "%H:%M")
-    ),
 
-    h6("Event:"),
-    dateInput(
-      "fecha_evento",
-      "Date of incident:",
-      value = Sys.Date(),
-      format = "dd/mm/yyyy",
-      language = "en"
-    ),
-    textInput(
-      "hora_evento",
-      HTML("Time of incident: <span class='input-format'>(HH:MM)</span>"),
-      value = format(Sys.time() - hours(3), "%H:%M")
-    ),
-    actionButton(
-      "calcular",
-      "Calculate extrapolation",
-      class = "btn-primary btn-lg w-100",
-      icon = icon("calculator")
-    ),
+      # chat ----
+      nav_panel(
+        title = "Chat",
 
-    downloadButton("descargar_reporte", "Download report") |> disabled(),
-
-    hr(),
-    helpText(
-      paste0(
-        "Note: Alcohol elimination rate (β) varies between ",
-        BETA_MIN,
-        " and ",
-        BETA_MAX,
-        " g/L/h."
+        chat_ui(
+          "chat",
+          greeting = "Ask any question related to retrograde extrapolation alcohol calculation, 
+          and this chat bot will answer based on scientific literature and forensic toxicology best practices.",
+          footer = "Please check all answers. AI can make mistakes.",
+          height = "100%",
+          enable_cancel = TRUE
+        ),
       )
-    ),
-    helpText(
-      "Ensure that the date/time of the event is prior to the date/time of the measurement."
     )
-
-    # helpText(
-    #   paste("v", version)
-    # )
   ),
 
   div(
@@ -846,6 +871,14 @@ server <- function(input, output, session) {
       print(reporte(), target = file)
     }
   )
+
+  # chatbot ----
+  source("ia/llm_setup.R")
+
+  observeEvent(input$chat_user_input, {
+    stream <- chat$stream_async(input$chat_user_input)
+    chat_append("chat", stream)
+  })
 }
 
 # --- Run ---

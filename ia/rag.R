@@ -29,31 +29,3 @@ ragnar_store_insert(store, marco_teorico_secciones)
 
 # guardar
 ragnar_store_build_index(store)
-
-# probar ----
-library(ellmer)
-
-chat <- chat_anthropic(
-  system_prompt = readLines("documentos/system_prompt.md"),
-  model = "claude-haiku-4-5",
-)
-
-store <- ragnar_store_connect(
-  "documentos/documentos.ragnar.duckdb",
-  read_only = TRUE
-)
-
-# registrar herramienta con el modelo de IA
-ragnar_register_tool_retrieve(
-  chat,
-  store,
-  top_k = 4,
-  store_description = "Consulta de documentos sobre cálculos de alcohol en sangre para cálculo de extrapolación retrógrada de alcohol"
-)
-
-
-chat$chat(
-  "a cuántas unidades de alcohol corresponden aproximadamente 0.8 g/l, y qué síntomas pueden estar asociados?"
-)
-
-chat$chat("qué significa el concepto de Eliminación?")

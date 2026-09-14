@@ -136,3 +136,19 @@ h6, .h6 {
 .btn:disabled, .btn.disabled, fieldset:disabled .btn {
   opacity: 0.5 !important;
 }
+
+.nav-link, .nav-tabs>li>a, .nav-pills>li>a, :where(ul.nav.navbar-nav > li)>a {
+display: block;
+padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+font-size: var(--bs-nav-link-font-size);
+font-weight: var(--bs-nav-link-font-weight);
+color: #2a3239;
+text-decoration: none;
+-webkit-text-decoration: none;
+-moz-text-decoration: none;
+-ms-text-decoration: none;
+-o-text-decoration: none;
+background: none;
+border: 0;
+transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out;
+}

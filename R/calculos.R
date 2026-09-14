@@ -70,3 +70,5 @@ extrapolar_bac <- function(
     beta_max = beta_max
   )
 }
+
+# extrapolar_bac(bac_medido = 0.9, horas_transcurridas = 3L)
