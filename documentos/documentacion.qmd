@@ -50,6 +50,7 @@ Capacidades principales:
 | Visualización | Gráfico `ggplot2` con puntos analítico/extrapolados y líneas de proyección |
 | Detalle de cálculo | Desglose paso a paso de ambas fórmulas renderizado en la UI |
 | Exportación | Reporte Word (`.docx`) descargable con datos, resultados y gráfico |
+| Asistente conversacional | Chatbot LLM con acceso a literatura (RAG) que además **escribe** los inputs de la app y **lee** su estado para comentar los resultados (ver @sec-chatbot) |
 | Robustez de sesión | Mensaje de reconexión mediante `shinydisconnect` |
 
 ::: {.callout-important}
@@ -115,6 +116,10 @@ La app carga los siguientes paquetes (líneas 1-9):
 | `shinyjs` | Mostrar/ocultar elementos (`show`, `hide`, `disabled`) |
 | `shinydisconnect` | Mensaje de reconexión de sesión |
 | `officer` | Generación del reporte `.docx` |
+| `sass` | Compilación del `estilos.scss` a CSS |
+| `shinychat` | Componente de chat (`chat_ui`, `chat_append`) para el asistente conversacional |
+| `ellmer` | Cliente LLM (`chat_anthropic`) y definición de herramientas (`tool`, `type_*`) |
+| `ragnar` | Recuperación aumentada (RAG) sobre la biblioteca documental (`ragnar_store_connect`) |
 
 ## Arquitectura general {#sec-arquitectura}
 
@@ -284,6 +289,97 @@ UI actual:
 estimación de bebidas, que está desactivada. Si no se piensa reactivar, este bloque
 puede retirarse para simplificar el script.
 :::
+
+## Asistente conversacional (chatbot) {#sec-chatbot}
+
+La app incorpora un asistente conversacional accesible desde la pestaña **Chat**
+del sidebar (`chat_ui("chat", ...)`). El chatbot está pensado para resolver dudas
+conceptuales y metodológicas sobre la extrapolación retrógrada, y para operar
+sobre el propio escenario cargado en la app. Su comportamiento y alcance se
+definen en el *system prompt* [ia/system_prompt.md](../ia/system_prompt.md).
+
+### Modelo y conexión {#sec-chatbot-modelo}
+
+En el `server` se crea un cliente LLM con `ellmer::chat_anthropic()`:
+
+- **Modelo:** `claude-haiku-4-5`.
+- **System prompt:** una instrucción para responder siempre en inglés seguida del
+  contenido de [ia/system_prompt.md](../ia/system_prompt.md), que fija el rol
+  (toxicólogo forense), el estilo (breve, técnico, sin rodeos), el formato de
+  fechas ISO 8601 y las fuentes científicas de referencia.
+- **Streaming:** el `observeEvent(input$chat_user_input, ...)` envía el mensaje con
+  `chat$stream_async()` y lo va renderizando con `shinychat::chat_append()`.
+
+### Recuperación documental (RAG) {#sec-chatbot-rag}
+
+El asistente consulta una biblioteca documental mediante `ragnar`. En el arranque
+del `server` se conecta al almacén vectorial
+`documentos/documentos.ragnar.duckdb` (solo lectura) y se registra la herramienta
+de recuperación con `ragnar_register_tool_retrieve(chat, store, top_k = 4)`. El
+almacén se construye por separado con [ia/rag.R](../ia/rag.R), que trocea e indexa
+la guía ANSI/ASB, el artículo de Jones (2024), el póster del proyecto y el marco
+teórico. Así el chatbot fundamenta sus respuestas en la literatura en lugar de
+depender solo del conocimiento paramétrico del modelo.
+
+### Herramientas de integración con la app {#sec-chatbot-tools}
+
+Además del RAG, el chatbot dispone de dos herramientas (`ellmer::tool`) que lo
+conectan **de forma bidireccional** con el estado de la app: puede *escribir* los
+inputs y también *leer* el escenario actual.
+
+| Herramienta | Función R | Dirección | Rol |
+|---|---|---|---|
+| `herramienta_retrobac` | `extrapolar_bac_tool()` | Chatbot → App (escritura) | Calcula la extrapolación y **sincroniza los inputs**, disparando el cálculo |
+| `herramienta_estado` | `obtener_estado_app()` | App → Chatbot (lectura) | Lee los inputs actuales y **recalcula** los resultados desde ellos |
+
+**Escritura (`herramienta_retrobac`).** Recibe el BAC medido y, o bien las
+fechas-hora del evento y de la medición en formato ISO, o bien las horas
+transcurridas. Valida las fechas con `validar_fecha_hora()`, calcula con
+`extrapolar_bac()`, y luego actualiza los inputs de la UI
+(`updateNumericInput`, `updateDateInput`, `updateTextInput`) y simula el clic en
+**Calculate** (`shinyjs::click("calcular")`). El panel de resultados queda así
+sincronizado con lo que el chatbot reporta.
+
+**Lectura (`herramienta_estado`).** Permite el flujo inverso: el usuario configura
+los inputs manualmente y luego pregunta al chatbot sobre ellos o sobre los
+resultados. La herramienta lee los inputs vigentes (`bac_medido`, fechas y horas)
+y recalcula usando las **mismas funciones puras** que el reactivo `resultado()`
+(`calcular_horas()` + `extrapolar_bac()`), por lo que reproduce exactamente el
+rango que se muestra en pantalla. Si el estado no es válido o está incompleto,
+devuelve un mensaje indicando qué corregir en lugar de un número.
+
+::: {.callout-note}
+## Lectura segura de inputs desde un contexto asíncrono
+
+Las herramientas se ejecutan cuando el LLM las invoca, dentro de
+`chat$stream_async()`, que corre en un contexto asíncrono (`later`/promises)
+donde leer reactivos directamente puede fallar por falta de dominio reactivo. Por
+eso `obtener_estado_app()` envuelve la lectura en
+`shiny::withReactiveDomain(session, isolate({ ... }))`, que fija el dominio de la
+sesión y aísla la dependencia. Con este patrón no se necesita mantener un
+"espejo" del estado: basta con leer los inputs y recalcular desde ellos, con las
+funciones de cálculo como única fuente de verdad.
+:::
+
+@fig-chatbot resume las tres herramientas y su relación con la app.
+
+```{mermaid}
+%%| label: fig-chatbot
+%%| fig-cap: "Herramientas del chatbot y su conexion con la app."
+
+flowchart TB
+  USER(["Usuario"]) -->|pregunta| CHAT["chatbot (ellmer::chat_anthropic)"]
+  CHAT -->|respuesta streaming| USER
+
+  CHAT -->|consulta literatura| RAG["ragnar_register_tool_retrieve<br/>documentos.ragnar.duckdb"]
+  CHAT -->|escribe inputs| WRITE["herramienta_retrobac<br/>extrapolar_bac_tool()"]
+  CHAT -->|lee estado| READ["herramienta_estado<br/>obtener_estado_app()"]
+
+  WRITE -->|update*Input + click| INPUTS["Inputs de la app"]
+  INPUTS -->|withReactiveDomain + isolate| READ
+  WRITE -.->|extrapolar_bac| CALC["R/calculos.R"]
+  READ -.->|calcular_horas + extrapolar_bac| CALC
+```
 
 ## Generación del reporte Word {#sec-reporte}
 

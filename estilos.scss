@@ -98,11 +98,29 @@ h6, .h6 {
   margin-bottom: 0.3rem;
 }
 
+.navbar-brand {
+  width: 100%;
+}
+
 .app-title-wrapper {
   display: flex;
   align-items: baseline;
   flex-wrap: wrap;
   gap: 0.8rem;
+  width: 100%;
+}
+
+.lang-globe {
+  color: $light;
+  cursor: pointer;
+  font-size: 1rem;
+  align-self: center;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.lang-globe:hover {
+  color: darken($light, 12%);
 }
 
 .app-title-wrapper h5 {
@@ -151,4 +169,14 @@ text-decoration: none;
 background: none;
 border: 0;
 transition: color 0.15s ease-in-out,background-color 0.15s ease-in-out,border-color 0.15s ease-in-out;
+}
+
+
+.nav-link:hover, .nav-tabs>li>a:hover, .nav-pills>li>a:hover, :where(ul.nav.navbar-nav > li)>a:hover, .nav-link:focus, .nav-tabs>li>a:focus, .nav-pills>li>a:focus, :where(ul.nav.navbar-nav > li)>a:focus {
+  color: #E3EBF3;
+}
+
+
+.text-muted, .help-text, .help-block {
+opacity: 0.8 !important;
 }

@@ -5436,8 +5436,14 @@ window.Quarto = {
   <li><a href="#sec-detalle" id="toc-sec-detalle" class="nav-link" data-scroll-target="#sec-detalle"><span class="header-section-number">8.3</span> Detalle de cálculo (<code>calculos_detallados_ui</code>)</a></li>
   <li><a href="#sec-inactivo" id="toc-sec-inactivo" class="nav-link" data-scroll-target="#sec-inactivo"><span class="header-section-number">8.4</span> Código inactivo</a></li>
   </ul></li>
-  <li><a href="#sec-reporte" id="toc-sec-reporte" class="nav-link" data-scroll-target="#sec-reporte"><span class="header-section-number">9</span> Generación del reporte Word</a></li>
-  <li><a href="#sec-observaciones" id="toc-sec-observaciones" class="nav-link" data-scroll-target="#sec-observaciones"><span class="header-section-number">10</span> Observaciones para mantenimiento</a></li>
+  <li><a href="#sec-chatbot" id="toc-sec-chatbot" class="nav-link" data-scroll-target="#sec-chatbot"><span class="header-section-number">9</span> Asistente conversacional (chatbot)</a>
+  <ul class="collapse">
+  <li><a href="#sec-chatbot-modelo" id="toc-sec-chatbot-modelo" class="nav-link" data-scroll-target="#sec-chatbot-modelo"><span class="header-section-number">9.1</span> Modelo y conexión</a></li>
+  <li><a href="#sec-chatbot-rag" id="toc-sec-chatbot-rag" class="nav-link" data-scroll-target="#sec-chatbot-rag"><span class="header-section-number">9.2</span> Recuperación documental (RAG)</a></li>
+  <li><a href="#sec-chatbot-tools" id="toc-sec-chatbot-tools" class="nav-link" data-scroll-target="#sec-chatbot-tools"><span class="header-section-number">9.3</span> Herramientas de integración con la app</a></li>
+  </ul></li>
+  <li><a href="#sec-reporte" id="toc-sec-reporte" class="nav-link" data-scroll-target="#sec-reporte"><span class="header-section-number">10</span> Generación del reporte Word</a></li>
+  <li><a href="#sec-observaciones" id="toc-sec-observaciones" class="nav-link" data-scroll-target="#sec-observaciones"><span class="header-section-number">11</span> Observaciones para mantenimiento</a></li>
   </ul>
 </nav>
 </div>
@@ -5465,7 +5471,7 @@ window.Quarto = {
     <div>
     <div class="quarto-title-meta-heading">Fecha de publicación</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">10 de septiembre de 2026</p>
+      <p class="date">14 de septiembre de 2026</p>
     </div>
   </div>
   
@@ -5520,6 +5526,10 @@ window.Quarto = {
 <td>Reporte Word (<code>.docx</code>) descargable con datos, resultados y gráfico</td>
 </tr>
 <tr class="even">
+<td>Asistente conversacional</td>
+<td>Chatbot LLM con acceso a literatura (RAG) que además <strong>escribe</strong> los inputs de la app y <strong>lee</strong> su estado para comentar los resultados (ver <a href="#sec-chatbot" class="quarto-xref">Sección 9</a>)</td>
+</tr>
+<tr class="odd">
 <td>Robustez de sesión</td>
 <td>Mensaje de reconexión mediante <code>shinydisconnect</code></td>
 </tr>
@@ -5706,6 +5716,22 @@ Nota
 <tr class="even">
 <td><code>officer</code></td>
 <td>Generación del reporte <code>.docx</code></td>
+</tr>
+<tr class="odd">
+<td><code>sass</code></td>
+<td>Compilación del <code>estilos.scss</code> a CSS</td>
+</tr>
+<tr class="even">
+<td><code>shinychat</code></td>
+<td>Componente de chat (<code>chat_ui</code>, <code>chat_append</code>) para el asistente conversacional</td>
+</tr>
+<tr class="odd">
+<td><code>ellmer</code></td>
+<td>Cliente LLM (<code>chat_anthropic</code>) y definición de herramientas (<code>tool</code>, <code>type_*</code>)</td>
+</tr>
+<tr class="even">
+<td><code>ragnar</code></td>
+<td>Recuperación aumentada (RAG) sobre la biblioteca documental (<code>ragnar_store_connect</code>)</td>
 </tr>
 </tbody>
 </table>
@@ -5919,7 +5945,7 @@ Nota
 <p>La regla personalizada sobre <code>fecha_evento</code> primero comprueba que ambas horas tengan formato válido; si no, devuelve <code>NULL</code> (sin error) para no solapar mensajes. Solo cuando las horas son válidas construye los <code>datetime</code> y verifica que <code>tiempo_evento &lt; tiempo_medicion</code>.</p>
 </div>
 </div>
-<p>Los mensajes de validación están en español, mientras que la interfaz visible está en inglés — una inconsistencia de idioma heredada (ver <a href="#sec-observaciones" class="quarto-xref">Sección 10</a>).</p>
+<p>Los mensajes de validación están en español, mientras que la interfaz visible está en inglés — una inconsistencia de idioma heredada (ver <a href="#sec-observaciones" class="quarto-xref">Sección 11</a>).</p>
 </section>
 <section id="sec-salidas" class="level2" data-number="8">
 <h2 data-number="8" class="anchored" data-anchor-id="sec-salidas"><span class="header-section-number">8</span> Salidas del servidor</h2>
@@ -5962,8 +5988,103 @@ Tip
 </div>
 </section>
 </section>
-<section id="sec-reporte" class="level2" data-number="9">
-<h2 data-number="9" class="anchored" data-anchor-id="sec-reporte"><span class="header-section-number">9</span> Generación del reporte Word</h2>
+<section id="sec-chatbot" class="level2" data-number="9">
+<h2 data-number="9" class="anchored" data-anchor-id="sec-chatbot"><span class="header-section-number">9</span> Asistente conversacional (chatbot)</h2>
+<p>La app incorpora un asistente conversacional accesible desde la pestaña <strong>Chat</strong> del sidebar (<code>chat_ui(&quot;chat&quot;, ...)</code>). El chatbot está pensado para resolver dudas conceptuales y metodológicas sobre la extrapolación retrógrada, y para operar sobre el propio escenario cargado en la app. Su comportamiento y alcance se definen en el <em>system prompt</em> <a href="../ia/system_prompt.md">ia/system_prompt.md</a>.</p>
+<section id="sec-chatbot-modelo" class="level3" data-number="9.1">
+<h3 data-number="9.1" class="anchored" data-anchor-id="sec-chatbot-modelo"><span class="header-section-number">9.1</span> Modelo y conexión</h3>
+<p>En el <code>server</code> se crea un cliente LLM con <code>ellmer::chat_anthropic()</code>:</p>
+<ul>
+<li><strong>Modelo:</strong> <code>claude-haiku-4-5</code>.</li>
+<li><strong>System prompt:</strong> una instrucción para responder siempre en inglés seguida del contenido de <a href="../ia/system_prompt.md">ia/system_prompt.md</a>, que fija el rol (toxicólogo forense), el estilo (breve, técnico, sin rodeos), el formato de fechas ISO 8601 y las fuentes científicas de referencia.</li>
+<li><strong>Streaming:</strong> el <code>observeEvent(input$chat_user_input, ...)</code> envía el mensaje con <code>chat$stream_async()</code> y lo va renderizando con <code>shinychat::chat_append()</code>.</li>
+</ul>
+</section>
+<section id="sec-chatbot-rag" class="level3" data-number="9.2">
+<h3 data-number="9.2" class="anchored" data-anchor-id="sec-chatbot-rag"><span class="header-section-number">9.2</span> Recuperación documental (RAG)</h3>
+<p>El asistente consulta una biblioteca documental mediante <code>ragnar</code>. En el arranque del <code>server</code> se conecta al almacén vectorial <code>documentos/documentos.ragnar.duckdb</code> (solo lectura) y se registra la herramienta de recuperación con <code>ragnar_register_tool_retrieve(chat, store, top_k = 4)</code>. El almacén se construye por separado con <a href="../ia/rag.R">ia/rag.R</a>, que trocea e indexa la guía ANSI/ASB, el artículo de Jones (2024), el póster del proyecto y el marco teórico. Así el chatbot fundamenta sus respuestas en la literatura en lugar de depender solo del conocimiento paramétrico del modelo.</p>
+</section>
+<section id="sec-chatbot-tools" class="level3" data-number="9.3">
+<h3 data-number="9.3" class="anchored" data-anchor-id="sec-chatbot-tools"><span class="header-section-number">9.3</span> Herramientas de integración con la app</h3>
+<p>Además del RAG, el chatbot dispone de dos herramientas (<code>ellmer::tool</code>) que lo conectan <strong>de forma bidireccional</strong> con el estado de la app: puede <em>escribir</em> los inputs y también <em>leer</em> el escenario actual.</p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+<col style="width: 25%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Herramienta</th>
+<th>Función R</th>
+<th>Dirección</th>
+<th>Rol</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>herramienta_retrobac</code></td>
+<td><code>extrapolar_bac_tool()</code></td>
+<td>Chatbot → App (escritura)</td>
+<td>Calcula la extrapolación y <strong>sincroniza los inputs</strong>, disparando el cálculo</td>
+</tr>
+<tr class="even">
+<td><code>herramienta_estado</code></td>
+<td><code>obtener_estado_app()</code></td>
+<td>App → Chatbot (lectura)</td>
+<td>Lee los inputs actuales y <strong>recalcula</strong> los resultados desde ellos</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Escritura (<code>herramienta_retrobac</code>).</strong> Recibe el BAC medido y, o bien las fechas-hora del evento y de la medición en formato ISO, o bien las horas transcurridas. Valida las fechas con <code>validar_fecha_hora()</code>, calcula con <code>extrapolar_bac()</code>, y luego actualiza los inputs de la UI (<code>updateNumericInput</code>, <code>updateDateInput</code>, <code>updateTextInput</code>) y simula el clic en <strong>Calculate</strong> (<code>shinyjs::click(&quot;calcular&quot;)</code>). El panel de resultados queda así sincronizado con lo que el chatbot reporta.</p>
+<p><strong>Lectura (<code>herramienta_estado</code>).</strong> Permite el flujo inverso: el usuario configura los inputs manualmente y luego pregunta al chatbot sobre ellos o sobre los resultados. La herramienta lee los inputs vigentes (<code>bac_medido</code>, fechas y horas) y recalcula usando las <strong>mismas funciones puras</strong> que el reactivo <code>resultado()</code> (<code>calcular_horas()</code> + <code>extrapolar_bac()</code>), por lo que reproduce exactamente el rango que se muestra en pantalla. Si el estado no es válido o está incompleto, devuelve un mensaje indicando qué corregir en lugar de un número.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Nota</span>Lectura segura de inputs desde un contexto asíncrono
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Las herramientas se ejecutan cuando el LLM las invoca, dentro de <code>chat$stream_async()</code>, que corre en un contexto asíncrono (<code>later</code>/promises) donde leer reactivos directamente puede fallar por falta de dominio reactivo. Por eso <code>obtener_estado_app()</code> envuelve la lectura en <code>shiny::withReactiveDomain(session, isolate({ ... }))</code>, que fija el dominio de la sesión y aísla la dependencia. Con este patrón no se necesita mantener un “espejo” del estado: basta con leer los inputs y recalcular desde ellos, con las funciones de cálculo como única fuente de verdad.</p>
+</div>
+</div>
+<p><a href="#fig-chatbot" class="quarto-xref">Figura 3</a> resume las tres herramientas y su relación con la app.</p>
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div id="fig-chatbot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chatbot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div>
+<pre class="mermaid mermaid-js" data-label="fig-chatbot">flowchart TB
+  USER([&quot;Usuario&quot;]) --&gt;|pregunta| CHAT[&quot;chatbot (ellmer::chat_anthropic)&quot;]
+  CHAT --&gt;|respuesta streaming| USER
+
+  CHAT --&gt;|consulta literatura| RAG[&quot;ragnar_register_tool_retrieve&lt;br/&gt;documentos.ragnar.duckdb&quot;]
+  CHAT --&gt;|escribe inputs| WRITE[&quot;herramienta_retrobac&lt;br/&gt;extrapolar_bac_tool()&quot;]
+  CHAT --&gt;|lee estado| READ[&quot;herramienta_estado&lt;br/&gt;obtener_estado_app()&quot;]
+
+  WRITE --&gt;|update*Input + click| INPUTS[&quot;Inputs de la app&quot;]
+  INPUTS --&gt;|withReactiveDomain + isolate| READ
+  WRITE -.-&gt;|extrapolar_bac| CALC[&quot;R/calculos.R&quot;]
+  READ -.-&gt;|calcular_horas + extrapolar_bac| CALC
+</pre>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chatbot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figura 3: Herramientas del chatbot y su conexion con la app.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="sec-reporte" class="level2" data-number="10">
+<h2 data-number="10" class="anchored" data-anchor-id="sec-reporte"><span class="header-section-number">10</span> Generación del reporte Word</h2>
 <p>El reactivo <code>reporte()</code> (líneas 435-481) usa <code>officer</code> para construir un documento <code>.docx</code> con <code>read_docx()</code>, añadiendo título, datos de entrada, resultados y el gráfico (<code>body_add_gg</code>). El <code>downloadHandler</code> (líneas 484-491) lo entrega con nombre <code>reporte_retroproyeccion_&lt;fecha&gt;.docx</code>.</p>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
@@ -5982,15 +6103,15 @@ Tip
 </div>
 </div>
 <figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-reporte-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
-Figura 3: Construccion y descarga del reporte Word.
+Figura 4: Construccion y descarga del reporte Word.
 </figcaption>
 </figure>
 </div>
 </div>
 </div>
 </section>
-<section id="sec-observaciones" class="level2" data-number="10">
-<h2 data-number="10" class="anchored" data-anchor-id="sec-observaciones"><span class="header-section-number">10</span> Observaciones para mantenimiento</h2>
+<section id="sec-observaciones" class="level2" data-number="11">
+<h2 data-number="11" class="anchored" data-anchor-id="sec-observaciones"><span class="header-section-number">11</span> Observaciones para mantenimiento</h2>
 <p>Puntos a considerar al actualizar o mejorar la app:</p>
 <div class="callout callout-style-default callout-warning callout-titled">
 <div class="callout-header d-flex align-content-center">

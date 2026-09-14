@@ -17,6 +17,9 @@ source("R/calculos.R")
 source("R/grafico.R")
 source("R/otros.R")
 
+# api para llm
+ANTHROPIC_API_KEY <- Sys.getenv("ANTHROPIC_API_KEY")
+
 # --- Constantes ---
 # BETA_MIN y BETA_MAX se definen en R/calculos.R (fuente única de verdad).
 # DENSIDAD_ETANOL <- 0.789 # g/mL
@@ -60,7 +63,17 @@ ui <- page_sidebar(
   title = div(
     class = "app-title-wrapper",
     h1("Retro-BAC", class = "app-title"),
-    h5("Retrograde extrapolation alcohol calculation", class = "app-subtitle")
+    h5("Retrograde extrapolation alcohol calculation", class = "app-subtitle"),
+    popover(
+      span(
+        icon("globe"),
+        class = "lang-globe ms-auto",
+        role = "button",
+        tabindex = "0",
+        `aria-label` = "Language"
+      ),
+      "Spanish localization coming soon"
+    )
   ),
 
   theme = bs_theme(
@@ -170,7 +183,7 @@ ui <- page_sidebar(
 
         downloadButton("descargar_reporte", "Download report") |> disabled(),
 
-        hr(),
+        # hr(),
         helpText(
           paste0(
             "Note: Alcohol elimination rate (β) varies between ",
@@ -232,7 +245,7 @@ ui <- page_sidebar(
           uiOutput("resultados_ui")
         )
       ),
-      
+
       ## gráfico ----
       card(
         # class = "shadow-sm mb-3",
@@ -359,7 +372,7 @@ server <- function(input, output, session) {
   })
 
   observe(
-    if (input$calcular == 0) {
+    if (is.null(resultado_rv())) {
       show("no_results")
       show("no_results_plot")
       show("no_results_calculos")
@@ -454,28 +467,23 @@ server <- function(input, output, session) {
   iv$enable()
 
   ## calcular ----
-  resultado <- eventReactive(input$calcular, {
-    req(iv$is_valid(), cancelOutput = TRUE)
-
-    tiempo_medicion_val <- ymd_hm(
-      paste(input$fecha_medicion, input$hora_medicion),
-      tz = Sys.timezone()
-    )
-    tiempo_evento_val <- ymd_hm(
-      paste(input$fecha_evento, input$hora_evento),
-      tz = Sys.timezone()
-    )
-    horas_transcurridas <- calcular_horas(
-      tiempo_evento_val,
-      tiempo_medicion_val
-    )
+  # arma la lista de resultados a partir de un escenario ya validado; se comparte
+  # entre el botón "Calculate" y la herramienta del chatbot para garantizar que
+  # ambos produzcan exactamente la misma estructura.
+  armar_resultado <- function(
+    bac_medido,
+    tiempo_evento_val,
+    tiempo_medicion_val
+  ) {
     extrap <- extrapolar_bac(
-      bac_medido = input$bac_medido,
-      horas_transcurridas = horas_transcurridas,
+      bac_medido = bac_medido,
+      horas_transcurridas = calcular_horas(
+        tiempo_evento_val,
+        tiempo_medicion_val
+      ),
       beta_min = BETA_MIN,
       beta_max = BETA_MAX
     )
-
     list(
       horas = extrap$horas,
       bac_min = extrap$bac_min,
@@ -486,7 +494,32 @@ server <- function(input, output, session) {
       beta_min_val = extrap$beta_min,
       beta_max_val = extrap$beta_max
     )
-  })
+  }
+
+  # el resultado vive en un reactiveVal para poder escribirse tanto desde el
+  # botón como directamente desde la herramienta del chatbot, sin depender de
+  # que el cliente devuelva los inputs actualizados por medio de un round-trip.
+  resultado_rv <- reactiveVal(NULL)
+  resultado <- reactive(resultado_rv())
+
+  observeEvent(
+    input$calcular,
+    {
+      req(iv$is_valid(), cancelOutput = TRUE)
+      resultado_rv(armar_resultado(
+        input$bac_medido,
+        ymd_hm(
+          paste(input$fecha_evento, input$hora_evento),
+          tz = Sys.timezone()
+        ),
+        ymd_hm(
+          paste(input$fecha_medicion, input$hora_medicion),
+          tz = Sys.timezone()
+        )
+      ))
+    },
+    ignoreInit = TRUE
+  )
 
   ### output resultado ----
   output$resultados_ui <- renderUI({
@@ -516,6 +549,7 @@ server <- function(input, output, session) {
 
   output$bac_plot <- renderPlot(
     {
+      req(resultado())
       construir_grafico(resultado(), es_movil = es_movil())
     },
     res = 96
@@ -913,8 +947,12 @@ server <- function(input, output, session) {
     beta_min = BETA_MIN,
     beta_max = BETA_MAX
   ) {
-    if (is.null(beta_min)) beta_min <- BETA_MIN
-    if (is.null(beta_max)) beta_max <- BETA_MAX
+    if (is.null(beta_min)) {
+      beta_min <- BETA_MIN
+    }
+    if (is.null(beta_max)) {
+      beta_max <- BETA_MAX
+    }
 
     # Preferir fechas-hora si se proveen ambas; si no, usar las horas.
     if (!is.null(tiempo_evento) && !is.null(tiempo_medicion)) {
@@ -939,21 +977,39 @@ server <- function(input, output, session) {
       beta_max = beta_max
     )
 
-    # Sincronizar los inputs y disparar "Calculate".
-    updateNumericInput(session, "bac_medido", value = bac_medido)
-    updateDateInput(
-      session,
-      "fecha_medicion",
-      value = as.Date(tm, tz = Sys.timezone())
-    )
-    updateTextInput(session, "hora_medicion", value = format(tm, "%H:%M"))
-    updateDateInput(
-      session,
-      "fecha_evento",
-      value = as.Date(te, tz = Sys.timezone())
-    )
-    updateTextInput(session, "hora_evento", value = format(te, "%H:%M"))
-    shinyjs::click("calcular")
+    # Sincronizar los inputs (para que la UI refleje el escenario) y empujar el
+    # resultado directamente al estado reactivo. Se hace dentro del dominio
+    # reactivo de la sesión porque la herramienta corre en el contexto asíncrono
+    # de `chat$stream_async`. Escribir el reactiveVal aquí garantiza que TODOS los
+    # outputs (texto y gráfico) se recalculen en el mismo ciclo de flush, sin
+    # depender de que el cliente devuelva los inputs actualizados (lo que causaba
+    # que a veces el gráfico o el texto no se refrescaran).
+    shiny::withReactiveDomain(session, {
+      updateNumericInput(session, "bac_medido", value = bac_medido)
+      updateDateInput(
+        session,
+        "fecha_medicion",
+        value = as.Date(tm, tz = Sys.timezone())
+      )
+      updateTextInput(session, "hora_medicion", value = format(tm, "%H:%M"))
+      updateDateInput(
+        session,
+        "fecha_evento",
+        value = as.Date(te, tz = Sys.timezone())
+      )
+      updateTextInput(session, "hora_evento", value = format(te, "%H:%M"))
+
+      resultado_rv(list(
+        horas = res$horas,
+        bac_min = res$bac_min,
+        bac_max = res$bac_max,
+        bac_medido_val = res$bac_medido,
+        tiempo_medicion_val = tm,
+        tiempo_evento_val = te,
+        beta_min_val = res$beta_min,
+        beta_max_val = res$beta_max
+      ))
+    })
 
     res
   }
@@ -992,6 +1048,95 @@ server <- function(input, output, session) {
 
   # entregar herramienta
   chat$register_tool(herramienta_retrobac)
+
+  # lectura del estado actual de la app: lee los inputs configurados por el
+  # usuario y recalcula desde ellos usando las mismas funciones puras que el
+  # reactivo `resultado()`, de modo que reproduce exactamente lo que se ve en
+  # pantalla. Se lee dentro de `withReactiveDomain(session, isolate(...))`
+  # porque la herramienta corre en el contexto asíncrono de `chat$stream_async`.
+  obtener_estado_app <- function() {
+    estado <- shiny::withReactiveDomain(session, {
+      isolate({
+        list(
+          bac_medido = input$bac_medido,
+          fecha_medicion = input$fecha_medicion,
+          hora_medicion = input$hora_medicion,
+          fecha_evento = input$fecha_evento,
+          hora_evento = input$hora_evento,
+          es_valido = iv$is_valid()
+        )
+      })
+    })
+
+    if (!isTRUE(estado$es_valido)) {
+      return(list(
+        estado_valido = FALSE,
+        mensaje = "Los inputs actuales no son válidos o están incompletos. Pide al usuario que revise el BAC medido y las fechas/horas del evento y de la medición.",
+        inputs = list(
+          bac_medido = estado$bac_medido,
+          fecha_medicion = as.character(estado$fecha_medicion),
+          hora_medicion = estado$hora_medicion,
+          fecha_evento = as.character(estado$fecha_evento),
+          hora_evento = estado$hora_evento
+        )
+      ))
+    }
+
+    calculo <- tryCatch(
+      {
+        tiempo_medicion_val <- ymd_hm(
+          paste(estado$fecha_medicion, estado$hora_medicion),
+          tz = Sys.timezone()
+        )
+        tiempo_evento_val <- ymd_hm(
+          paste(estado$fecha_evento, estado$hora_evento),
+          tz = Sys.timezone()
+        )
+        horas <- calcular_horas(tiempo_evento_val, tiempo_medicion_val)
+        extrapolar_bac(
+          bac_medido = estado$bac_medido,
+          horas_transcurridas = horas,
+          beta_min = BETA_MIN,
+          beta_max = BETA_MAX
+        )
+      },
+      error = function(e) e
+    )
+
+    if (inherits(calculo, "error")) {
+      return(list(
+        estado_valido = FALSE,
+        mensaje = paste(
+          "No se pudo recalcular desde los inputs actuales:",
+          conditionMessage(calculo)
+        )
+      ))
+    }
+
+    list(
+      estado_valido = TRUE,
+      inputs = list(
+        bac_medido = estado$bac_medido,
+        fecha_medicion = as.character(estado$fecha_medicion),
+        hora_medicion = estado$hora_medicion,
+        fecha_evento = as.character(estado$fecha_evento),
+        hora_evento = estado$hora_evento
+      ),
+      horas_transcurridas = calculo$horas,
+      bac_estimado_min = calculo$bac_min,
+      bac_estimado_max = calculo$bac_max,
+      beta_min = calculo$beta_min,
+      beta_max = calculo$beta_max
+    )
+  }
+
+  herramienta_estado <- tool(
+    obtener_estado_app,
+    description = "Lee el estado actual de la aplicación: los inputs que el usuario ha configurado (BAC medido, fechas y horas del evento y de la medición) y los resultados de la extrapolación recalculados a partir de esos inputs (rango de BAC estimado con las tasas mínima y máxima, y horas transcurridas). Los resultados son idénticos a los que se muestran en pantalla. Usa esta función cuando el usuario pregunte sobre 'los resultados', 'los datos que ingresé', 'este cálculo', 'por qué da este rango' u otras consultas sobre el escenario actual de la app, en lugar de pedirle al usuario que repita los valores. Si el estado no es válido, informa al usuario qué debe corregir.",
+    arguments = list()
+  )
+
+  chat$register_tool(herramienta_estado)
 
   observeEvent(input$chat_user_input, {
     stream <- chat$stream_async(input$chat_user_input)

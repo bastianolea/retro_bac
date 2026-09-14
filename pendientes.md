@@ -41,4 +41,4 @@ Cálculo
 Chatbot
 - [x] implementar chatbot
 - [x] hacer que cambie los inputs en la app
-- [ ] permitir que el chatbot vea resultados
+- [x] permitir que el chatbot vea resultados

@@ -45,6 +45,27 @@ una tasa mínima ($\beta_{min}$ = 0.10 g/L/h) y una máxima ($\beta_{max}$
 **no tiene validez legal por sí misma**: es un apoyo al análisis
 pericial experto.
 
+## Funcionamiento
+
+En la práctica, el usuario ingresa en el panel lateral la concentración de
+alcohol medida (BAC), junto con la fecha y hora del incidente y de la toma de
+muestra. Al pulsar **Calculate extrapolation**, la app valida las entradas
+(formato de hora, BAC no negativo, evento anterior a la medición) y aplica la
+fórmula de Widmark con las tasas de eliminación mínima y máxima. El resultado se
+presenta como un rango de BAC estimado en el momento del incidente, acompañado de
+un gráfico temporal, un desglose paso a paso del cálculo y un reporte Word
+(`.docx`) descargable que sirve como documentación de registro.
+
+La aplicación integra además un asistente conversacional (chatbot) basado en un
+modelo de lenguaje que fundamenta sus respuestas en la literatura científica de
+referencia mediante recuperación aumentada (RAG) sobre la guía ANSI/ASB y
+publicaciones asociadas. El chatbot está conectado de forma bidireccional con la
+app: puede **modificar los inputs** y disparar el cálculo a partir de los datos
+que el usuario le indica, y también **leer el estado actual** de la app para
+recalcular los resultados desde los inputs vigentes y comentar o explicar el
+escenario cargado. De este modo, resuelve dudas conceptuales y metodológicas a la
+vez que interactúa directamente con el cálculo en curso.
+
 ## Entregables
 
 | Entregable | Descripción |
