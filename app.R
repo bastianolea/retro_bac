@@ -232,6 +232,8 @@ ui <- page_sidebar(
           uiOutput("resultados_ui")
         )
       ),
+      
+      ## gráfico ----
       card(
         # class = "shadow-sm mb-3",
         full_screen = TRUE,
@@ -900,18 +902,82 @@ server <- function(input, output, session) {
     store_description = "Consulta de documentos sobre cálculos de alcohol en sangre para cálculo de extrapolación retrógrada de alcohol"
   )
 
+  # wrapper de la herramienta: calcula la extrapolación y, además, sincroniza
+  # los inputs de la app y dispara el cálculo para que el panel de resultados
+  # refleje el mismo escenario que el chatbot le reporta al usuario.
+  extrapolar_bac_tool <- function(
+    bac_medido,
+    horas_transcurridas = NULL,
+    tiempo_evento = NULL,
+    tiempo_medicion = NULL,
+    beta_min = BETA_MIN,
+    beta_max = BETA_MAX
+  ) {
+    if (is.null(beta_min)) beta_min <- BETA_MIN
+    if (is.null(beta_max)) beta_max <- BETA_MAX
+
+    # Preferir fechas-hora si se proveen ambas; si no, usar las horas.
+    if (!is.null(tiempo_evento) && !is.null(tiempo_medicion)) {
+      te <- validar_fecha_hora(tiempo_evento, "tiempo_evento")
+      tm <- validar_fecha_hora(tiempo_medicion, "tiempo_medicion")
+      horas <- calcular_horas(te, tm)
+    } else if (!is.null(horas_transcurridas)) {
+      tm <- Sys.time()
+      te <- tm - lubridate::dhours(horas_transcurridas)
+      horas <- horas_transcurridas
+    } else {
+      stop(
+        "Proporciona las fechas-hora del evento y de la medición, o bien las horas transcurridas.",
+        call. = FALSE
+      )
+    }
+
+    res <- extrapolar_bac(
+      bac_medido = bac_medido,
+      horas_transcurridas = horas,
+      beta_min = beta_min,
+      beta_max = beta_max
+    )
+
+    # Sincronizar los inputs y disparar "Calculate".
+    updateNumericInput(session, "bac_medido", value = bac_medido)
+    updateDateInput(
+      session,
+      "fecha_medicion",
+      value = as.Date(tm, tz = Sys.timezone())
+    )
+    updateTextInput(session, "hora_medicion", value = format(tm, "%H:%M"))
+    updateDateInput(
+      session,
+      "fecha_evento",
+      value = as.Date(te, tz = Sys.timezone())
+    )
+    updateTextInput(session, "hora_evento", value = format(te, "%H:%M"))
+    shinyjs::click("calcular")
+
+    res
+  }
+
   # registrar función
   herramienta_retrobac <- tool(
-    extrapolar_bac,
-    description = "Función para cálculo de extrapolación retrógrada de alcohol. Calcular las horas transcurridas entre el evento y la medición. A partir del BAC o alcohol en el cuerpo medido y las horas transcurridas desde el evento, retorna: BAC estimado usando la tasa mínima y máxima, horas transcurridas, BAC medido de entrada, y las tasas de eliminación utilizadas. Usa esta función cuando te pidan calcular o estimar la concentración de alcohol en sangre (BAC) que un individuo en el momento de un incidente a partir de una medición analítica posterior.",
+    extrapolar_bac_tool,
+    description = "Calcula la extrapolación retrógrada de alcohol y sincroniza los inputs de la app. Entrega el BAC medido y, o bien las fechas-hora del evento y de la medición en formato ISO 'YYYY-MM-DD HH:MM', o bien las horas transcurridas desde el evento (en cuyo caso se asume que la medición es ahora). Retorna: BAC estimado con la tasa mínima y máxima, horas transcurridas, BAC medido de entrada, y las tasas de eliminación utilizadas. Usa esta función cuando te pidan calcular o estimar la concentración de alcohol en sangre (BAC) de un individuo en el momento de un incidente a partir de una medición analítica posterior.",
     arguments = list(
       bac_medido = type_number(
         required = TRUE,
         "Concentración de alcohol medida (g/L)."
       ),
       horas_transcurridas = type_number(
-        required = TRUE,
-        "Tiempo transcurrido entre el incidente y la medición, en horas. Debe ser >= 0."
+        required = FALSE,
+        "Tiempo transcurrido entre el incidente y la medición, en horas (>= 0). Úsalo solo si no conoces las fechas."
+      ),
+      tiempo_evento = type_string(
+        required = FALSE,
+        "Fecha-hora del incidente en formato ISO 'YYYY-MM-DD HH:MM'."
+      ),
+      tiempo_medicion = type_string(
+        required = FALSE,
+        "Fecha-hora de la toma de muestra en formato ISO 'YYYY-MM-DD HH:MM'."
       ),
       beta_min = type_number(
         required = FALSE,
