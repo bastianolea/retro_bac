@@ -39,4 +39,5 @@ Cálculo
   
   
 Chatbot
-- [ ] implementar chatbot
+- [x] implementar chatbot
+- [ ] hacer que cambie los inputs en la app
