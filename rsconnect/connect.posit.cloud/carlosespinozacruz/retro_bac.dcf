@@ -1,0 +1,12 @@
+name: retro_bac
+title: retro_bac
+username: carlosespinozacruz
+account: carlosespinozacruz
+server: connect.posit.cloud
+hostUrl: https://api.connect.posit.cloud/v1
+appId: 01a0a57a-7a3c-c8c7-8ac5-a521558afd37
+bundleId:
+url: https://connect.posit.cloud/carlosespinozacruz/content/01a0a57a-7a3c-c8c7-8ac5-a521558afd37
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
