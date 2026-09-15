@@ -11,7 +11,7 @@ library(shinychat)
 library(ellmer)
 library(ragnar)
 
-version <- "1.3"
+version <- "1.4"
 
 source("R/calculos.R")
 source("R/grafico.R")
@@ -933,6 +933,7 @@ server <- function(input, output, session) {
     chat,
     store,
     top_k = 4,
+    title = "Base de conocimientos sobre cálculos de alcohol en sangre",
     store_description = "Consulta de documentos sobre cálculos de alcohol en sangre para cálculo de extrapolación retrógrada de alcohol"
   )
 

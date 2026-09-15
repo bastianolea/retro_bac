@@ -1,0 +1,12 @@
+name: Retro-BAC
+title: Retro-BAC
+username: forensictox
+account: forensictox
+server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
+appId: 16149391
+bundleId: 12558373
+url: https://forensictox.shinyapps.io/Retro-BAC/
+version: 1
+asMultiple: FALSE
+asStatic: FALSE
