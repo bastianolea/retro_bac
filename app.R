@@ -639,6 +639,15 @@ server <- function(input, output, session) {
             "\\end{aligned}$$"
           )
         )
+      ),
+      p(
+        HTML(paste0(
+          "It is estimated that the subject's AC at the time of incident was ~",
+          fmt(res$bac_min),
+          " and ~",
+          fmt(res$bac_max),
+          " g/L."
+        ))
       )
     ))
   })
